@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items>
+  <coin id="platinum" cost="1000" name="platinum coin" color="slateGray" char="€" />
+  <coin id="gold" cost="100" name="gold coin" color="gold" char="€" />
+  <coin id="silver" cost="10" name="silver coin" color="silver" char="€" />
+  <coin id="copper" cost="1" name="copper coin" color="yellow" char="€" />
+  <food id="wheat" cost="1" name="bushel of wheat" weight=".5" color="wheat" char="⌠" spell="heal" />
+  <item id="flour" cost="2" name="sack of flour" weight=".5" color="brown" char="%" />
+  <item id="iron" cost="10" name="clump of iron" weight=".5" color="lightSteelBlue" char="*" />
+  <item id="tobacco" cost="50" name="bushel of tobacco" weight=".5" color="olive" char="⌠" />
+  <item id="clump_copper" cost="50" name="clump of copper" weight=".5" color="yellow" char="*" />
+  <item id="cinnamon" cost="100" name="sack of cinnamon" weight=".5" color="brown" char="%" />
+  <item id="ginger" cost="200" name="sack of ginger" weight=".5" color="brown" char="%" />
+  <item id="pepper" cost="200" name="sack of pepper" weight=".5" color="brown" char="%" />
+  <aid id="linen" cost="400" name="sheat of linen" weight=".5" color="linen" char="|" />
+  <item id="salt" cost="500" name="sack of salt" weight=".5" color="brown" char="%" />
+  <item id="clump_silver" cost="500" name="clump of silver" weight=".5" color="silver" char="*" />
+  <item id="silk" cost="1000" name="sheat of silk" weight=".5" color="azure" char="|" />
+  <item id="saffron" cost="1500" name="sack of saffron" weight=".5" color="brown" char="%" />
+  <item id="cloves" cost="1500" name="sack of cloves" weight=".5" color="brown" char="%" />
+  <item id="clump_gold" cost="5000" name="clump of gold" weight=".5" color="gold" char="*" />
+  <item id="clump_platinum" cost="50000" name="clump of platinum" weight=".5" color="slateGray" char="*" />
+  <item id="diamond" cost="50000" weight=".1" color="whiteSmoke" char="*" />
+  <item id="emerald" cost="30000" weight=".1" color="chartreuse" char="*" />
+  <item id="sapphire" cost="40000" weight=".1" color="royalBlue" char="*" />
+  <item id="ruby" cost="20000" weight=".1" color="red" char="*" />
+  <item id="amethyst" cost="10000" weight=".1" color="mediumPurple" char="*" />
+  <weapon id="dagger" cost="200" dmg="1d4" weight=".5" color="gray" char=")" type="blade_one" />
+  <weapon id="shocking dagger" cost="200" dmg="1d4" weight=".5" color="gray" char=")" type="blade_one" mana="100" spell="w_shock" />
+  <weapon id="longspear" cost="500" dmg="1d8" name="long spear" weight="4.5" color="gray" char=")" type="spear" />
+  <weapon id="crossbow" cost="3500" dmg="1d6" weight="1.5" color="gray" char=")" type="crossbow" />
+  <weapon id="bolt_crossbow" cost="10" dmg="0" name="crossbow bolt" weight=".05" color="gray" char=")" type="bolt" />
+  <weapon id="dart" cost="50" dmg="1d8" weight=".25" color="gray" char=")" type="thrown" />
+  <weapon id="scimitar" cost="1500" dmg="1d6" weight="2" color="gray" char=")" type="blade_one" />
+  <armor id="leather cuirass" cost="10000" weight="12.5" color="steelBlue" char="[">
+    <stats class="light" slot="cuirass" ar="5" />
+  </armor>
+  <armor id="leather left bracer" cost="10000" weight="12.5" color="steelBlue" char="[">
+    <stats class="light" slot="bracer_left" ar="5" />
+  </armor>
+  <armor id="leather right bracer" cost="500" weight="1" color="saddleBrown" char="[">
+    <stats class="light" slot="BRACER_RIGHT" ar="5" />
+  </armor>
+  <armor id="leather chausses" cost="10000" weight="12.5" color="steelBlue" char="[">
+    <stats class="light" slot="chausses" ar="5" />
+  </armor>
+  <armor id="leather boots" cost="800" weight="7" color="saddleBrown" char="[">
+    <stats slot="boots" class="light" ar="5" />
+  </armor>
+  <armor id="shirt_chain" cost="10000" name="chain shirt" weight="12.5" color="steelBlue" char="[">
+    <stats class="light" slot="cuirass" ar="4" />
+  </armor>
+  <armor id="breastplate" cost="20000" weight="15" color="steelBlue" char="[">
+    <stats class="heavy" slot="cuirass" ar="5" />
+  </armor>
+  <armor id="buckler" cost="1500" weight="2.5" color="steelBlue" char="[">
+    <stats class="heavy" slot="shield" ar="1" />
+  </armor>
+  <armor id="shield_light_wooden" cost="300" name="light wooden shield" weight="2.5" color="steelBlue" char="[">
+    <stats class="light" slot="shield" ar="1" />
+  </armor>
+  <armor id="shield_light_steel" cost="900" name="light steel shield" weight="3" color="steelBlue" char="[">
+    <stats class="medium" slot="shield" ar="1" />
+  </armor>
+  <armor id="shield_heavy_wooden" cost="700" name="heavy wooden shield" weight="5" color="steelBlue" char="[">
+    <stats class="medium" slot="shield" ar="2" />
+  </armor>
+  <armor id="shield_heavy_steel" cost="2000" name="heavy steel shield" weight="7.5" color="steelBlue" char="[">
+    <stats class="heavy" slot="shield" ar="2" />
+  </armor>
+  <armor id="shield_tower" cost="3000" name="tower shield" weight="22.5" color="steelBlue" char="[">
+    <stats class="heavy" slot="shield" ar="4" />
+  </armor>
+  <armor id="chain mail left pauldron" weight="8" cost="2000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="PAULDRON_LEFT" ar="15" />
+  </armor>
+  <armor id="chain mail left gauntlet" weight="4" cost="1500" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="GAUNTLET_LEFT" ar="15" />
+  </armor>
+  <armor id="chain mail boots" weight="14.0" cost="3000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="BOOTS" ar="15" />
+  </armor>
+  <armor id="chain mail cuirass" weight="20" cost="4000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="CUIRASS" ar="15" />
+  </armor>
+  <armor id="leather shield" cost="600" weight="4" color="saddleBrown" char="[">
+    <stats slot="SHIELD" class="light" ar="5" />
+  </armor>
+  <armor id="chain mail right gauntlet" weight="4" cost="1500" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="GAUNTLET_RIGHT" ar="15" />
+  </armor>
+  <armor id="leather left pauldron" cost="700" weight="4" color="saddleBrown" char="[">
+    <stats class="light" slot="PAULDRON_LEFT" ar="5" />
+  </armor>
+  <armor id="leather right pauldron" cost="700" weight="4" color="saddleBrown" char="[">
+    <stats class="light" slot="PAULDRON_RIGHT" ar="5" />
+  </armor>
+  <armor id="leather helmet" cost="1000" weight="6.0" color="saddleBrown" char="[">
+    <stats class="light" slot="HELMET" ar="5" />
+  </armor>
+  <armor id="chain mail helmet" weight="12" cost="2500" color="white" char="]">
+    <stats class="medium" slot="HELMET" ar="15" />
+  </armor>
+  <armor id="chain mail right pauldron" weight="8" cost="2000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="PAULDRON_RIGHT" ar="15" />
+  </armor>
+  <armor id="chain mail chausses" weight="10" cost="3000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="CHAUSSES" ar="15" />
+  </armor>
+  <clothing id="wool pants" cost="300" weight="1" color="white" char="[">
+    <stats slot="pants" />
+  </clothing>
+  <clothing id="wool shirt" cost="300" weight="1" color="white" char="[">
+    <stats slot="shirt" />
+  </clothing>
+  <clothing id="silk shirt" cost="300" weight="1" color="white" char="[">
+    <stats slot="shirt" />
+  </clothing>
+  <list id="shirt">
+    <creature id="wool shirt" l="1" />
+    <creature id="silk shirt" l="10" />
+  </list>
+  <container id="chest" color="brown" char="■" />
+  <container id="altar" color="gray" char="Ħ" />
+  <container id="chest_loot1" color="saddleBrown" name="chest" char="■">
+  	<item>silk shirt</item>
+  </container>
+  <item id="fig" z="top">
+  	<svg><circle r="3" fill="forestGreen" opacity="0.2" /></svg>
+  </item>
+  <item id="cedar" z="top">
+  	<svg><circle r="5" fill="darkGreen" opacity="0.2" /></svg>
+  </item>
+  <item id="teak" z="top">
+  	<svg><circle r="1" fill="springGreen" opacity="0.2" /></svg>
+  </item>
+  <item id="conifer" z="top">
+  	<svg><circle r="6" fill="seaGreen" opacity="0.3" /></svg>
+  </item>
+  <item id="beech" z="top">
+  	<svg><circle r="4" fill="sienna" opacity="0.4" /></svg>
+  </item>
+  <item id="maple" z="top">
+  	<svg><circle r="2" fill="greenYellow" opacity="0.2" /></svg>
+  </item>
+  <item id="yew" z="top">
+  	<svg><circle r="1" fill="green" opacity="0.4" /></svg>
+  </item>
+  <container id="shrub" color="yellowGreen" char="ω" />
+  <container id="bamboo" color="yellowGreen" char="ж" />
+  <container id="reed" color="yellowGreen" char="Ϡ" />
+  <container id="tomb" color="gray" char="†" />
+  <light id="torch" cost="100" weight=".2" color="brown" char="⌠" />
+  <light id="candle" cost="100" weight=".2" color="white" char="⌠" />
+  <potion id="potion of healing" cost="100" weight=".2" color="paleTurquoise" char="!" spell="heal" />
+  <scroll id="scroll of healing" cost="100" weight=".2" color="paleTurquoise" char="§" spell="heal">Heal me!</scroll>
+  <book id="shopping list" cost="100" weight="2" color="paleTurquoise" char="§">shopping_list</book>
+  <book id="three billy goats gruff" cost="100" weight="2" color="paleTurquoise" char="§">three_billy_goats_gruff</book>
+  <book id="why the bear is stumpy-tailed" cost="100" weight="2" color="paleTurquoise" char="§">why_the_bear_is_stumpy_tailed</book>
+  <book id="the fox as herdsman" cost="100" weight="2" color="paleTurquoise" char="§">the_fox_as_herdsman</book>
+  <item id="key1" weight=".1" color="white" char="'" />
+  <item id="wall" color="gray" char="#" />
+  <door id="door" color="gray" char="/"><states closed="+" /></door>
+  <door id="door_wood" color="saddleBrown" char="/"><states closed="+" /></door>
+  <door id="door_stone" color="darkSlateGray" char="/"><states closed="+" /></door>
+  <door id="door_iron" color="steelBlue" char="/"><states closed="+" /></door>
+  <door id="hole" color="darkGray" char="●" />
+</items>

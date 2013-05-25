@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monsters>
+  <humanoid id="dwarf" hit="1d8+2" size="small" speed="9" color="gray" char="@" mana="1">
+    <stats str="13" dex="11" con="14" int="10" wis="9" cha="6" />
+    <av>1d3</av>
+    <skills axe="10" />
+  </humanoid>
+  <humanoid id="light elf" hit="1d8" size="medium" speed="10" mana="2" color="paleGreen" char="@">
+    <stats str="13" dex="13" con="10" int="10" wis="9" cha="5" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="dark elf" hit="1d8" size="medium" speed="10" color="darkSlateBlue" char="@" mana="1">
+    <stats str="13" dex="13" con="10" int="12" wis="9" cha="10" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="nord" size="medium" hit="1d8+1" speed="10" color="ivory" char="@" mana="1">
+    <stats str="14" dex="10" con="14" int="9" wis="9" cha="6" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="tengri" size="medium" hit="1d7" speed="10" color="goldenrod" char="@" mana="1">
+    <stats str="12" dex="14" con="10" int="11" wis="9" cha="9" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="tengri1" name="tengri" size="medium" hit="1d7" speed="10" color="gold" char="@" mana="1">
+    <stats str="12" dex="14" con="10" int="11" wis="9" cha="9" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="tengri2" name="tengri" size="medium" hit="1d7" speed="10" color="yellow" char="@" mana="1">
+    <stats str="12" dex="14" con="10" int="11" wis="9" cha="9" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="tengri3" name="tengri" size="medium" hit="1d7" speed="10" color="darkGoldenrod" char="@" mana="1">
+    <stats str="12" dex="14" con="10" int="11" wis="9" cha="9" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="nomad" size="medium" hit="1d8" speed="11" color="darkRed" char="@" mana="1">
+    <stats str="13" dex="12" con="11" int="10" wis="9" cha="7" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="fire giant" size="large" hit="1d8" speed="11" color="orangeRed" char="G" mana="1">
+    <stats str="23" dex="12" con="21" int="10" wis="9" cha="7" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="mountain giant" size="large" hit="1d8" speed="11" color="skyBlue" char="G" mana="1">
+    <stats str="23" dex="12" con="21" int="10" wis="9" cha="7" />
+    <av>1d3</av>
+  </humanoid>
+  <humanoid id="agogwe" hit="1d8+2" size="small" speed="13" color="indianRed" char="@">
+    <stats str="13" dex="11" con="14" int="10" wis="9" cha="6" />
+    <av>1d3</av>
+  </humanoid>
+  <goblin id="hobgoblin" size="small" hit="1d8+1" speed="11" color="greenYellow" char="ğ">
+    <stats str="11" dex="13" con="12" int="10" wis="9" cha="6" />
+    <av>1d3</av>
+  </goblin>
+  <goblin id="goblin" size="medium" hit="2d8+1" speed="10" color="green" char="ğ">
+    <stats str="11" dex="13" con="12" int="10" wis="9" cha="6" />
+    <av>1d3</av>
+  </goblin>
+  <goblin id="kobold" size="small" hit="1d8" speed="8" color="limeGreen" char="k">
+    <stats str="9" dex="13" con="10" int="10" wis="9" cha="8" />
+    <av>1d3</av>
+  </goblin>
+  <goblin id="bogle" size="small" hit="1d8" speed="8" color="springGreen" char="ğ">
+    <stats str="9" dex="13" con="10" int="10" wis="9" cha="8" />
+    <av>1d3</av>
+  </goblin>
+  <goblin id="gnome" hit="1d8+2" size="small" speed="7" color="paleGreen" char="ğ">
+    <stats str="11" dex="11" con="14" int="10" wis="9" cha="8" />
+    <av>1d3</av>
+  </goblin>
+  <goblin id="troll" size="large" hit="6d8+36" speed="11" color="green" char="T">
+    <stats str="23" dex="14" con="23" int="6" wis="9" cha="6" />
+    <av>1d5</av>
+  </goblin>
+  <goblin id="ogre" size="large" hit="4d8+11" speed="12" color="darkOliveGreen" char="Ŏ">
+    <stats str="21" dex="8" con="15" int="6" wis="10" cha="7" />
+    <av>1d5</av>
+  </goblin>
+  <animal id="poukai" size="small" hit="1d10" speed="3" color="sienna" char="p" habitat="air">
+    <stats str="2" dex="15" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+  </animal>
+  <animal id="hermit crab" size="small" hit="1d10" speed="3" color="coral" char="h" habitat="amphibian">
+    <stats str="2" dex="15" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+  </animal>
+  <animal id="spider" size="tiny" hit="1d2" speed="3" color="salmon" char="s">
+    <stats str="2" dex="15" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+  </animal>
+  <animal id="scorpion" size="tiny" hit="1d2" speed="3" color="peru" char="s">
+    <stats str="2" dex="15" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+  </animal>
+  <animal id="rat" size="tiny" hit="1d2" speed="3" color="gray" char="r">
+    <stats str="2" dex="15" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="rat_forest" size="tiny" hit="1d2" speed="4" color="lightGray" char="r">
+    <stats str="2" dex="20" con="10" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="rat_cave" size="tiny" hit="1d2" speed="4" color="darkGray" char="r">
+    <stats str="2" dex="15" con="15" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="rat_field" size="tiny" hit="1d2" speed="4" color="rosyBrown" char="r">
+    <stats str="2" dex="15" con="15" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="rat_brown" size="tiny" hit="1d2" speed="4" color="burlyWood" char="r">
+    <stats str="2" dex="15" con="15" int="2" wis="12" cha="2" />
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="rat_spiny" size="tiny" hit="1d2" speed="4" color="ivory" char="r" name="spiny rat">
+    <stats str="2" dex="15" con="15" int="2" wis="12" cha="2" />
+    <sub>undead</sub>
+    <av>1d5</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="emela" size="huge" hit="1d8" speed="8" color="khaki" char="E">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="tseajaia" size="small" hit="1d8" speed="8" color="khaki" char="u" habitat="amphibian">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="tame tseajaia" size="small" hit="1d8" speed="8" color="rosyBrown" char="u" habitat="amphibian">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="high tseajaia" size="small" hit="1d8" speed="8" color="ivory" char="u" habitat="amphibian">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="brackish tseajaia" size="small" hit="1d8" speed="8" color="tan" char="u" habitat="amphibian">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="cat" size="small" hit="1d8" speed="8" color="khaki" char="c">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="wildcat" size="small" hit="1d8" speed="8" color="sandyBrown" char="c">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="jungle cat" size="small" hit="1d8" speed="8" color="burlyWood" char="c">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="mountain cat" size="small" hit="1d8" speed="8" color="gray" char="c">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="marbled cat" size="small" hit="1d8" speed="8" color="antiqueWhite" char="c">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="abaia" size="small" hit="1d8" speed="8" color="blue" char="a" habitat="water">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="great abaia" size="medium" hit="5d8+10" speed="8" color="navy" char="a" habitat="water">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="cave abaia" size="small" hit="1d8" speed="8" color="white" char="a" habitat="water">
+    <stats str="9" dex="19" con="5" int="2" wis="12" cha="12" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="boar" size="medium" hit="3d8+6" speed="8" color="tan" char="b">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="pig" size="medium" hit="3d8+6" speed="8" color="pink" char="p">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="goat" size="medium" hit="3d8+6" speed="8" color="oldLace" char="g">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="wolf" size="medium" hit="3d8+6" speed="8" color="silver" char="W">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="mountain wolf" size="medium" hit="3d8+6" speed="8" color="navajoWhite" char="W">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="timber wolf" size="medium" hit="3d8+6" speed="8" color="tan" char="W">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="merrow" size="medium" hit="3d8+6" speed="8" color="dodgerBlue" char="m" habitat="water">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="adjule" size="medium" hit="3d8+6" speed="8" color="gray" char="a">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="kasai" size="small" hit="5d4+3" speed="16" color="crimson" char="k">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6</av>
+  </animal>
+  <animal id="ahool" size="large" hit="3d8+6" speed="8" color="brown" char="A" habitat="air">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="bear" size="large" hit="3d8+6" speed="8" color="brown" char="B">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="snow bear" size="large" hit="3d8+6" speed="8" color="white" char="B">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="black bear" size="large" hit="3d8+6" speed="8" color="darkGray" char="B">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="mule" size="large" hit="3d8+9" speed="6" color="gray" char="M">
+    <stats str="13" dex="15" con="10" int="13" wis="14" cha="12" />
+    <av>1d4+3</av>
+    <ai a="10">wander</ai>
+  </animal>
+  <animal id="gazelle" size="medium" hit="1d8+9" speed="16" color="burlyWood" char="ģ">
+    <stats str="13" dex="15" con="10" int="13" wis="14" cha="12" />
+    <av>1d4+3</av>
+    <ai>wander</ai>
+  </animal>
+  <animal id="buggane" size="large" hit="3d8+6" speed="8" color="darkSeaGreen" char="B">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="red buggane" size="large" hit="3d8+6" speed="8" color="indianRed" char="B">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru queen" size="medium" hit="3d8+6" speed="8" color="darkSeaGreen" char="Б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru soldier" size="small" hit="3d8+6" speed="8" color="yellowGreen" char="Б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru drone" size="small" hit="3d8+6" speed="8" color="darkOliveGreen" char="Б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru worker" size="small" hit="3d8+6" speed="8" color="olive" char="Б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru grub" size="tiny" hit="3d8+6" speed="8" color="olive" char="б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="buru honeypot" size="large" hit="3d8+6" speed="8" color="limeGreen" char="Б">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="veo" size="large" hit="3d8+6" speed="8" color="darkKhaki" char="V">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="sirrush" size="large" hit="3d8+6" speed="8" color="darkKhaki" char="S">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <animal id="cerastes" size="large" hit="3d8+6" speed="8" color="teal" char="C">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </animal>
+  <humanoid id="ghoul" size="medium" hit="2d12" speed="11" color="navy" char="g">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <humanoid id="banshee" size="medium" hit="2d12" speed="9" color="navy" char="b" habitat="air">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <humanoid id="ghost" size="medium" hit="2d12" speed="9" color="gray" char="g" habitat="air">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <humanoid id="wraith" size="medium" hit="2d12" speed="9" color="slateGray" char="w" habitat="air">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <goblin id="wight" size="small" hit="2d12" speed="11" color="mistyRose" char="w">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </goblin>
+  <humanoid id="skeleton" size="medium" hit="2d12" speed="9" color="ivory" char="s">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <humanoid id="draugr" size="medium" hit="2d12" speed="11" color="darkViolet" char="ð">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+  </humanoid>
+  <humanoid id="mummy" size="medium" hit="2d12" speed="9" color="khaki" char="m">
+	<sub>undead</sub>
+    <stats str="16" dex="13" con="17" int="2" wis="11" cha="6" />
+    <av>1d6+1</av>
+    <dv>14</dv>
+    <ai a="200">wander</ai>
+  </humanoid>
+  <monster id="sylph" size="small" hit="1d8" speed="6" color="green" char="s" habitat="air">
+    <stats str="3" dex="5" con="5" int="3" wis="4" cha="2" />
+    <av>1d4</av>
+    <ai a="100">wander</ai>
+  </monster>
+  <monster id="spectre" size="medium" hit="1d8" speed="6" color="silver" char="s" habitat="air">
+    <stats str="3" dex="5" con="5" int="3" wis="4" cha="2" />
+    <av>1d4</av>
+    <ai a="100">wander</ai>
+  </monster>
+  <monster id="shade" size="medium" hit="1d8" speed="6" color="steelBlue" char="s" habitat="air">
+    <stats str="3" dex="5" con="5" int="3" wis="4" cha="2" />
+    <av>1d4</av>
+    <ai a="100">wander</ai>
+  </monster>
+  <monster id="fouke" size="large" hit="1d8" speed="6" color="maroon" char="F">
+    <stats str="3" dex="5" con="5" int="3" wis="4" cha="2" />
+    <av>1d4</av>
+    <ai a="100">wander</ai>
+  </monster>
+  <monster id="spore zombie" size="medium" hit="1d8+6" speed="8" color="paleGreen" char="ż">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore guardian" size="medium" hit="1d8+6" speed="8" color="paleGreen" char="Ġ">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore elder" size="medium" hit="1d8+6" speed="8" color="paleGreen" char="ė">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore collector" size="medium" hit="1d8+6" speed="8" color="paleGreen" char="ċ">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore colossus" size="large" hit="4d8+6" speed="8" color="paleGreen" char="Ċ">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore infestation" size="large" hit="4d8+6" speed="8" color="paleGreen" char="İ">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="spore grub" size="small" hit="1d6" speed="8" color="paleGreen" char="ġ">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="lusca" size="large" hit="3d8+6" speed="8" color="royalBlue" char="L" habitat="water">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="white lusca" size="large" hit="3d8+6" speed="8" color="white" char="L" habitat="water">
+    <stats str="19" dex="13" con="15" int="2" wis="12" cha="6" />
+    <av>1d6+2</av>
+  </monster>
+  <monster id="wyvern" size="medium" hit="6d10+12" speed="4" color="green" char="W" habitat="air">
+    <stats str="15" dex="8" con="15" int="2" wis="12" cha="11" />
+    <av>1d8+3</av>
+    <dv>16</dv>
+  </monster>
+  <construct id="gargoyle" size="medium" hit="4d8+19" speed="8" color="darkSlateGray" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="ice golem" size="large" hit="4d8+19" speed="8" color="royalBlue" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="iron golem" size="large" hit="4d8+19" speed="8" color="steelBlue" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="stone golem" size="large" hit="4d8+19" speed="8" color="slateGray" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="earth golem" size="large" hit="4d8+19" speed="8" color="sandyBrown" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="flesh golem" size="large" hit="4d8+19" speed="8" color="lightSalmon" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="bone golem" size="large" hit="4d8+19" speed="8" color="white" char="Γ">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </construct>
+  <construct id="alraun" size="tiny" hit="1d4" speed="8" color="peru" char="α">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>1</dv>
+  </construct>
+  <construct id="infiltrator automaton" size="small" hit="1d4" speed="8" color="goldenrod" char="î">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>10</dv>
+  </construct>
+  <construct id="spider automaton" size="medium" hit="1d4" speed="8" color="goldenrod" char="ŝ">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>10</dv>
+  </construct>
+  <construct id="archer automaton" size="medium" hit="1d4" speed="8" color="goldenrod" char="â">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="chain automaton" size="medium" hit="1d4" speed="8" color="goldenrod" char="ĉ">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="harpoon automaton" size="medium" hit="1d4" speed="8" color="goldenrod" char="ĥ">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="automaton_guard" size="medium" hit="1d4" speed="8" color="goldenrod" char="ĝ" name="guard automaton">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="warrior automaton" size="medium" hit="1d4" speed="8" color="goldenrod" char="ŵ">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="exterminator automaton" size="tiny" hit="1d4" speed="8" color="goldenrod" char="ê">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>5</dv>
+  </construct>
+  <construct id="siege automaton" size="huge" hit="10d40" speed="8" color="goldenrod" char="Ŝ">
+    <stats str="5" dex="14" con="8" int="6" wis="11" cha="7" />
+    <av>10d4+2</av>
+    <dv>50</dv>
+  </construct>
+  <monster id="spriggan" size="large" hit="4d8+19" speed="8" color="forestGreen" char="S">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </monster>
+  <monster id="kelpie" size="large" hit="3d8+19" speed="10" color="seaGreen" char="K" habitat="water">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </monster>
+  <daemon id="fire daemon" size="large" hit="4d8+19" speed="8" color="fireBrick" char="d">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </daemon>
+  <daemon id="frost daemon" size="large" hit="4d8+19" speed="8" color="lightCyan" char="d">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </daemon>
+  <daemon id="shadow daemon" size="large" hit="4d8+19" speed="8" color="dimGray" char="d">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </daemon>
+  <daemon id="dryad" size="small" hit="1d9" speed="8" color="forestGreen" char="d">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="naiad" size="small" hit="1d8+1" speed="8" color="aquamarine" char="n">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="nereid" size="medium" hit="2d9" speed="8" color="navy" char="n">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="nysiad" size="small" hit="1d8" speed="8" color="skyBlue" char="n">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="maenad" size="small" hit="1d9+1" speed="8" color="crimson" char="m">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="maliad" size="small" hit="1d9+1" speed="8" color="oldLace" char="m">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="oread" size="small" hit="1d9+1" speed="8" color="snow" char="o">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="hyad" size="small" hit="1d9+1" speed="8" color="gainsboro" char="h">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <daemon id="alseid" size="medium" hit="2d9+2" speed="8" color="forestGreen" char="a">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>6</dv>
+  </daemon>
+  <dragon id="dragonling" size="medium" hit="4d8+19" speed="8" color="lightCyan" char="D">
+    <stats str="15" dex="14" con="18" int="6" wis="11" cha="7" />
+    <av>1d4+2</av>
+    <dv>16</dv>
+  </dragon>
+  <dragon id="red dragon" size="huge" hit="4d8+19" speed="8" color="red" char="D">
+    <stats str="25" dex="24" con="28" int="16" wis="21" cha="17" />
+    <av>1d40+2</av>
+    <dv>26</dv>
+  </dragon>
+  <dragon id="black dragon" size="huge" hit="4d8+9" speed="8" color="darkGray" char="D">
+    <stats str="25" dex="24" con="28" int="16" wis="21" cha="17" />
+    <av>1d40+2</av>
+    <dv>26</dv>
+  </dragon>
+  <dragon id="blue dragon" size="huge" hit="4d9+9" speed="8" color="blue" char="D">
+    <stats str="25" dex="24" con="28" int="16" wis="21" cha="17" />
+    <av>1d40+2</av>
+    <dv>26</dv>
+  </dragon>
+  <dragon id="green dragon" size="huge" hit="4d9+9" speed="8" color="green" char="D">
+    <stats str="25" dex="24" con="28" int="16" wis="21" cha="17" />
+    <av>1d40+2</av>
+    <dv>26</dv>
+  </dragon>
+  <dragon id="white dragon" size="huge" hit="4d9+9" speed="8" color="white" char="D">
+    <stats str="25" dex="24" con="28" int="16" wis="21" cha="17" />
+    <av>1d40+2</av>
+    <dv>26</dv>
+  </dragon>
+  <list id="forest_1">
+    <creature id="bear" l="1" />
+    <creature id="dryad" l="1" />
+    <creature id="spore grub" l="1" />
+    <creature id="wildcat" l="1" />
+  </list>
+  <list id="city_1">
+    <creature id="rat" l="1" />
+    <creature id="mule" l="1" />
+  </list>
+</monsters>
+

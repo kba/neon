@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+  <event script="intro1" tick="0" />
+  <event script="intro2" tick="11" />
+  <event script="intro3" tick="21" />
+</events>

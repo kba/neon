@@ -1,0 +1,1 @@
+engine.show('Speak to friendly people by running in to them.\n')

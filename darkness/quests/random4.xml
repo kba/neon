@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repeat name="bounty" f="5">
+  <pre>
+  	<condition>NPC.isMember("traders")</condition>
+  	<condition>NPC.getAI().getDisposition(PC) >= 50</condition>
+  </pre>
+  <objects>
+  	<creature>target
+  	  <onDie>journal.updateQuest("bounty", 60, "I killed my target.")</onDie>
+  	</creature>
+  </objects>
+  <dialog>
+    <topic id="work">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.hasQuest("bounty")</pre>
+      <answer>Yes, I might have some work for you, $pcr$. I need someone silenced.</answer>
+      <action>journal.addQuest("bounty", "$giver$ wants someone silenced.");</action>
+  	</topic>
+    <topic id="bounty">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; journal.hasQuest("bounty") &amp;&amp; journal.questStatus("bounty") &lt; 20</pre>
+      <answer>I would like you to kill a $target$, $pcn$.</answer>
+	  <action>journal.updateQuest("bounty", 40, "$giver$ asked me to kill a $target$.")</action>
+    </topic>
+    <topic id="bounty">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.finishedQuest("bounty") &amp;&amp; journal.questStatus("bounty") &gt; 50</pre>
+      <answer>Thank you, here's a little something for the effort.</answer>
+      <action>journal.finishQuest("bounty")
+      PC.addMoney(100)</action>
+    </topic>
+  </dialog>
+</repeat>

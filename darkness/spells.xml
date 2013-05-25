@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spells>
+  <spell id="far silence" effect="silence" range="20" />
+  <spell id="silence" effect="silence" range="1" />
+  <spell id="fire storm" effect="fire_damage" size="10" duration="10" range="10" area="5" />
+  <spell id="icicle" effect="frost_damage" size="10" duration="5" range="6" />
+  <spell id="ice storm" effect="frost_damage" size="10" duration="10" range="10" area="5" />
+  <spell id="steal life" effect="leech_health" size="5" duration="10" range="10" />
+  <spell id="lightning" effect="shock_damage" size="5" duration="5" range="10" area="2" />
+  <spell id="ball lightning" effect="shock_damage" size="5" duration="5" range="10" />
+  <spell id="steal mana" effect="leech_mana" size="5" duration="5" range="10" />
+  <spell id="heal" effect="restore_health" size="20" />
+  <spell id="levitate" effect="levitate" duration="10" />
+  <spell id="open" effect="open" range="2" />
+  <spell id="cure disease" effect="cure_disease" />
+  <spell id="cure poison" effect="cure_poison" />
+  <spell id="shock" range="5" effect="shock_damage" size="2" duration="5"/>
+  <spell id="resist cold" effect="frost_shield" size="5" duration="5"/>
+  <spell id="resist fire" effect="fire_shield" size="5" duration="5"/>
+  <spell id="resist shock" effect="shock_shield" size="5" duration="5"/>
+  <spell id="lock" effect="lock" range="2" />
+  <spell id="paralyze" effect="paralyze" duration="10" range="6" />
+  <spell id="fireball" effect="fire_damage" size="5" duration="5" range="6" area="2"/>
+  <spell id="torch" effect="fire_damage" size="5" duration="10" range="6" />
+  <spell id="drain strength" effect="drain_strength" size="10" duration="10" />
+  <spell id="drain swimming" effect="drain_swimming" size="10" duration="10" />
+  <spell id="woohoo" effect="scripted" size="10" duration="10">engine.show('woohoo, spell cast')</spell>
+
+  <enchant id="cold shield" effect="frost_shield" size="1" item="clothing" />
+  <enchant id="w_shock" name="shock" effect="shock_damage" size="2" item="weapon" />
+
+  <disease id="footrot" effect="drain_health" size="1" />
+
+  <curse id="curse" effect="drain_health" size="1" />
+
+  <poison id="white stuff" effect="drain_health" size="1" />
+
+  <power id="heal_p" name="heal" effect="restore_health" size="20" int="100" />
+</spells>
+

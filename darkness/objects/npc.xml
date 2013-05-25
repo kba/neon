@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<people>
+  <npc id="Zari" race="tengri1">
+    <service id="trade" />
+    <service id="repair" />
+    <service id="craft" />
+    <factions>
+      <faction id="kusunda" />
+      <faction id="traders" />
+    </factions>
+    <items>
+      <item id="longspear" />
+      <item id="buckler" />
+      <item id="candle" />
+    </items>
+  </npc>
+  <npc id="Sir Mixalot" race="nord">
+    <service id="alchemy" />
+  </npc>
+  <npc id="troll fisherman" race="troll">
+    <ai r="0" c="100" />
+    <factions>
+      <faction id="kusunda" />
+    </factions>
+    <service id="training">
+      <skill>SWIMMING</skill>
+    </service>
+    <skills>
+      <skill id="SWIMMING" rank="10" />
+    </skills>
+    <service id="travel">
+      <dest x="19701" y="5527" name="Tanjamin" cost="5" />
+      <dest x="6050" y="11508" name="Lagan" cost="5" />
+      <dest x="3144" y="13049" name="Ban Rajas" cost="5" />
+      <dest x="21101" y="17453" name="Ghokhba" cost="5" />
+      <dest x="14908" y="23083" name="Boraian" cost="5" />
+      <dest x="13817" y="24010" name="Yeren hunting lodge" cost="5" />
+      <dest x="39331" y="13900" name="Leticum" cost="5" />
+    </service>
+  </npc>
+  <npc id="Gwilym" race="light elf">
+    <factions>
+      <faction id="kusunda" />
+    </factions>
+  </npc>
+  <npc id="Uenia" race="light elf">
+    <factions>
+      <faction id="kusunda" />
+      <faction id="empire" />
+    </factions>
+    <service id="enchant" />
+    <service id="charger" />
+  </npc>
+  <npc id="Os'cues" race="light elf">
+    <factions>
+      <faction id="kusunda" />
+      <faction id="empire" />
+    </factions>
+    <service id="healer" />
+  </npc>
+  <npc id="Ares Talo" race="light elf">
+    <factions>
+      <faction id="kusunda" />
+      <faction id="empire" />
+    </factions>
+    <service id="tattoo" />
+  </npc>
+  <npc id="dwarven mage" race="dwarf">
+    <factions>
+      <faction id="traders" />
+    </factions>
+    <service id="spells" />
+    <service id="spellmaker" />
+    <spells>
+      <spell id="heal" />
+      <spell id="levitate" />
+    </spells>
+  </npc>
+  <npc id="guard" race="tengri3">
+    <!--ai a="100" c="100">wander</ai-->
+    <factions>
+      <faction id="guards" />
+    </factions>
+  </npc>
+  <npc id="fisher_tan1" race="tengri1" name="Tengri fisherman">
+    <ai r="0" />
+    <service id="travel">
+      <dest x="34052" y="15151" name="Kusunda" cost="5" />
+    </service>
+  </npc>
+  <npc id="fisher_tan2" race="tengri2" name="Tengri fisherman">
+    <ai r="0" />
+    <service id="travel">
+      <dest x="3144" y="13049" name="Ban Rajas" cost="5" />
+    </service>
+  </npc>
+  <npc id="farmer1" race="tengri" name="Tengri farmer">
+    <ai r="5" />
+  </npc>
+</people>
+

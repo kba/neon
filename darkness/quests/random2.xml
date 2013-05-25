@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repeat name="retrieve weapon" f="5">
+  <pre>
+  	<condition>NPC.isMember("traders")</condition>
+  </pre>
+  <objects>
+  	<item id="dagger,scimitar">item</item>
+  </objects>
+  <dialog>
+    <topic id="work">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.hasQuest("retrieve weapon")</pre>
+      <answer>Yes, I might have some work for you. I would like you to find a weapon for me.</answer>
+      <action>journal.addQuest("retrieve weapon", "$giver$ asked me to retrieve an item for him.");</action>
+  	</topic>
+    <topic id="weapon">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; journal.hasQuest("retrieve weapon") &amp;&amp; journal.questStatus("retrieve weapon") &lt; 50</pre>
+      <answer>I would like you to find me a $item$.</answer>
+	  <action>journal.updateQuest("retrieve weapon", 75, "I have to find a $item$ for $giver$.")</action>
+    </topic>
+    <topic id="weapon">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.finishedQuest("retrieve weapon") &amp;&amp; journal.questStatus("retrieve weapon") &gt; 50 &amp;&amp; PC.inventory.hasItem("$item$")</pre>
+      <answer>Thank you, that will be all for now.</answer>
+      <action>journal.finishQuest("retrieve weapon")
+      PC.inventory.removeItem("$item$")</action>
+    </topic>
+  </dialog>
+</repeat>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<themes>
+  <dungeon id="goblin_camp" min="5" max="10" b="4" zones="goblin_cave;goblin_mine" />
+
+  <dungeon id="cave_buru" min="5" max="10" b="4" zones="z_buru_cave" />
+  <dungeon id="cave_spore" min="5" max="10" b="4" zones="z_buru_cave" />
+  <dungeon id="cave_mountain" min="5" max="10" b="4" zones="z_buru_cave" />
+  <dungeon id="cave_jungle" min="5" max="10" b="4" zones="z_buru_cave" />
+
+  <dungeon id="barrow" min="1" max="3" b="3" zones="tomb_nord" />
+  <dungeon id="tengri_tomb" min="1" max="3" b="3" zones="tomb_tengri" />
+  <dungeon id="dwarven_tomb" min="1" max="3" b="3" zones="tomb_dwarf" />
+
+  <dungeon id="dwarven_hall" min="5" max="10" b="2" zones="dwarf_hall" />
+  <dungeon id="dwarven_mine_iron" min="5" max="10" b="2" zones="dwarf_hall" />
+  <dungeon id="dwarven_mine_copper" min="5" max="10" b="2" zones="dwarf_hall" />
+  <dungeon id="dwarven_mine_gold" min="5" max="10" b="2" zones="dwarf_hall" />
+  <dungeon id="dwarven_mine_platinum" min="5" max="10" b="2" zones="dwarf_hall" />
+  <dungeon id="dwarven_mine_silver" min="5" max="10" b="2" zones="dwarf_hall" />
+</themes>

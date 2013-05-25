@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<signs>
+  <sign id="s_alraun" name="alraun"><ability id="spell_resistance" size="20" /><power id="heal_p" /></sign>
+</signs>

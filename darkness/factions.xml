@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<factions>
+  <faction id="guards" />
+  <faction id="traders" />
+  <faction id="kusunda" />
+  <faction id="oradu" />
+  <faction id="ainen" />
+  <faction id="yeren" />
+  <faction id="xsaya" />
+  <faction id="empire" />
+</factions>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quest name="main quest" init="1">
+  <dialog>
+    <topic id="mission">
+      <pre>NPC.getName() == "Gwilym" &amp;&amp; !journal.finishedQuest("report to Gwilym")</pre>
+      <answer>Ah yes, you were sent to find that strange dwarven device.</answer>
+      <action>journal.finishQuest("report to Gwilym")
+	    journal.addText("report to Gwilym", "I reported to Gwilym.")</action>
+    </topic>
+    <topic id="dwarven device">
+      <pre>NPC.getName() == "Gwilym" &amp;&amp; journal.finishedQuest("report to Gwilym") &amp;&amp; !journal.finishedQuest("travel to Ban Rajas")</pre>
+      <answer>I don't know its purpose, but I do know you can find it in the mines of Huldim. 
+		There is a boat at the docks that can take you to Ban Rajas. There you can ask for directions to the mines.</answer>
+      <action>journal.addQuest("travel to Ban Rajas", "Gwilym told me to take the boat to Ban Rajas and search for the mines of Huldim.")</action>
+    </topic>
+  </dialog>
+</quest>

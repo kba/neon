@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <race>dwarf</race>
+  <race>dark elf</race>
+  <race>light elf</race>
+  <race>tengri</race>
+  <race>nomad</race>
+  <race>nord</race>
+  <!--map path="world" x="34020" y="15170" z="0" /-->
+  <map path="world" x="34020" y="15170" z="0" />
+  <item>wool pants</item>
+  <item>wool shirt</item>
+  <item>leather boots</item>
+  <item>shocking dagger</item>
+  <item>shopping list</item>
+  <item>salt</item>
+  <item>salt</item>
+  <item>wheat</item>
+  <item>dart</item>
+  <item>saffron</item>
+  <item>platinum</item>
+  <item>candle</item>
+  <item>scroll of healing</item>
+  <item>iron</item>
+  <item>iron</item>
+  <item>the fox as herdsman</item>
+  <spell>heal</spell>
+  <spell>drain swimming</spell>
+  <spell>woohoo</spell>
+</root>
+

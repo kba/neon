@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repeat name="retrieve item" f="5">
+  <pre>
+  	<condition>NPC.isMember("traders")</condition>
+  </pre>
+  <objects>
+  	<item type="light">item</item>
+  </objects>
+  <dialog>
+    <topic id="work">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.hasQuest("$quest$")</pre>
+      <answer>Yes, I might have some work for you. I would like you to find an item for me.</answer>
+      <action>
+      	journal.addQuest("$quest$", "$giver$ asked me to retrieve an item for him.");
+      	engine.startQuest("$quest$");
+      </action>
+  	</topic>
+    <topic id="item">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; journal.hasQuest("$quest$") &amp;&amp; journal.questStatus("$quest$") &lt; 50</pre>
+      <answer>I would like you to find me a $item$.</answer>
+	  <action>journal.updateQuest("$quest$", 75, "I have to find a $item$ for $giver$.")</action>
+    </topic>
+    <topic id="item">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.finishedQuest("$quest$") &amp;&amp; journal.questStatus("$quest$") &gt; 50 &amp;&amp; PC.inventory.hasItem("$item$")</pre>
+      <answer>Thank you, that will be all for now.</answer>
+      <action>
+      	journal.finishQuest("$quest$")
+      	PC.inventory.removeItem("$item$")
+      </action>
+    </topic>
+  </dialog>
+</repeat>

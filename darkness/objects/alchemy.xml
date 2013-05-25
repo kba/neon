@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recipes>
+  <recipe id="healing1" cost="5">
+    <out>potion of healing</out>
+    <in>wheat</in>
+    <in>saffron</in>
+  </recipe>
+  <recipe id="healing2">
+    <out>potion of healing</out>
+    <in>wheat</in>
+    <in>salt</in>
+  </recipe>
+  <recipe id="healing3" cost="5">
+    <out>potion of healing</out>
+    <in>salt</in>
+    <in>saffron</in>
+  </recipe>
+</recipes>
+

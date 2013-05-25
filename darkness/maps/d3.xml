@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dungeon>
+  <header uid="4">
+  	<name>an old water basin</name>
+  </header>
+
+  <level l="0" name="entry" theme="cellar" out="1" />
+  <level l="1" name="cave" theme="goblin_cave" />
+  <level l="2" name="mine" theme="goblin_mine" />
+  <level l="3" name="sewer" theme="sewer" />
+  <level l="4" name="Erchanband" theme="dwarf_hall" />
+  <level l="5" name="storage" theme="storage" />
+  <level l="6" name="catacombs" theme="catacombs" />
+</dungeon>

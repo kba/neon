@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<themes>
+  <zone id="tomb_nord" type="sparse;floor;wall;door,door_stone" min="30" max="60">
+	<creature n="5">draugr</creature>
+  	<creature n="3">wraith</creature>
+  	<creature n="3">shade</creature>
+  	<creature n="10">rat_spiny</creature>
+  	<item n="5">copper</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<item n="30">tomb</item>
+  	<feature n="10" s="8" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="tomb_tengri" type="packed;floor;wall_lime;door,door_wood" min="30" max="60">
+  	<creature n="5">ghoul</creature>
+  	<creature n="3">skeleton</creature>
+  	<creature n="3">mummy</creature>
+  	<creature n="10">spectre</creature>
+  	<item n="30">tomb</item>
+  	<item n="5">gold</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<feature n="10" s="8" t="dirt">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="tomb_dwarf" type="pits;floor;wall;door,door_stone,door_iron" min="30" max="60">
+  	<creature n="5">ghost</creature>
+  	<creature n="3">wight</creature>
+  	<creature n="3">automaton_guard</creature>
+  	<item n="50">tomb</item>
+  	<item n="5">gold</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<feature n="10" s="8" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  	<feature n="10" s="4" t="wall_fungi">stain</feature>
+  </zone>
+  
+  <zone id="goblin_cave" type="cave;floor;wall;door,door_stone" min="30" max="60">
+  	<creature n="5">hobgoblin</creature>
+  	<creature n="1">troll</creature>
+  	<creature n="3">gnome</creature>
+  	<creature n="3">kobold</creature>
+  	<creature n="10">goblin</creature>
+  	<item n="5">copper</item>
+  	<item n="5">clump_copper</item>
+  	<item n="1">iron</item>
+  	<item n="3">wheat</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<feature n="1" s="50" t="water">lake</feature>
+  	<feature n="5" s="4" t="boulders">patch</feature>
+  	<feature n="1" s="6" t="water">river</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_buru_cave" type="cave;floor;wall;door,door_stone" min="30" max="60">
+  	<creature n="5">hobgoblin</creature>
+  	<creature n="1">troll</creature>
+  	<creature n="3">gnome</creature>
+  	<creature n="3">kobold</creature>
+  	<creature n="10">goblin</creature>
+  	<item n="5">copper</item>
+  	<item n="5">clump_copper</item>
+  	<item n="1">iron</item>
+  	<item n="3">wheat</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<feature n="1" s="50" t="water">lake</feature>
+  	<feature n="5" s="4" t="boulders">patch</feature>
+  	<feature n="1" s="6" t="water">river</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="goblin_mine" type="mine;floor,dirt;wall;door,door_iron" min="30" max="60">
+  	<creature n="5">hobgoblin</creature>
+  	<creature n="3">gnome</creature>
+  	<creature n="2">bogle</creature>
+  	<creature n="3">kobold</creature>
+  	<creature n="10">goblin</creature>
+  	<item n="5">iron</item>
+  	<item n="3">dagger</item>
+  	<item n="10">torch</item>
+  	<feature n="20" s="4" t="boulders">patch</feature>
+  	<feature n="10" s="4" t="ore_iron">stain</feature>
+  </zone>
+  
+  <zone id="sewer" type="maze;floor;wall;door,door_wood" min="30" max="60">
+  	<creature n="10">rat</creature>
+  	<item n="5">copper</item>
+  	<feature n="10" s="5" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_blood">stain</feature>
+  </zone>
+  
+  <zone id="cellar" type="packed;floor;wall;door,door_wood" min="30" max="60">
+  	<creature n="10">rat</creature>
+  	<item n="10">torch</item>
+  	<feature n="10" s="5" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="catacombs" type="sparse;floor;wall;door" min="30" max="60">
+  	<creature n="3">ghoul</creature>
+  	<creature n="3">ghost</creature>
+  	<creature n="3">skeleton</creature>
+  	<creature n="3">wraith</creature>
+  	<item n="10">torch</item>
+  	<feature n="10" s="5" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="storage" type="bsp;floor;wall;door" min="30" max="60">
+  	<creature n="10">rat</creature>
+  	<item n="10">torch</item>
+  	<feature n="10" s="5" t="puddle">patch</feature>
+  	<feature n="10" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="dwarf_hall" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_dwarf_iron" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_dwarf_silver" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_dwarf_copper" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_dwarf_gold" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+  
+  <zone id="z_dwarf_platinum" type="pits;floor;wall;door" min="30" max="60">
+  	<creature n="10">dwarf</creature>
+  	<item n="10">torch</item>
+  	<feature n="20" s="5" t="puddle">patch</feature>
+  	<feature n="20" s="4" t="wall_moss">stain</feature>
+  </zone>
+</themes>

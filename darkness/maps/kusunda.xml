@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dungeon>
+  <header uid="5">
+    <name>Kusunda</name>
+  </header>
+  <level name="Gwilym's house" l="0">
+    <creatures>
+      <creature x="3" y="2" uid="0" id="Gwilym" />
+    </creatures>
+    <items>
+      <item x="2" y="3" id="platinum" uid="1" />
+      <door x="5" y="3" state="locked" lock="1" id="door" uid="2">
+        <dest x="34012" y="15163" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="6" h="6" l="0" text="wall" />
+      <region x="1" y="1" w="4" h="4" l="1" text="floor" />
+      <region x="5" y="3" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="temple of Furun" l="1">
+    <creatures />
+    <items>
+      <door x="3" y="6" state="closed" id="door" uid="4">
+        <dest x="34021" y="15177" map="1" />
+      </door>
+      <container x="4" y="1" id="altar" uid="17">
+      	<item id="copper" uid="3" />
+    	<item id="silver" uid="6" />
+    	<item id="gold" uid="7" />
+      </container>
+      <door x="1" y="1" state="open" lock="1" id="door_stone" uid="5">
+      	<dest theme="tengri_tomb" sign="temple catacombs" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="8" h="7" l="0" text="wall" />
+      <region x="1" y="1" w="6" h="5" l="1" text="floor" />
+      <region x="3" y="6" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="harbor master" l="2">
+    <creatures />
+    <items>
+      <door x="5" y="3" state="closed" id="door" uid="8">
+        <dest x="34013" y="15150" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="6" h="7" l="0" text="wall" />
+      <region x="1" y="1" w="4" h="5" l="1" text="floor" />
+      <region x="5" y="3" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="Kasku's house" l="3">
+    <creatures />
+    <items>
+      <door x="5" y="3" state="locked" lock="1" id="door" uid="9">
+        <dest x="34013" y="15157" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="6" h="6" l="0" text="wall_adobe" />
+      <region x="1" y="1" w="4" h="4" l="1" text="floor" />
+      <region x="5" y="3" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="Zari's pawn shop" l="4">
+    <creatures>
+      <creature x="3" y="2" uid="10" id="Zari" />
+    </creatures>
+    <items>
+      <door x="5" y="3" state="locked" lock="1" id="door" uid="11">
+        <dest x="34012" y="15183" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="6" h="7" l="0" text="wall" />
+      <region x="1" y="1" w="4" h="5" l="1" text="floor" />
+      <region x="5" y="3" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="Os'cues's house" l="5">
+    <creatures>
+      <creature x="3" y="2" uid="12" id="Os'cues" />
+    </creatures>
+    <items>
+      <door x="3" y="5" state="locked" lock="1" id="door" uid="13">
+        <dest x="34006" y="15174" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="8" h="6" l="0" text="wall" />
+      <region x="1" y="1" w="6" h="4" l="1" text="floor" />
+      <region x="3" y="5" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="Uenia's house" l="6">
+    <creatures>
+      <creature x="3" y="2" uid="14" id="Uenia" />
+    </creatures>
+    <items>
+      <door x="3" y="5" state="locked" lock="1" id="door" uid="15">
+        <dest x="34034" y="15181" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="8" h="6" l="0" text="wall" />
+      <region x="1" y="1" w="6" h="4" l="1" text="floor" />
+      <region x="3" y="5" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+  <level name="Ares Talo's house" l="7">
+    <creatures>
+      <creature x="3" y="2" uid="16" id="Ares Talo" />
+    </creatures>
+    <items>
+      <door x="4" y="5" state="locked" lock="1" id="door" uid="18">
+        <dest x="34041" y="15183" map="1" />
+      </door>
+    </items>
+    <regions>
+      <region x="0" y="0" w="8" h="6" l="0" text="wall" />
+      <region x="1" y="1" w="6" h="4" l="1" text="floor" />
+      <region x="4" y="5" w="1" h="1" l="1" text="floor" />
+    </regions>
+  </level>
+</dungeon>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quest name="default" init="1">
+  <dialog>
+	<topic id="the Empire">
+      <pre>NPC.isMember("empire")</pre>
+      <answer>Some Tengri see us as invaders, but we're just merchants.</answer>
+ 	</topic>
+	<topic id="profession">
+      <pre>NPC.isMember("traders")</pre>
+      <answer>I'm a trader.</answer>
+ 	</topic>
+ 	<topic id="Aneirin">
+      <answer>You're on the island kingdom of Aneirin.</answer>
+	</topic>
+	<topic id="Ironwood">
+      <answer>That's a Nordic colony on the west of the island.</answer>
+	</topic>
+	<topic id="dwarves">
+      <answer>They live in the central mountains, in the great dwarven mine of Erchanband.</answer>
+	</topic>
+  </dialog>
+</quest>

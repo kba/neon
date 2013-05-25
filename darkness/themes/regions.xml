@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<themes>
+  <region id="town_small" random="town_small;wall;door" floor="floor" />
+  
+  <region id="swamp" random="CHAOTIC" floor="water">
+	<plant a="30">reed</plant>
+	<plant a="15">teak</plant>
+  </region>
+  
+  <region id="town_big" random="town_big;wall;door" floor="floor" />
+  
+  <region id="town" random="town;wall;door" floor="floor" />
+  
+  <region id="jungle" random="PLAIN">
+	<plant a="80">conifer</plant>
+	<plant a="60">fig</plant>
+	<plant a="45">bamboo</plant>
+	<plant a="30">teak</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="jungle_north" random="PLAIN">
+	<plant a="60">conifer</plant>
+	<plant a="30">beech</plant>
+	<plant a="80">fig</plant>
+	<plant a="45">shrub</plant>
+	<plant a="30">teak</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="jungle_south" random="PLAIN">
+	<plant a="80">cedar</plant>
+	<plant a="60">fig</plant>
+	<plant a="45">bamboo</plant>
+	<plant a="30">teak</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="jungle_west" random="PLAIN">
+	<plant a="30">beech</plant>
+	<plant a="80">fig</plant>
+	<plant a="45">bamboo</plant>
+	<plant a="45">teak</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="tundra" random="CHAOTIC" floor="puddle" >
+	<plant a="10">shrub</plant>
+	<plant a="5">reed</plant>
+  </region>
+  
+  <region id="cloud" random="PLAIN">
+	<plant a="40">cedar</plant>
+	<plant a="30">fig</plant>
+	<plant a="24">teak</plant>
+	<plant a="18">shrub</plant>
+  </region>
+  
+  <region id="savanna" random="CHAOTIC" floor="sand">
+	<plant a="10">shrub</plant>
+	<plant a="5">teak</plant>
+  </region>
+  
+  <region id="volcano" random="RIDGES" floor="rock" />
+  
+  <region id="mountain" random="RIDGES" floor="cliff" />
+  
+  <region id="forest" random="PLAIN">
+	<plant a="60">conifer</plant>
+	<plant a="15">beech</plant>
+	<plant a="45">maple</plant>
+	<plant a="45">yew</plant>
+	<plant a="30">shrub</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="forest_nord" random="PLAIN">
+	<plant a="60">conifer</plant>
+	<plant a="15">beech</plant>
+	<plant a="45">maple</plant>
+	<plant a="45">yew</plant>
+	<plant a="30">shrub</plant>
+	<feature n="1" s="50" t="water">lake</feature>
+  	<creature n="35">forest_1</creature>
+  </region>
+  
+  <region id="plain_nord" random="CHAOTIC" floor="sand">
+	<plant a="10">shrub</plant>
+	<plant a="5">yew</plant>
+  </region>
+</themes>

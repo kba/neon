@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<terrain>
+  <type id="floor" color="gray" char="·">a stone floor</type>
+  <type id="wall" color="slateGray" char="#" mod="block">a wall</type>
+  <type id="water" color="blue" char="~" mod="swim" />
+  <type id="sea" color="royalBlue" char="~" mod="swim" />
+  <type id="lava" color="red" char="~" mod="swim" sub="fire" />
+  <type id="sand" color="yellow" char="·" />
+  <type id="rock" color="dimGray" char="٠" />
+  <type id="cliff" color="darkSlateGray" char="#" mod="climb">a cliff</type>
+  <type id="wood" color="saddleBrown" char="•" />
+  <type id="dirt" color="peru" char="·" />
+  <type id="grass" color="green" char="·" />
+  <type id="moss" color="darkGreen" char="·" />
+  <type id="shrubs" color="yellowGreen" char="·" />
+  <type id="ferns" color="darkOliveGreen" char="٠" />
+  <type id="sedge" color="oliveDrab" char="·" />
+  <type id="boulders" color="rosyBrown" char="*" mod="climb" />
+  <type id="wall_moss" color="green" char="#" mod="block">a moss covered wall</type>
+  <type id="hedge" color="forestGreen" char="#" mod="climb" />
+  <type id="wall_fungi" color="purple" char="#" mod="block">a fungus covered wall</type>
+  <type id="wall_lime" color="darkKhaki" char="#" mod="block">a limestone wall</type>
+  <type id="puddle" color="mediumSpringGreen" char="~">a puddle</type>
+  <type id="wall_blood" color="darkRed" char="#" mod="block">a blood covered wall</type>
+  <type id="wall_wood" color="saddleBrown" char="#" mod="block">a wooden wall</type>
+  <type id="wall_adobe" color="tan" char="#" mod="block">an adobe wall</type>
+  <type id="ore_iron" color="steelBlue" char="#" mod="block">iron ore</type>
+  <type id="ice" color="snow" char="#" mod="block" />
+  <type id="tubers" color="darkOliveGreen" char="ҩ" />
+  <type id="tomatoes" color="darkOliveGreen" char="ω" />
+  <type id="pumpkins" color="darkOliveGreen" char="ж" />
+  <type id="cucumbers" color="darkOliveGreen" char="Ϡ" />
+  <type id="grain" color="gold" char="Ϡ" />
+</terrain>
+

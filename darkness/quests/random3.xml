@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repeat name="deliver item" f="5">
+  <pre>
+  	<condition>NPC.isMember("traders")</condition>
+  </pre>
+  <objects>
+  	<item id="dagger,scimitar">item</item>
+  	<npc id="ogre trader,troll fisherman">npc</npc>
+  </objects>
+  <dialog>
+    <topic id="work">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; !journal.hasQuest("deliver item")</pre>
+      <answer>Yes, I might have some work for you. I would like you to make a delivery for me.</answer>
+      <action>journal.addQuest("deliver item", "$giver$ asked me to make a delivery.");</action>
+  	</topic>
+    <topic id="delivery">
+      <pre>NPC.getName() == "$giver$" &amp;&amp; journal.hasQuest("deliver item") &amp;&amp; journal.questStatus("deliver item") &lt; 50</pre>
+      <answer>I would like you to bring a $item$ to $npc$.</answer>
+	  <action>journal.updateQuest("deliver item", 75, "I have to bring a $item$ to $npc$.")
+	  PC.inventory.addItem("$item$")</action>
+    </topic>
+    <topic id="delivery">
+      <pre>NPC.getName() == "$npc$" &amp;&amp; !journal.finishedQuest("deliver item") &amp;&amp; journal.questStatus("deliver item") &gt; 50 &amp;&amp; PC.inventory.hasItem("$item$")</pre>
+      <answer>Thank you, here's a little something for the effort.</answer>
+      <action>journal.finishQuest("deliver item")
+      PC.addMoney(100)
+      PC.inventory.removeItem("$item$")</action>
+    </topic>
+  </dialog>
+</repeat>
