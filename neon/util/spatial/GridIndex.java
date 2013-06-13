@@ -21,10 +21,11 @@ package neon.util.spatial;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.*;
-import neon.util.MultiMap;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 public class GridIndex<E> implements SpatialIndex<E> {
-	private MultiMap<Point, E> elements = new MultiMap<Point, E>();
+	private Multimap<Point, E> elements = ArrayListMultimap.create();
 
 	public List<E> getElements() {
 		ArrayList<E> list = new ArrayList<E>();

@@ -22,16 +22,17 @@ import java.util.EventObject;
 import neon.core.Engine;
 import neon.systems.timing.TimerListener;
 import neon.systems.timing.Timer;
-import neon.util.MultiMap;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import neon.util.fsm.Action;
 
 public class Queue implements TimerListener {
-	private MultiMap<String, Action> tasks;
-	private MultiMap<Integer, RepeatEntry> repeat;
+	private Multimap<String, Action> tasks;
+	private Multimap<Integer, RepeatEntry> repeat;
 	
 	protected Queue(Timer timer) {
-		tasks = new MultiMap<String, Action>();
-		repeat = new MultiMap<Integer, RepeatEntry>();
+		tasks = ArrayListMultimap.create();
+		repeat = ArrayListMultimap.create();
 		timer.addListener(this);
 	}
 	
@@ -57,11 +58,11 @@ public class Queue implements TimerListener {
 		repeat.put(start, entry);
 	}
 	
-	protected MultiMap<String, Action> getTasks() {
+	protected Multimap<String, Action> getTasks() {
 		return tasks;
 	}
 	
-	protected MultiMap<Integer, RepeatEntry> getTimerTasks() {
+	protected Multimap<Integer, RepeatEntry> getTimerTasks() {
 		return repeat;
 	}
 	
@@ -81,7 +82,7 @@ public class Queue implements TimerListener {
 					repeat.put(time + entry.period, entry);
 				}
 			}
-			repeat.remove(time);
+			repeat.removeAll(time);
 		}
 	}
 	

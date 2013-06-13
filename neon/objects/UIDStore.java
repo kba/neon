@@ -24,9 +24,10 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.jdbm.DB;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import neon.objects.entities.Entity;
 import neon.objects.serialization.EntitySerializer;
-import neon.util.TwoWayMap;
 
 /**
  * This class stores the UIDs of every object, map and mod currently in the 
@@ -47,7 +48,7 @@ public class UIDStore {
 	// uids van alle geladen mods
 	private ConcurrentMap<Short, Mod> mods;
 	// uids van alle geladen maps
-	private TwoWayMap<Integer, String> maps = new TwoWayMap<Integer, String>();
+	private BiMap<Integer, String> maps = HashBiMap.create();
 	
 	/**
 	 * Tells this UIDStore to use the given jdbm3 cache.
@@ -147,8 +148,8 @@ public class UIDStore {
 	 * @return		the full path of a map
 	 */
 	public String[] getMapPath(int uid) {
-		if(maps.getValue(uid) != null) {
-			return maps.getValue(uid).split(",");
+		if(maps.get(uid) != null) {
+			return maps.get(uid).split(",");
 		} else {
 			return null;
 		}
@@ -159,7 +160,7 @@ public class UIDStore {
 	 * @return	the uid of the given map
 	 */
 	public int getMapUID(String... path) {
-		return maps.getKey(toString(path));
+		return maps.inverse().get(toString(path));
 	}
 	
 	/**

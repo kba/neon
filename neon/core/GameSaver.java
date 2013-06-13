@@ -30,7 +30,7 @@ import neon.objects.property.Feat;
 import neon.objects.property.Skill;
 import neon.objects.resources.RSpell;
 import neon.systems.files.XMLTranslator;
-import neon.util.MultiMap;
+import com.google.common.collect.Multimap;
 import neon.util.fsm.Action;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -82,7 +82,7 @@ public class GameSaver {
 		Element events = new Element("events");
 		
 		// alle gewone tasks (voorlopig enkel script tasks)
-		MultiMap<String, Action> tasks = tracker.getTasks();
+		Multimap<String, Action> tasks = tracker.getTasks();
 		for(String key : tasks.keySet()) {
 			for(Action action : tasks.get(key)) {
 				Element event = new Element("task");
@@ -96,7 +96,7 @@ public class GameSaver {
 		}
 
 		// alle timer tasks
-		MultiMap<Integer, Queue.RepeatEntry> repeats = tracker.getTimerTasks();
+		Multimap<Integer, Queue.RepeatEntry> repeats = tracker.getTimerTasks();
 		for(Integer key : repeats.keySet()) {
 			for(Queue.RepeatEntry entry : repeats.get(key)) {
 				Element event = new Element("timer");

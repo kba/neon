@@ -24,8 +24,9 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import neon.core.Engine;
-import neon.util.MultiMap;
 import neon.util.fsm.*;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.ArrayListMultimap;
 
 /**
  * This class implements a primitive event bus. Incoming events are dispatched 
@@ -39,7 +40,7 @@ import neon.util.fsm.*;
  * @author mdriesen
  */
 public class EventTracker {
-	private MultiMap<Class<? extends EventObject>, EventListener> listeners = new MultiMap<>();
+	private Multimap<Class<? extends EventObject>, EventListener> listeners = ArrayListMultimap.create();
 	private HashMap<Class<? extends EventObject>, EventHandler<?, ?>> handlers = new HashMap<>();
 	
 	private Queue queue = new Queue(Engine.getTimer());
@@ -98,7 +99,7 @@ public class EventTracker {
 	/**
 	 * @return	a map with all queued tasks
 	 */
-	public MultiMap<String, Action> getTasks() {
+	public Multimap<String, Action> getTasks() {
 		return queue.getTasks();
 	}
 	
@@ -110,7 +111,7 @@ public class EventTracker {
 		queue.add(task, start, period, stop);
 	}
 	
-	public MultiMap<Integer, Queue.RepeatEntry> getTimerTasks() {
+	public Multimap<Integer, Queue.RepeatEntry> getTimerTasks() {
 		return queue.getTimerTasks();
 	}
 
