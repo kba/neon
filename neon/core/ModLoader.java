@@ -21,7 +21,7 @@ package neon.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import neon.core.event.EventTracker;
+import neon.core.event.TaskQueue;
 import neon.systems.files.StringTranslator;
 import neon.systems.files.XMLTranslator;
 import neon.objects.resources.*;
@@ -30,11 +30,11 @@ import org.jdom2.*;
 public class ModLoader {
 	private String path;
 	private Configuration config;
-	private EventTracker tracker;
+	private TaskQueue queue;
 	
-	public ModLoader(Element mod, Configuration config, EventTracker tracker) {
+	public ModLoader(Element mod, Configuration config, TaskQueue queue) {
 		this.config = config;
-		this.tracker = tracker;
+		this.queue = queue;
 		path = mod.getText();
 		try {
 			path = Engine.getFileSystem().mount(path);
@@ -255,25 +255,25 @@ public class ModLoader {
 			String[] ticks = e.getAttributeValue("tick").split(":");
 			RScript rs = (RScript)Engine.getResources().getResource(e.getAttributeValue("script"), "script");
 			if(ticks.length == 1) {	// ene tick: gewoon toevoegen op dat tijdstip
-				tracker.addTimerTask(rs.script, Integer.parseInt(ticks[0]), 0, 0);
+				queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
 			} else if(ticks.length == 2) {	// twee ticks
 				if(ticks[0] == "") { 
 					ticks[0] = "0"; 
 				}
 				if(ticks[1] == "") {	// indien periode 0, maar 1 keer uitvoeren
-					tracker.addTimerTask(rs.script, Integer.parseInt(ticks[0]), 0, 0);
+					queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
 				} else {	// anders met periode vanaf start
-					tracker.addTimerTask(rs.script, Integer.parseInt(ticks[0]), Integer.parseInt(ticks[1]), 0);
+					queue.add(rs.script, Integer.parseInt(ticks[0]), Integer.parseInt(ticks[1]), 0);
 				}
 			} else if(ticks.length == 3) {	// drie ticks
 				if(ticks[2] == "") { 
 					ticks[2] = "0"; 
 				}
 				if(ticks[1] == "" || ticks[1] == "0") {	// indien periode 0, enkel op begin en eind uitvoeren
-					tracker.addTimerTask(rs.script, Integer.parseInt(ticks[0]), 0, 0);
-					tracker.addTimerTask(rs.script, Integer.parseInt(ticks[2]), 0, 0);
+					queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
+					queue.add(rs.script, Integer.parseInt(ticks[2]), 0, 0);
 				} else {	// anders met periode vanaf start tot stop
-					tracker.addTimerTask(rs.script, Integer.parseInt(ticks[0]), 
+					queue.add(rs.script, Integer.parseInt(ticks[0]), 
 							Integer.parseInt(ticks[1]), Integer.parseInt(ticks[2]));
 				}
 			}

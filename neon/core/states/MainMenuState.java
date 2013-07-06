@@ -122,7 +122,7 @@ public class MainMenuState extends State {
 		}
 	}
 	
-	private class LabelListener implements MouseListener {
+	private static class LabelListener implements MouseListener {
 		public void mouseClicked(MouseEvent me) { }
 		public void mouseEntered(MouseEvent me) { }
 		public void mouseExited(MouseEvent me) { }

@@ -19,6 +19,7 @@
 package neon.systems.files;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Scanner;
 
 /**
@@ -37,7 +38,7 @@ public class StringTranslator implements Translator<String> {
 	
 	public ByteArrayOutputStream translate(String output) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte buffer[] = output.getBytes();
+		byte buffer[] = output.getBytes(Charset.forName("UTF-8"));
 		try {
 			out.write(buffer);
 		} catch (IOException e) {

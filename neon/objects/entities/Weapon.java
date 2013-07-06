@@ -63,7 +63,7 @@ public class Weapon extends Item {
 	 * @return	the item slot this weapon occupies when equiped
 	 */
 	public Slot getSlot() {
-		if(((RWeapon)resource).type.equals(WeaponType.ARROW) || ((RWeapon)resource).type.equals(WeaponType.BOLT)) {
+		if(((RWeapon)resource).weaponType.equals(WeaponType.ARROW) || ((RWeapon)resource).weaponType.equals(WeaponType.BOLT)) {
 			return Slot.AMMO;
 		} else {
 			return Slot.WEAPON;

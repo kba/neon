@@ -24,6 +24,7 @@ import neon.ui.UserInterface;
 import javax.script.*;
 import neon.core.event.*;
 import neon.core.handlers.CombatHandler;
+import neon.core.handlers.DeathHandler;
 import neon.core.states.*;
 import neon.maps.Atlas;
 import neon.narrative.EventAdapter;
@@ -35,6 +36,9 @@ import neon.systems.physics.PhysicsSystem;
 import neon.systems.timing.Timer;
 import neon.systems.files.FileSystem;
 import neon.util.fsm.*;
+import net.engio.mbassy.bus.BusConfiguration;
+import net.engio.mbassy.bus.MBassador;
+import net.engio.mbassy.listener.Handler;
 
 /**
  * The engine class is the core of the neon roguelike engine. It is essentially
@@ -50,11 +54,12 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	private static FileSystem files;		// virtual file system
 	private static PhysicsSystem physics;	// de physics engine
 	private static Logger logger;			// de logger
-	private static EventTracker events;		// event tracker
 	private static QuestTracker quests;		// quest tracker
 	private static UIDStore store;			// UID store
 	private static ResourceManager resources;	// resources
 	private static Atlas atlas;
+	private static MBassador<EventObject> bus;	// event bus
+	private static TaskQueue queue; 		// task queue
 	
 	private Configuration config;			// configuration
 
@@ -70,26 +75,22 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		physics = new PhysicsSystem();
 		quests = new QuestTracker();
 		timer.addListener(quests);
+		queue = new TaskQueue(timer);
 		initEvents();
 		resources = new ResourceManager();
 		store = new UIDStore();
 		atlas = new Atlas();
-		config = new Configuration("neon.ini", events);
+		config = new Configuration("neon.ini", queue);
 	}
 	
 	private void initEvents() {
-		events = new EventTracker();
-		events.addHandler(new CombatEventHandler());
-		events.addHandler(new DeathEventHandler());
-		events.addHandler(new SkillEventHandler());
-		events.addHandler(new TransitionEventHandler());
-		events.addListener(TransitionEvent.class, this);
 		EventAdapter adapter = new EventAdapter(quests);
-		events.addListener(CombatEvent.class, adapter);
-		events.addListener(DeathEvent.class, adapter);
-		events.addListener(SkillEvent.class, adapter);
-		events.addListener(TransitionEvent.class, adapter);
-		events.addListener(CombatEvent.class, new CombatHandler());		
+		bus = new MBassador<EventObject>(BusConfiguration.Default());
+		bus.subscribe(this);
+		bus.subscribe(queue);
+		bus.subscribe(new CombatHandler());	
+		bus.subscribe(new DeathHandler());
+		bus.subscribe(adapter);
 	}
 	
 	private void initFSM() {
@@ -97,9 +98,8 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		MainMenuState main = new MainMenuState(this, config);
 
 		// alle game substates. 
-		GameState game = new GameState(this, events, atlas);
-		events.addListener(SkillEvent.class, game);
-		events.addListener(CombatEvent.class, game);	// om berichten te laten zien bij combat
+		GameState game = new GameState(this, queue, atlas);
+		bus.subscribe(game);
 		// deuren
 		DoorState doors = new DoorState(game);
 		// locks
@@ -160,14 +160,18 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	}
 	
 	/**
-	 * Convenience method to post an event to the event tracker.
+	 * Convenience method to post an event to the event bus.
 	 * 
-	 * @param e
+	 * @param message
 	 */
-	public static void post(EventObject e) {
-		events.post(e);
+	public static void post(EventObject message) {
+		bus.publishAsync(message);
 	}
-
+	
+	@Handler public void handleTransition(TransitionEvent te) {
+		transition(te);
+	}
+	
 /*
  * alle scriptbrol
  */
@@ -197,10 +201,6 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	
 	public static QuestTracker getQuestTracker() {
 		return quests;
-	}
-	
-	public static EventTracker getEvents() {
-		return events;
 	}
 	
 	/**
@@ -259,6 +259,10 @@ public class Engine extends FiniteStateMachine implements Runnable {
 
 	public static Atlas getAtlas() {
 		return atlas;
+	}
+	
+	public static TaskQueue getQueue() {
+		return queue;
 	}
 
 /*

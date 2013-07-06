@@ -29,18 +29,19 @@ import neon.maps.Atlas;
 import neon.objects.entities.Player;
 import neon.objects.resources.RScript;
 import neon.util.fsm.*;
+import net.engio.mbassy.listener.Handler;
 import net.phys2d.raw.CollisionEvent;
 import net.phys2d.raw.CollisionListener;
 
-public class GameState extends State implements KeyListener, CollisionListener, CombatListener, SkillListener {
+public class GameState extends State implements KeyListener, CollisionListener {
 	private Player player;
 	private GamePanel panel;
 	private GameSaver saver;
 	private Atlas atlas;
 	
-	public GameState(Engine engine, EventTracker tracker, Atlas atlas) {
+	public GameState(Engine engine, TaskQueue queue, Atlas atlas) {
 		super(engine, "game module");
-		saver = new GameSaver(tracker, atlas);
+		saver = new GameSaver(queue, atlas);
 		panel = new GamePanel();
 		this.atlas = atlas;
 		setVariable("panel", panel);
@@ -151,38 +152,37 @@ public class GameState extends State implements KeyListener, CollisionListener, 
 		} catch(Exception e) { }
 	}
 	
-	public void combatStarted(CombatEvent ce) {}
-	public void combatEnded(CombatEvent ce) {
-		if(ce.getDefender() == player) {
-			panel.print("You were attacked!");
-		} else {
-			switch(ce.getResult()) {
-			case CombatEvent.DODGE:
-				panel.print("The " + ce.getDefender() + " dodges the attack.");
-				break;
-			case CombatEvent.BLOCK:
-				panel.print("The " + ce.getDefender() + " blocks the attack.");
-				break;
-			case CombatEvent.ATTACK:
-				panel.print("You strike the " + ce.getDefender() + " (" + ce.getDefender().getHealth() + ").");
-				break;
-			case CombatEvent.DIE:
-				panel.print("You killed the " + ce.getDefender() + ".");
-				Engine.post(new DeathEvent(ce.getDefender(), Engine.getTimer().getTime()));
-				break;
+	@Handler public void handleCombat(CombatEvent ce) {
+		if(ce.isFinished()) {
+			if(ce.getDefender() == player) {
+				panel.print("You were attacked!");
+			} else {
+				switch(ce.getResult()) {
+				case CombatEvent.DODGE:
+					panel.print("The " + ce.getDefender() + " dodges the attack.");
+					break;
+				case CombatEvent.BLOCK:
+					panel.print("The " + ce.getDefender() + " blocks the attack.");
+					break;
+				case CombatEvent.ATTACK:
+					panel.print("You strike the " + ce.getDefender() + " (" + ce.getDefender().getHealth() + ").");
+					break;
+				case CombatEvent.DIE:
+					panel.print("You killed the " + ce.getDefender() + ".");
+					Engine.post(new DeathEvent(ce.getDefender(), Engine.getTimer().getTime()));
+					break;
+				}
 			}
 		}
 	}
 
-	public void skillRaised(SkillEvent se) {
-		panel.print("Skill raised: " + se.getSkill() + ".");
-	}
-
-	public void levelRaised(SkillEvent se) {
-		panel.print("Level up.");		
-	}
-
-	public void statRaised(SkillEvent se) {
-		panel.print("Stat raised: " + se.getSkill().getStat());
+	@Handler public void handleSkill(SkillEvent se) {
+		if(se.getStat() > 0) {
+			panel.print("Stat raised: " + se.getSkill().getStat());
+		} else if(se.hasLevelled()) {
+			panel.print("Level up.");			
+		} else {
+			panel.print("Skill raised: " + se.getSkill() + ".");
+		}
 	}
 }

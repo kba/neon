@@ -19,12 +19,13 @@
 package neon.core;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.*;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import de.muntjak.tinylookandfeel.Theme;
-import neon.core.event.EventTracker;
+import neon.core.event.TaskQueue;
 import neon.systems.files.XMLTranslator;
 import java.awt.Point;
 import javax.swing.UIManager;
@@ -49,7 +50,7 @@ public class Configuration {
 	 * 
 	 * @param ini	a configuration file
 	 */
-	public Configuration(String ini, EventTracker tracker) {
+	public Configuration(String ini, TaskQueue queue) {
 		// configuratie inladen
 		Document doc = new Document();
 		try (FileInputStream in = new FileInputStream(ini)){
@@ -69,11 +70,12 @@ public class Configuration {
 		// taal
 		String lang = doc.getRootElement().getChild("lang").getText();
 		strings = new Properties();
-		try {
-			strings.load(new FileReader("data/locale/locale." + lang));
+		try (FileInputStream stream = new FileInputStream("data/locale/locale." + lang); 
+				InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"))){
+			strings.load(reader);
 		} catch(IOException e) {
 			e.printStackTrace();
-		}
+		} 
 		
 		// logging
 		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -84,24 +86,15 @@ public class Configuration {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 		String level = doc.getRootElement().getChildText("log");
-		switch(level) {
-		case "off": logger.setLevel(Level.OFF); break;
-		case "severe": logger.setLevel(Level.SEVERE); break;
-		case "warning": logger.setLevel(Level.WARNING); break;
-		case "info": logger.setLevel(Level.INFO); break;
-		case "config": logger.setLevel(Level.CONFIG); break;
-		case "fine": logger.setLevel(Level.FINE); break;
-		case "finer": logger.setLevel(Level.FINER);	break;
-		case "finest": logger.setLevel(Level.FINEST); break;
-		case "all": logger.setLevel(Level.ALL); break;
-		}
+		logger.setLevel(Level.parse(level.toUpperCase()));
 
 		// alle data dirs en jars afgaan
 		mods = new HashMap<String, Collection<String[]>>();
 		Element files = doc.getRootElement().getChild("files");
 		for(Element file : files.getChildren()) {
-			new ModLoader(file, this, tracker).loadMod();
+			new ModLoader(file, this, queue).loadMod();
 		}
 		
 		// keyboard inlezen

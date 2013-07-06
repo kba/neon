@@ -25,7 +25,6 @@ public class RTattoo extends RData {
 	public Ability ability;
 	public int magnitude;
 	public int cost;
-	public String name;
 
 	public RTattoo(String id, String... path) {
 		super(id, path);

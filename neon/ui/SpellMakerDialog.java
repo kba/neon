@@ -124,7 +124,7 @@ public class SpellMakerDialog {
 	}
 	
 	private boolean isValid() {
-		return(!nameField.getText().equals(null) && !nameField.getText().equals(""));
+		return(nameField.getText() != null && !nameField.getText().isEmpty());
 	}
 	
 	@SuppressWarnings("serial")

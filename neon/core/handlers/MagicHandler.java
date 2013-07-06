@@ -314,7 +314,7 @@ public class MagicHandler {
 			target.addActiveSpell(spell);
 			int time = Engine.getTimer().getTime();
 			MagicTask task = new MagicTask(spell, time + formula.duration);
-			Engine.getEvents().addTimerTask(task, time, 1, time + formula.duration);
+			Engine.getQueue().add(task, time, 1, time + formula.duration);
 		}
 		
 		return OK;

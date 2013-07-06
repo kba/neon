@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@ import neon.objects.entities.Creature;
 
 @SuppressWarnings("serial")
 public class DeathEvent extends EventObject {
-	private Creature creature;
 	private int time;
 	
 	/**
@@ -32,7 +31,6 @@ public class DeathEvent extends EventObject {
 	 */
 	public DeathEvent(Creature c, int t) {
 		super(c);
-		creature = c;
 		time = t;
 	}
 	
@@ -41,11 +39,11 @@ public class DeathEvent extends EventObject {
 	}
 	
 	public Creature getCreature() {
-		return creature;
+		return (Creature)source;
 	}
 	
 	@Override
 	public String toString() {
-		return "die:" + creature.getID();
+		return "die:" + getCreature().getID();
 	}
 }

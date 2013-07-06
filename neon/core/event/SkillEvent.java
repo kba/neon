@@ -23,7 +23,6 @@ import neon.objects.property.Skill;
 
 @SuppressWarnings("serial")
 public class SkillEvent extends EventObject {
-	private Skill skill;
 	private boolean levelled;
 	private int stat;
 	
@@ -34,7 +33,6 @@ public class SkillEvent extends EventObject {
 	
 	public SkillEvent(Skill skill, boolean levelled) {
 		super(skill);
-		this.skill = skill;
 		this.levelled = levelled;
 	}
 	
@@ -47,12 +45,12 @@ public class SkillEvent extends EventObject {
 	}
 	
 	public Skill getSkill() {
-		return skill;
+		return (Skill)source;
 	}
 	
 	@Override
 	public String toString() {
-		return skill.toString();
+		return source.toString();
 	}
 	
 	public int getStat() {

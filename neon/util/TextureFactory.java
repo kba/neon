@@ -97,7 +97,7 @@ public class TextureFactory {
 		BufferedImage image = gc.createCompatibleImage(size, size);
 		Graphics2D g2i = image.createGraphics();
 		
-		Font font = base.deriveFont(style, size*6/7);
+		Font font = base.deriveFont(style, size*6/7f);
 		
 		g2i.setFont(font);
 		g2i.setColor(Color.black);
@@ -135,7 +135,7 @@ public class TextureFactory {
 		BufferedImage image = gc.createCompatibleImage(size, size);
 		Graphics2D g2i = image.createGraphics();
 		
-		Font font = base.deriveFont(Font.PLAIN, size*6/7);
+		Font font = base.deriveFont(Font.PLAIN, size*6/7f);
 		
 		g2i.setFont(font);
 		g2i.setColor(Color.black);

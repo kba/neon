@@ -30,7 +30,8 @@ public class SVGLoader {
 	public static JVShape loadShape(String shape) {
 		StringReader stringReader = new StringReader(shape);
 		SAXBuilder builder = new SAXBuilder();
-		Document doc = null;
+		// doc al initialiseren, in geval builder.build faalt
+		Document doc = new Document();
 		try {
 			doc = builder.build(stringReader);
 		} catch (Exception e) {

@@ -64,8 +64,8 @@ public class QuestTracker implements TimerListener {
 		} else if(temp.containsKey(topic.quest)) {
 			objects.putAll(temp.get(topic.quest).getObjects());			
 		}
-		for(String s : objects.keySet()) {
-			Engine.getScriptEngine().put(s, objects.get(s));
+		for(Map.Entry<String, Object> entry : objects.entrySet()) {
+			Engine.getScriptEngine().put(entry.getKey(), entry.getValue());
 		}
 		
 		if(topic.getAction() != null) {

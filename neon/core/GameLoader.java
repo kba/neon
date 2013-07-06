@@ -162,7 +162,7 @@ public class GameLoader {
 			String description = event.getAttributeValue("desc");
 			if(event.getAttribute("script") != null) {
 				String script = event.getAttributeValue("script");
-				Engine.getEvents().addTask(description, new ScriptAction(script));
+				Engine.getQueue().add(description, new ScriptAction(script));
 			}
 		}
 		
@@ -175,7 +175,7 @@ public class GameLoader {
 					
 			switch(event.getAttributeValue("task")) {
 			case "script": 
-				Engine.getEvents().addTimerTask(event.getAttributeValue("script"), start, period, stop);
+				Engine.getQueue().add(event.getAttributeValue("script"), start, period, stop);
 				break;
 			case "magic": 
 				Effect effect = Effect.valueOf(event.getAttributeValue("effect").toUpperCase());
@@ -191,7 +191,7 @@ public class GameLoader {
 					target = Engine.getStore().getEntity(Long.parseLong(event.getAttributeValue("target")));
 				}
 				Spell spell = new Spell(target, caster, effect, magnitude, script, type);
-				Engine.getEvents().addTimerTask(new MagicTask(spell, stop), start, stop, period);
+				Engine.getQueue().add(new MagicTask(spell, stop), start, stop, period);
 				break;
 			}
 		}

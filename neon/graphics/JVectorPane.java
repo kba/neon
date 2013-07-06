@@ -106,8 +106,8 @@ public class JVectorPane extends JComponent implements MouseListener {
 	}
 
 	public void updateCamera(Point camera) {
-		cx = (int)(camera.x*zoom - getWidth()/2);
-		cy = (int)(camera.y*zoom - getHeight()/2);
+		cx = (int)(camera.x*zoom - getWidth()/2f);
+		cy = (int)(camera.y*zoom - getHeight()/2f);
 		revalidate();
 	}
 	

@@ -77,6 +77,7 @@ public class JConsole extends JTextArea implements KeyListener {
 	/**
 	 * Show this console.
 	 */
+	@Override
 	public void show() {
 		frame.pack();
 		frame.setVisible(true);
@@ -101,7 +102,7 @@ public class JConsole extends JTextArea implements KeyListener {
 		getCaret().setDot(text.length());
 	}
 
-	private class ConsoleFilter extends DocumentFilter {
+	private static class ConsoleFilter extends DocumentFilter {
 		private JConsole console;
 		public boolean useFilters;
 

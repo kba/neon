@@ -110,7 +110,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		} else if(item instanceof Item.Aid) {
 			InventoryHandler.removeItem(player, item.getUID());
 			initList();
-			player.heal(SkillHandler.check(player, Skill.MEDICAL)/5);
+			player.heal(SkillHandler.check(player, Skill.MEDICAL)/5f);
 		} else if(!player.inventory.hasEquiped(item.getUID())) {
 			InventoryHandler.equip(item, player);			
 		} else {

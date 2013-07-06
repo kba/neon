@@ -19,46 +19,26 @@
 package neon.narrative;
 
 import neon.core.event.CombatEvent;
-import neon.core.event.CombatListener;
-import neon.core.event.DeathEvent;
-import neon.core.event.DeathListener;
 import neon.core.event.SkillEvent;
-import neon.core.event.SkillListener;
 import neon.util.fsm.TransitionEvent;
-import neon.util.fsm.TransitionListener;
+import net.engio.mbassy.listener.Handler;
 
-public class EventAdapter implements CombatListener, DeathListener, SkillListener, TransitionListener {
+public class EventAdapter {
 	private QuestTracker tracker;
 	
 	public EventAdapter(QuestTracker tracker) {
 		this.tracker = tracker;
 	}
 	
-	public void skillRaised(SkillEvent se) {
-		
+	@Handler public void handleSkill(SkillEvent se) {
+
 	}
 
-	public void statRaised(SkillEvent se) {
+	@Handler public void handleCombat(CombatEvent ce) {
 		
 	}
-
-	public void levelRaised(SkillEvent se) {
-		
-	}
-
-	public void died(DeathEvent de) {
-		
-	}
-
-	public void combatStarted(CombatEvent ce) {
-		
-	}
-
-	public void combatEnded(CombatEvent ce) {
-		
-	}
-
-	public void transition(TransitionEvent event) {
+	
+	@Handler public void transition(TransitionEvent event) {
 		if(event.toString().equals("dialog")) {
 			tracker.checkTransition((TransitionEvent)event);
 		}

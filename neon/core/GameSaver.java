@@ -19,9 +19,8 @@
 package neon.core;
 
 import java.io.File;
-import neon.core.event.EventTracker;
+import neon.core.event.TaskQueue;
 import neon.core.event.MagicTask;
-import neon.core.event.Queue;
 import neon.core.event.ScriptAction;
 import neon.magic.Spell;
 import neon.maps.Atlas;
@@ -36,11 +35,11 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 public class GameSaver {
-	private EventTracker tracker;
+	private TaskQueue queue;
 	private Atlas atlas;
 	
-	public GameSaver(EventTracker tracker, Atlas atlas) {
-		this.tracker = tracker;
+	public GameSaver(TaskQueue queue, Atlas atlas) {
+		this.queue = queue;
 		this.atlas = atlas;
 	}
 	
@@ -82,7 +81,7 @@ public class GameSaver {
 		Element events = new Element("events");
 		
 		// alle gewone tasks (voorlopig enkel script tasks)
-		Multimap<String, Action> tasks = tracker.getTasks();
+		Multimap<String, Action> tasks = queue.getTasks();
 		for(String key : tasks.keySet()) {
 			for(Action action : tasks.get(key)) {
 				Element event = new Element("task");
@@ -96,9 +95,9 @@ public class GameSaver {
 		}
 
 		// alle timer tasks
-		Multimap<Integer, Queue.RepeatEntry> repeats = tracker.getTimerTasks();
+		Multimap<Integer, TaskQueue.RepeatEntry> repeats = queue.getTimerTasks();
 		for(Integer key : repeats.keySet()) {
-			for(Queue.RepeatEntry entry : repeats.get(key)) {
+			for(TaskQueue.RepeatEntry entry : repeats.get(key)) {
 				Element event = new Element("timer");
 				event.setAttribute("tick", key + ":" + entry.getPeriod() + ":" + entry.getStop());
 				if(entry.getScript() != null) {

@@ -20,11 +20,13 @@ package neon.core.handlers;
 
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
-import neon.core.event.CombatListener;
 import neon.objects.entities.Creature;
 import neon.objects.entities.Item;
 import neon.objects.entities.Weapon;
 import neon.objects.property.Slot;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 
 /**
  * This class handles combat between two creatures. There are four possible outcomes of 
@@ -38,22 +40,24 @@ import neon.objects.property.Slot;
  * 
  * @author mdriesen
  */
-public class CombatHandler implements CombatListener {	
-	public void combatEnded(CombatEvent ce) {}	
-	public void combatStarted(CombatEvent ce) {
-		int result = 0;
-		switch(ce.getType()) {
-		case CombatEvent.SHOOT:
-			result = shoot(ce.getAttacker(), ce.getDefender());
-			break;
-		case CombatEvent.FLING:
-			result = fling(ce.getAttacker(), ce.getDefender());
-			break;
-		default:
-			result = fight(ce.getAttacker(), ce.getDefender());
-			break;
+@Listener(references = References.Strong)	// strong, om gc te vermijden
+public class CombatHandler {
+	@Handler public void handleCombat(CombatEvent ce) {
+		if(!ce.isFinished()) {
+			int result = 0;
+			switch(ce.getType()) {
+			case CombatEvent.SHOOT:
+				result = shoot(ce.getAttacker(), ce.getDefender());
+				break;
+			case CombatEvent.FLING:
+				result = fling(ce.getAttacker(), ce.getDefender());
+				break;
+			default:
+				result = fight(ce.getAttacker(), ce.getDefender());
+				break;
+			}
+			Engine.post(new CombatEvent(ce.getAttacker(), ce.getDefender(), result));
 		}
-		Engine.post(new CombatEvent(ce.getAttacker(), ce.getDefender(), result));
 	}
 
 	/*

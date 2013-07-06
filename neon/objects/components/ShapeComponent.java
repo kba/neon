@@ -61,4 +61,11 @@ public class ShapeComponent extends Rectangle implements Component {
 	public long getUID() {
 		return entity.getUID();
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		// dit zou in principe ook entity in rekening moeten brengen
+		// equals van rectangle kan problemen geven als twee objecten dezelfde shape hebben
+		return super.equals(o);
+	}
 }

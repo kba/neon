@@ -113,7 +113,7 @@ public class BumpState extends State implements KeyListener {
 		Player player = Engine.getPlayer();
 		int px = player.getBounds().x;
 		int py = player.getBounds().y;
-		if(MotionHandler.move(player, creature.getBounds().x, creature.getBounds().y) == MotionHandler.OK); {
+		if(MotionHandler.move(player, creature.getBounds().x, creature.getBounds().y) == MotionHandler.OK) {
 			creature.getBounds().setLocation(px, py);			
 		}
 	}

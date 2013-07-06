@@ -24,7 +24,6 @@ import neon.objects.resources.RCreature.AIType;
 import org.jdom2.Element;
 
 public class RPerson extends RData {
-	public String name;
 	public HashMap<String, Integer> factions = new HashMap<String, Integer>();
 	public AIType aiType;
 	public int aiRange, aiConf, aiAggr;

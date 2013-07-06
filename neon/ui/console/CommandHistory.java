@@ -25,7 +25,7 @@ package neon.ui.console;
  */
 
 public class CommandHistory {
-	private class Node {
+	private static class Node {
 		public String command;
 		public Node	next;
 		public Node	prev;

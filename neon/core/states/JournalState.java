@@ -152,9 +152,9 @@ public class JournalState extends State implements FocusListener {
 		quests.removeAll();
 		HashMap<String, Integer> questList = Engine.getPlayer().getJournal().getQuests();
 		HashMap<String, String> questDescriptions = Engine.getPlayer().getJournal().getSubjects();
-		for(String s : questList.keySet()) {
-			quests.add(new JLabel("<html><b>" + s + ": " + (questList.get(s) == 100 ? "finished" : "active" ) + 
-					"</b><br />" + questDescriptions.get(s) + "</html>"));
+		for(Map.Entry<String, Integer> entry : questList.entrySet()) {
+			quests.add(new JLabel("<html><b>" + entry.getKey() + ": " + (entry.getValue() == 100 ? "finished" : "active" ) + 
+					"</b><br />" + questDescriptions.get(entry.getKey()) + "</html>"));
 		}
 	}
 	
@@ -300,7 +300,7 @@ public class JournalState extends State implements FocusListener {
 	}
 	
 	@SuppressWarnings("serial")
-	private class SpellCellRenderer extends JLabel implements ListCellRenderer<RSpell> {
+	private static class SpellCellRenderer extends JLabel implements ListCellRenderer<RSpell> {
 		private Font font;
 	    
 		/**

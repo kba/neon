@@ -101,7 +101,7 @@ public class Resolver {
 		strings.add("$" + var.getTextTrim() + "$");
 		strings.add(creature);
 		if(var.getChild("onDie") != null) {
-			Engine.getEvents().addTask("die:" + creature, new ScriptAction(var.getChildText("onDie")));
+			Engine.getQueue().add("die:" + creature, new ScriptAction(var.getChildText("onDie")));
 		}
 		tracker.addObject(creature);		
 	}

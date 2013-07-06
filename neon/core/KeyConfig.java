@@ -50,42 +50,42 @@ public class KeyConfig {
 	public static int keys = NUMPAD;
 	
 	public static void setKeys(Element settings) {
-		// movement keys
 		if(settings != null) {
+			// movement keys
 			switch(settings.getText()) {
 			case "azerty": KeyConfig.setKeys(KeyConfig.AZERTY); break;
 			case "qwerty": KeyConfig.setKeys(KeyConfig.QWERTY); break;
 			case "qwertz": KeyConfig.setKeys(KeyConfig.QWERTZ); break;
 			}
-		}
-		
-		// andere keys
-		if(settings.getAttribute("map") != null) {
-			map = getKeyCode(settings.getAttributeValue("map"));
-		}
-		if(settings.getAttribute("act") != null) {
-			act = getKeyCode(settings.getAttributeValue("act"));
-		}
-		if(settings.getAttribute("magic") != null) {
-			magic = getKeyCode(settings.getAttributeValue("magic"));
-		}
-		if(settings.getAttribute("shoot") != null) {
-			shoot = getKeyCode(settings.getAttributeValue("shoot"));
-		}
-		if(settings.getAttribute("look") != null) {
-			look = getKeyCode(settings.getAttributeValue("look"));
-		}
-		if(settings.getAttribute("talk") != null) {
-			talk = getKeyCode(settings.getAttributeValue("talk"));
-		}
-		if(settings.getAttribute("unmount") != null) {
-			unmount = getKeyCode(settings.getAttributeValue("unmount"));
-		}
-		if(settings.getAttribute("sneak") != null) {
-			sneak = getKeyCode(settings.getAttributeValue("sneak"));
-		}
-		if(settings.getAttribute("journal") != null) {
-			journal = getKeyCode(settings.getAttributeValue("journal"));
+
+			// andere keys
+			if(settings.getAttribute("map") != null) {
+				map = getKeyCode(settings.getAttributeValue("map"));
+			}
+			if(settings.getAttribute("act") != null) {
+				act = getKeyCode(settings.getAttributeValue("act"));
+			}
+			if(settings.getAttribute("magic") != null) {
+				magic = getKeyCode(settings.getAttributeValue("magic"));
+			}
+			if(settings.getAttribute("shoot") != null) {
+				shoot = getKeyCode(settings.getAttributeValue("shoot"));
+			}
+			if(settings.getAttribute("look") != null) {
+				look = getKeyCode(settings.getAttributeValue("look"));
+			}
+			if(settings.getAttribute("talk") != null) {
+				talk = getKeyCode(settings.getAttributeValue("talk"));
+			}
+			if(settings.getAttribute("unmount") != null) {
+				unmount = getKeyCode(settings.getAttributeValue("unmount"));
+			}
+			if(settings.getAttribute("sneak") != null) {
+				sneak = getKeyCode(settings.getAttributeValue("sneak"));
+			}
+			if(settings.getAttribute("journal") != null) {
+				journal = getKeyCode(settings.getAttributeValue("journal"));
+			}
 		}
 	}
 	

@@ -271,7 +271,7 @@ public class DialogState extends State implements KeyListener {
 	}
 	
 	@SuppressWarnings("serial")
-	private class DialogCellRenderer extends JLabel implements ListCellRenderer<Topic> {
+	private static class DialogCellRenderer extends JLabel implements ListCellRenderer<Topic> {
 		public Component getListCellRendererComponent(JList<? extends Topic> list, Topic topic, int index, boolean isSelected, boolean cellHasFocus) {
 			if(isSelected) {
 				setBackground(defaults.getColor("List.selectionBackground"));

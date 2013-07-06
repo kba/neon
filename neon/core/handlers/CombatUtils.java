@@ -115,9 +115,9 @@ public class CombatUtils {
 			float mod = 1f;
 			Armor armor = (Armor)Engine.getStore().getEntity(creature.inventory.get(Slot.SHIELD));
 			switch(((RClothing)(armor.resource)).kind) {
-			case LIGHT: mod = creature.getSkill(Skill.LIGHT_ARMOR)/20; break;
-			case MEDIUM: mod = creature.getSkill(Skill.MEDIUM_ARMOR)/20; break;
-			case HEAVY: mod = creature.getSkill(Skill.HEAVY_ARMOR)/20; break;
+			case LIGHT: mod = creature.getSkill(Skill.LIGHT_ARMOR)/20f; break;
+			case MEDIUM: mod = creature.getSkill(Skill.MEDIUM_ARMOR)/20f; break;
+			case HEAVY: mod = creature.getSkill(Skill.HEAVY_ARMOR)/20f; break;
 			default: break;
 			}
 			

@@ -25,7 +25,7 @@ import java.util.*;
  * 
  * @author mdriesen
  */
-public class FiniteStateMachine extends State implements TransitionListener {
+public class FiniteStateMachine extends State {
 	// String in hashmap is eventID + current state, dan kunnen eventIDs herbruikt worden
 	private HashMap<String, Transition> transitions = new HashMap<>();
 	private HashMap<String, Object> variables = new HashMap<>();

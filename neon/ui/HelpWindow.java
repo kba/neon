@@ -72,7 +72,7 @@ public class HelpWindow implements KeyListener {
 		int inc = area.getScrollableUnitIncrement(scroller.getVisibleRect(), SwingConstants.VERTICAL, 1);
 		BoundedRangeModel model = scroller.getVerticalScrollBar().getModel();
 		switch(ke.getKeyCode()) {
-		case KeyEvent.VK_ESCAPE: frame.dispose();
+		case KeyEvent.VK_ESCAPE: frame.dispose(); break;
 		case KeyEvent.VK_UP: model.setValue(model.getValue() - inc); break;
 		case KeyEvent.VK_DOWN: model.setValue(model.getValue() + inc); break;		
 		}

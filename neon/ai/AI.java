@@ -170,12 +170,7 @@ public abstract class AI {
 		for(long uid : creature.inventory) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item instanceof Item.Scroll || item instanceof Item.Potion) {
-				RSpell formula = null;
-				if(item instanceof Item.Scroll) {
-					formula = ((Item.Scroll)item).enchantment.getSpell();
-				} else if(item instanceof Item.Potion) {
-					formula = ((Item.Potion)item).enchantment.getSpell();
-				}
+				RSpell formula = item.enchantment.getSpell();
 				
 				if(formula.effect.equals(Effect.RESTORE_HEALTH) && formula.range == 0) {
 					MagicHandler.cast(creature, item);
