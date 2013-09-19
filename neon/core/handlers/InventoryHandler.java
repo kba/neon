@@ -21,11 +21,14 @@ package neon.core.handlers;
 import java.util.ArrayList;
 import java.util.Collection;
 import neon.core.Engine;
+import neon.entities.Clothing;
+import neon.entities.Creature;
+import neon.entities.Item;
+import neon.entities.Weapon;
+import neon.entities.components.Inventory;
+import neon.entities.property.Slot;
 import neon.magic.MagicUtils;
-import neon.objects.components.Inventory;
-import neon.objects.entities.*;
-import neon.objects.property.Slot;
-import neon.objects.resources.RWeapon.WeaponType;
+import neon.resources.RWeapon.WeaponType;
 
 public class InventoryHandler {
 	/**
@@ -96,24 +99,13 @@ public class InventoryHandler {
 				inventory.put(c.getSlot(), item.getUID());
 				break;
 			case GLOVES:
-				inventory.remove(Slot.BRACER_LEFT);
-				inventory.remove(Slot.BRACER_RIGHT);
-				inventory.remove(Slot.GAUNTLET_LEFT);
-				inventory.remove(Slot.GAUNTLET_RIGHT);
+				inventory.remove(Slot.GAUNTLETS);
+				inventory.remove(Slot.GLOVES); 
 				inventory.put(c.getSlot(), item.getUID());
 				break;
-			case GAUNTLET_LEFT:
-			case BRACER_LEFT:
+			case GAUNTLETS:
 				inventory.remove(Slot.GLOVES); 
-				inventory.remove(Slot.GAUNTLET_LEFT); 
-				inventory.remove(Slot.BRACER_LEFT); 
-				inventory.put(c.getSlot(), item.getUID());
-				break;
-			case GAUNTLET_RIGHT:
-			case BRACER_RIGHT:
-				inventory.remove(Slot.GLOVES); 
-				inventory.remove(Slot.GAUNTLET_RIGHT); 
-				inventory.remove(Slot.BRACER_RIGHT); 
+				inventory.remove(Slot.GAUNTLETS);
 				inventory.put(c.getSlot(), item.getUID());
 				break;
 			default:

@@ -21,7 +21,8 @@ package neon.ui;
 import javax.swing.*;
 import java.awt.*;
 import neon.core.Engine;
-import neon.objects.entities.Entity;
+import neon.entities.Entity;
+
 import java.util.HashMap;
 
 /**

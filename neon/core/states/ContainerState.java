@@ -22,12 +22,6 @@ import neon.core.Configuration;
 import neon.core.Engine;
 import neon.maps.Atlas;
 import neon.maps.Zone;
-import neon.objects.entities.Container;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.entities.Entity;
-import neon.objects.entities.Item;
-import neon.objects.entities.Player;
 import neon.ui.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -39,6 +33,12 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.MotionHandler;
+import neon.entities.Container;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.Entity;
+import neon.entities.Item;
+import neon.entities.Player;
 import neon.util.fsm.*;
 
 public class ContainerState extends State implements KeyListener, ListSelectionListener {

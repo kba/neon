@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -19,13 +19,13 @@
 package neon.core;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
 import java.util.logging.*;
 import org.jdom2.*;
-import org.jdom2.input.SAXBuilder;
 import de.muntjak.tinylookandfeel.Theme;
 import neon.core.event.TaskQueue;
+import neon.resources.CServer;
+import neon.resources.RMod;
 import neon.systems.files.XMLTranslator;
 import java.awt.Point;
 import javax.swing.UIManager;
@@ -42,22 +42,20 @@ public class Configuration {
 	private String[] startMap;
 	private int startZone = 0;	// default
 	private HashMap<String, String> properties = new HashMap<String, String>();
-	private HashMap<String, Collection<String[]>> mods;
-	private Properties strings;
+	private HashMap<String, Collection<String[]>> mods = new HashMap<String, Collection<String[]>>();
+//	private ArrayList<RMod> rmods = new ArrayList<RMod>();
+	private CServer config;
+	private KeyConfig keys = new KeyConfig();
 	
 	/**
 	 * Loads a configuration file, containing a list of mods.
 	 * 
 	 * @param ini	a configuration file
 	 */
-	public Configuration(String ini, TaskQueue queue) {
-		// configuratie inladen
-		Document doc = new Document();
-		try (FileInputStream in = new FileInputStream(ini)){
-			doc = new SAXBuilder().build(in);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+	public Configuration(TaskQueue queue) {
+		// ini file inladen
+		config = new CServer("neon.ini");
+		config.load();
 
 		// look and feel setten
 		try {
@@ -67,46 +65,36 @@ public class Configuration {
 			e.printStackTrace();
 		}					
 		
-		// taal
-		String lang = doc.getRootElement().getChild("lang").getText();
-		strings = new Properties();
-		try (FileInputStream stream = new FileInputStream("data/locale/locale." + lang); 
-				InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"))){
-			strings.load(reader);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} 
-		
 		// logging
 		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		logger.setLevel(Level.parse(config.getLogLevel()));
 		try {
 			Handler handler = new FileHandler("neon.log");
 			handler.setFormatter(new SimpleFormatter());
 			logger.addHandler(handler);
-		} catch(Exception e) {
+		} catch (SecurityException | IOException e) {
 			e.printStackTrace();
 		}
-		
-		String level = doc.getRootElement().getChildText("log");
-		logger.setLevel(Level.parse(level.toUpperCase()));
 
-		// alle data dirs en jars afgaan
-		mods = new HashMap<String, Collection<String[]>>();
-		Element files = doc.getRootElement().getChild("files");
-		for(Element file : files.getChildren()) {
-			new ModLoader(file, this, queue).loadMod();
-		}
-		
 		// keyboard inlezen
-		KeyConfig.setKeys(doc.getRootElement().getChild("keys"));
+		KeyConfig.setKeys(config.getKeys());
 		
 		// threading
-		gThread = doc.getRootElement().getChild("threads").getAttributeValue("generate").equals("on");
+		gThread = config.isMapThreaded();
 		logger.config("Map generation thread: " + gThread);
+
+		// alle data dirs en jars afgaan
+		for(String file : config.getMods()) {
+			new ModLoader(file, this, queue).loadMod();
+		}		
+	}
+	
+	public KeyConfig getKeyConfig() {
+		return keys;
 	}
 	
 	/**
-	 * Adds a mod to list.
+	 * Adds a mod to the list.
 	 * 
 	 * @param mod
 	 * @param maps	a {@code Collection} of all maps in the given mod
@@ -188,11 +176,10 @@ public class Configuration {
 	 * Return the string value with the given name.
 	 * 
 	 * @param name
-	 * @param backup
 	 * @return
 	 */
-	public String getString(String name, String backup) {
-		return strings.getProperty(name, backup);
+	public String getString(String name) {
+		return config.getStrings().getProperty(name);
 	}
 	
 	/**

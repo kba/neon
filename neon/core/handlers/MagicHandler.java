@@ -19,17 +19,18 @@
 package neon.core.handlers;
 
 import neon.magic.*;
-import neon.objects.entities.*;
-import neon.objects.property.Ability;
-import neon.objects.property.Condition;
-import neon.objects.property.Skill;
-import neon.objects.resources.RSpell;
+import neon.resources.RSpell;
 import neon.util.Dice;
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.util.Collection;
 import neon.core.Engine;
 import neon.core.event.MagicTask;
+import neon.entities.Creature;
+import neon.entities.Item;
+import neon.entities.property.Ability;
+import neon.entities.property.Condition;
+import neon.entities.property.Skill;
 
 /**
  * This class handles all magic casting. 

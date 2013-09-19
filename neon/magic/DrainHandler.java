@@ -18,8 +18,8 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
-import neon.objects.property.Damage;
+import neon.entities.Creature;
+import neon.entities.property.Damage;
 
 public class DrainHandler implements EffectHandler {
 	private Damage type;

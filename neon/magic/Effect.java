@@ -18,9 +18,9 @@
 
 package neon.magic;
 
-import neon.objects.property.Ability;
-import neon.objects.property.Damage;
-import neon.objects.property.Skill;
+import neon.entities.property.Ability;
+import neon.entities.property.Damage;
+import neon.entities.property.Skill;
 
 /**
  * Represents a magic effect. Every effect should belong to one of six magic

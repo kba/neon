@@ -20,8 +20,8 @@ package neon.narrative;
 
 import java.util.*;
 import neon.core.Engine;
-import neon.objects.entities.Creature;
-import neon.objects.resources.RQuest;
+import neon.entities.Creature;
+import neon.resources.RQuest;
 import neon.systems.timing.TimerListener;
 import neon.util.fsm.TransitionEvent;
 

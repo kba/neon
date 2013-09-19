@@ -25,10 +25,10 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.*;
 import neon.core.Engine;
-import neon.graphics.Renderable;
-import neon.objects.resources.RRegionTheme;
-import neon.objects.resources.RTerrain;
+import neon.resources.RRegionTheme;
+import neon.resources.RTerrain;
 import neon.systems.scripting.Activator;
+import neon.ui.graphics.Renderable;
 import neon.util.ColorFactory;
 import neon.util.TextureFactory;
 

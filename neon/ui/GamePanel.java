@@ -29,11 +29,11 @@ import javax.swing.border.*;
 import javax.swing.text.DefaultCaret;
 import neon.core.Engine;
 import neon.core.handlers.CombatUtils;
+import neon.entities.Player;
+import neon.entities.property.Condition;
+import neon.ui.graphics.*;
 import neon.util.ColorFactory;
-import neon.graphics.*;
 import neon.maps.*;
-import neon.objects.entities.Player;
-import neon.objects.property.Condition;
 
 /**
  * This class represents the main game screen. It contains a <code>JVectorPane</code> 

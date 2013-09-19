@@ -18,9 +18,9 @@
 
 package neon.magic;
 
-import neon.objects.entities.Container;
-import neon.objects.entities.Door;
-import neon.objects.entities.Item;
+import neon.entities.Container;
+import neon.entities.Door;
+import neon.entities.Item;
 
 public class LockHandler implements EffectHandler {
 	public boolean isWeaponEnchantment() {

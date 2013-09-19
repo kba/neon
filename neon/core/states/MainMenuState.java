@@ -28,19 +28,21 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import neon.core.*;
-import neon.ui.LoadGameDialog;
-import neon.ui.NewGameDialog;
-import neon.ui.OptionDialog;
+import neon.ui.dialog.LoadGameDialog;
+import neon.ui.dialog.NewGameDialog;
+import neon.ui.dialog.OptionDialog;
 import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 
 public class MainMenuState extends State {
 	private JPanel main;
 	private Engine engine;
+	private Configuration config;
 	
 	public MainMenuState(Engine engine, Configuration config) {
 		super(engine, "main menu");
 		this.engine = engine;
+		this.config = config;
 		
 		// het main menu JPanel zelf
 		main = new JPanel(new BorderLayout());
@@ -52,19 +54,19 @@ public class MainMenuState extends State {
 				config.getProperty("title") + "</font></html>", JLabel.CENTER);
 		
 		// de knoppen op het menu
-		String newString = config.getString("$newGame", "New Game");
+		String newString = config.getString("$newGame");
 		Action n = new ButtonAction(newString, "n");
 		JButton newGame = new JButton(n);
 		newGame.setMnemonic(newString.charAt(0));
-		String loadString = config.getString("$loadGame", "Load game");
+		String loadString = config.getString("$loadGame");
 		Action l = new ButtonAction(loadString, "l");    
 		JButton load = new JButton(l);
 		load.setMnemonic(loadString.charAt(0));
-		String optionString = config.getString("$options", "Options");
+		String optionString = config.getString("$options");
 		Action o = new ButtonAction(optionString, "o");
 		JButton options = new JButton(o);
 		options.setMnemonic(optionString.charAt(0));
-		String quitString = config.getString("$quit", "Quit");
+		String quitString = config.getString("$quit");
 		Action q = new ButtonAction(quitString, "q");
 		JButton quit = new JButton(q);
 		quit.setMnemonic(quitString.charAt(0));
@@ -109,13 +111,14 @@ public class MainMenuState extends State {
 			super(text);
 			putValue(ACTION_COMMAND_KEY, command);
 		}
+		
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("n")) {
 				new NewGameDialog(Engine.getUI().getWindow(), engine).show();
 			} else if(e.getActionCommand().equals("l")) {
 				new LoadGameDialog(Engine.getUI().getWindow(), engine.getConfig()).show();
 			} else if(e.getActionCommand().equals("o")) {
-				new OptionDialog(Engine.getUI().getWindow()).show();
+				new OptionDialog(Engine.getUI().getWindow(), config.getKeyConfig()).show();
 			} else if(e.getActionCommand().equals("q")) {
 				System.exit(0);
 			}
@@ -130,8 +133,8 @@ public class MainMenuState extends State {
 		public void mouseReleased(MouseEvent me) {
 			try {
 				Desktop.getDesktop().browse(new URI("http://sourceforge.net/projects/neon"));
-			} catch (IOException e) {
-			} catch (URISyntaxException e) {
+			} catch (IOException  | URISyntaxException e) {
+				e.printStackTrace();
 			}
 		}
 		

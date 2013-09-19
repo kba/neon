@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.List;
 import neon.core.Engine;
 import neon.core.event.ScriptAction;
-import neon.objects.resources.RCreature;
-import neon.objects.resources.RItem;
+import neon.resources.RCreature;
+import neon.resources.RItem;
 import neon.util.Dice;
 import org.jdom2.Element;
 

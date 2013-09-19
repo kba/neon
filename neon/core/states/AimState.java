@@ -22,21 +22,23 @@ import java.awt.Point;
 import neon.core.*;
 import neon.core.event.CombatEvent;
 import neon.core.handlers.*;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.Item;
+import neon.entities.Player;
+import neon.entities.Weapon;
+import neon.entities.property.Slot;
+
 import java.awt.event.*;
-import neon.graphics.DefaultRenderable;
 import neon.maps.Atlas;
 import neon.maps.Zone;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.entities.Item;
-import neon.objects.entities.Player;
-import neon.objects.entities.Weapon;
-import neon.objects.property.Slot;
-import neon.objects.resources.RWeapon.WeaponType;
 import java.util.*;
 import javax.swing.Popup;
+
+import neon.resources.RWeapon.WeaponType;
 import neon.systems.animation.Translation;
 import neon.ui.GamePanel;
+import neon.ui.graphics.DefaultRenderable;
 import neon.util.fsm.*;
 
 /**

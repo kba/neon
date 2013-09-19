@@ -20,10 +20,10 @@ package neon.core.event;
 
 import java.util.EventObject;
 import neon.core.Engine;
+import neon.entities.Creature;
 import neon.magic.Effect;
 import neon.magic.MagicUtils;
 import neon.magic.Spell;
-import neon.objects.entities.Creature;
 import neon.util.fsm.Action;
 
 public class MagicTask implements Action {

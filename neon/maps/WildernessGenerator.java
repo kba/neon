@@ -27,14 +27,14 @@ import java.util.Collection;
 import org.jdom2.Element;
 import org.texgen.signals.AnimalStripe;
 import neon.core.Engine;
-import neon.objects.EntityFactory;
-import neon.objects.entities.Container;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Item;
-import neon.objects.property.Habitat;
-import neon.objects.resources.RItem;
-import neon.objects.resources.RRegionTheme;
-import neon.objects.resources.RTerrain;
+import neon.entities.Container;
+import neon.entities.Creature;
+import neon.entities.EntityFactory;
+import neon.entities.Item;
+import neon.entities.property.Habitat;
+import neon.resources.RItem;
+import neon.resources.RRegionTheme;
+import neon.resources.RTerrain;
 import neon.util.Dice;
 
 /**
@@ -285,7 +285,7 @@ public class WildernessGenerator {
 							Creature creature = EntityFactory.getCreature(id, region.x + i, region.y + j, uid);
 							Engine.getStore().addEntity(creature);
 							zone.addCreature(creature);							
-						} else if(!entry.isEmpty() && entry != region.getTextureType()) {
+						} else if(!entry.isEmpty() && !entry.equals(region.getTextureType())) {
 							RTerrain terrain = (RTerrain)Engine.getResources().getResource(entry, "terrain");
 							zone.addRegion(new Region(entry, region.x + i, region.y + j, 1, 1, null, region.z + 1, terrain));
 						}
@@ -364,7 +364,7 @@ public class WildernessGenerator {
 			// overlappen
 			int h = 0;
 			for(int i = 0; i < width; i++) {
-				if(terrain[0][i+1] != type) {
+				if(!terrain[0][i+1].equals(type)) {
 					if(h > 0) {
 						addTerrain(i+1, 1, 1, h, terrain[0][i+1]);
 					}
@@ -383,7 +383,7 @@ public class WildernessGenerator {
 			// overlappen
 			int h = 0;
 			for(int i = 0; i < width; i++) {
-				if(terrain[height + 1][i+1] != type) {
+				if(!terrain[height + 1][i+1].equals(type)) {
 					if(h > 0) {
 						addTerrain(i+1, height - h + 1, 1, h, terrain[height + 1][i+1]);
 					}
@@ -402,7 +402,7 @@ public class WildernessGenerator {
 			// overlappen
 			int w = 0;
 			for(int i = 0; i < height; i++) {
-				if(terrain[i+1][0] != type) {
+				if(!terrain[i+1][0].equals(type)) {
 					if(w > 0) {
 						addTerrain(1, i+1, w, 1, terrain[i+1][0]);
 					}
@@ -421,7 +421,7 @@ public class WildernessGenerator {
 			// overlappen
 			int w = 0;
 			for(int i = 0; i < height; i++) {
-				if(terrain[i][width + 1] != type) {
+				if(!type.equals(terrain[i][width + 1])) {
 					if(w > 0) {
 						addTerrain(width - w + 1, i+1, w, 1, terrain[i+1][width + 1]);
 					}

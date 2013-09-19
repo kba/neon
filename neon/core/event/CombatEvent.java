@@ -19,7 +19,8 @@
 package neon.core.event;
 
 import java.util.EventObject;
-import neon.objects.entities.Creature;
+
+import neon.entities.Creature;
 
 @SuppressWarnings("serial")
 public class CombatEvent extends EventObject {

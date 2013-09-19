@@ -18,9 +18,9 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
-import neon.objects.property.Condition;
-import neon.objects.resources.RSpell;
+import neon.entities.Creature;
+import neon.entities.property.Condition;
+import neon.resources.RSpell;
 
 /**
  * Handles all <i>cure</i> effects: cure disease, cure poison, cure blindness,

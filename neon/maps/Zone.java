@@ -25,13 +25,14 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.*;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Item;
-import neon.objects.entities.Light;
-import neon.objects.resources.RZoneTheme;
+
+import neon.resources.RZoneTheme;
+import neon.ui.graphics.*;
 import neon.util.spatial.*;
 import neon.core.Engine;
-import neon.graphics.*;
+import neon.entities.Creature;
+import neon.entities.Item;
+import neon.entities.Light;
 
 public class Zone implements Externalizable {
 	private static ZComparator comparator = new ZComparator();

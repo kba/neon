@@ -28,13 +28,14 @@ import java.awt.event.*;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.MagicHandler;
 import neon.core.handlers.SkillHandler;
+import neon.entities.Item;
+import neon.entities.Player;
+import neon.entities.property.Skill;
 import neon.maps.Atlas;
-import neon.objects.entities.*;
-import neon.objects.property.Skill;
-import neon.objects.resources.RItem;
-import neon.objects.resources.RText;
-import neon.ui.BookDialog;
+import neon.resources.RItem;
+import neon.resources.RText;
 import neon.ui.DescriptionPanel;
+import neon.ui.dialog.BookDialog;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
 
@@ -101,7 +102,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			MagicHandler.drink(player, (Item.Potion)item);
 			initList();
 		} else if(item instanceof Item.Book && !(item instanceof Item.Scroll)) {
-			RText text = (RText)Engine.getResources().getResource(((RItem.Text)item.resource).content + ".html");
+			RText text = (RText)Engine.getResources().getResource(((RItem.Text)item.resource).content + ".html", "text");
 			new BookDialog(Engine.getUI().getWindow()).show(item.toString(), text.getText());
 		} else if(item instanceof Item.Food) {
 			InventoryHandler.removeItem(player, item.getUID());

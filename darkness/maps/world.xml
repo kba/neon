@@ -437,18 +437,18 @@
     <region x="17600" y="22600" w="400" h="200" l="1" text="sedge" />
     <region x="23000" y="3200" w="600" h="200" l="1" text="sedge" />
     <region x="10800" y="22600" w="600" h="600" l="1" text="sedge" />
-    <region x="16800" y="11200" w="800" h="1000" l="1" text="moss" random="jungle_west" />
+    <region x="16800" y="11200" w="800" h="1000" l="1" text="sedge" random="swamp" />
     <region x="3800" y="9600" w="200" h="600" l="1" text="moss" random="jungle_west" />
     <region x="1000" y="18200" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="37200" y="18800" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="22400" y="5600" w="400" h="400" l="1" text="moss" random="jungle_north" />
     <region x="23200" y="11400" w="1400" h="1000" l="1" text="moss" random="jungle" />
     <region x="33400" y="12200" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="20400" y="8200" w="400" h="800" l="1" text="moss" random="jungle" />
+    <region x="20400" y="8200" w="400" h="800" l="1" text="sedge" random="swamp" />
     <region x="18400" y="20400" w="400" h="400" l="1" text="grass" random="savanna" />
     <region x="34800" y="13000" w="200" h="400" l="1" text="moss" random="jungle" />
     <region x="23600" y="8000" w="400" h="400" l="1" text="moss" random="jungle" />
-    <region x="18000" y="5400" w="1200" h="1200" l="1" text="moss" random="jungle_north" />
+    <region x="18000" y="5400" w="1200" h="1200" l="1" text="sedge" random="swamp" />
     <region x="5200" y="14000" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="10400" y="2600" w="400" h="1000" l="1" text="moss" random="forest_nord" />
     <region x="7000" y="13800" w="200" h="400" l="1" text="moss" random="jungle_west" />
@@ -458,31 +458,31 @@
     <region x="37000" y="14400" w="400" h="200" l="1" text="moss" random="jungle" />
     <region x="2600" y="14200" w="600" h="200" l="1" text="moss" random="jungle_west" />
     <region x="11800" y="23800" w="800" h="400" l="1" text="moss" random="jungle" />
-    <region x="18200" y="5200" w="800" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="18200" y="5200" w="800" h="200" l="1" text="sedge" random="swamp" />
     <region x="32000" y="13000" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="8000" y="11400" w="200" h="800" l="1" text="rock" random="mountain" />
     <region x="9600" y="1400" w="200" h="400" l="1" text="moss" random="forest_nord" />
     <region x="26800" y="13800" w="1600" h="1600" l="1" text="moss" random="jungle" />
-    <region x="17600" y="5800" w="400" h="800" l="1" text="moss" random="jungle_north" />
+    <region x="17600" y="5800" w="400" h="800" l="1" text="sedge" random="swamp" />
     <region x="37000" y="14600" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="19200" y="5800" w="200" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="19200" y="5800" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="39800" y="14800" w="400" h="200" l="1" text="grass" random="savanna" />
     <region x="6800" y="13400" w="400" h="400" l="1" text="moss" random="jungle_west" />
     <region x="34000" y="13800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="18400" y="19200" w="2400" h="1200" l="1" text="grass" random="savanna" />
     <region x="22800" y="3000" w="200" h="600" l="1" text="sedge" random="swamp" />
     <region x="15000" y="25000" w="800" h="400" l="1" text="sedge" />
-    <region x="18000" y="11600" w="200" h="600" l="1" text="sedge" />
+    <region x="18000" y="11400" w="200" h="800" l="1" text="sedge" />
     <region x="800" y="18400" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="5600" y="9000" w="600" h="200" l="1" text="moss" random="jungle_west" />
-    <region x="20400" y="7400" w="200" h="400" l="1" text="moss" random="jungle" />
+    <region x="20400" y="7400" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="33200" y="19200" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="15000" y="14000" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="18600" y="14200" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="20800" y="6400" w="1400" h="2600" l="1" text="moss" random="jungle" />
     <region x="28400" y="14000" w="200" h="1400" l="1" text="moss" random="jungle" />
     <region x="7400" y="11400" w="400" h="200" l="1" text="shrubs" random="tundra" />
-    <region x="20600" y="6400" w="200" h="400" l="1" text="moss" random="jungle_north" />
+    <region x="20600" y="6400" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="7200" y="12000" w="200" h="400" l="1" text="ferns" random="cloud" />
     <region x="10200" y="7000" w="200" h="200" l="1" text="dirt" />
     <region x="30000" y="12800" w="200" h="200" l="1" text="grass" random="savanna" />
@@ -496,8 +496,8 @@
     <region x="8200" y="11800" w="800" h="600" l="1" text="moss" random="jungle_west" />
     <region x="10000" y="13800" w="400" h="600" l="1" text="moss" random="jungle_west" />
     <region x="20000" y="20800" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="15400" y="12200" w="2400" h="2200" l="1" text="moss" random="jungle_west" />
-    <region x="33600" y="17000" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="15400" y="12200" w="2400" h="400" l="1" text="sedge" random="swamp" />
+    <region x="32600" y="17000" w="1200" h="200" l="1" text="moss" random="jungle" />
     <region x="15400" y="23600" w="1000" h="800" l="1" text="moss" random="jungle_south" />
     <region x="13200" y="25600" w="200" h="200" l="1" text="sedge" />
     <region x="5000" y="13800" w="400" h="200" l="1" text="moss" random="jungle_west" />
@@ -512,24 +512,21 @@
     <region x="19600" y="10400" w="600" h="600" l="1" text="moss" random="jungle" />
     <region x="15400" y="24800" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="23200" y="19600" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="10600" y="5400" w="200" h="1200" l="1" text="sedge" random="swamp" />
+    <region x="10600" y="5400" w="200" h="1600" l="1" text="sedge" random="swamp" />
     <region x="10200" y="7800" w="400" h="200" l="1" text="moss" random="jungle_north" />
     <region x="11000" y="11000" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="20200" y="5000" w="200" h="200" l="1" text="moss" random="jungle_north" />
     <region x="29600" y="13000" w="600" h="800" l="1" text="grass" random="savanna" />
     <region x="4600" y="12400" w="6600" h="1000" l="1" text="moss" random="jungle_west" />
-    <region x="17800" y="11600" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="12000" y="24200" w="400" h="800" l="1" text="grass" random="savanna" />
     <region x="22200" y="6000" w="200" h="200" l="1" text="dirt" />
-    <region x="32600" y="17000" w="1000" h="200" l="1" text="sedge" random="swamp" />
     <region x="2400" y="10200" w="1600" h="200" l="1" text="moss" random="jungle_west" />
     <region x="37600" y="18800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="16200" y="24400" w="200" h="400" l="1" text="sedge" />
     <region x="12600" y="23800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="32600" y="12200" w="200" h="400" l="1" text="moss" random="jungle" />
     <region x="36400" y="20400" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="26400" y="15400" w="4600" h="1200" l="1" text="moss" random="jungle" />
-    <region x="26400" y="16600" w="4600" h="1200" l="1" text="sedge" random="swamp" />
+    <region x="26400" y="15400" w="4600" h="2400" l="1" text="moss" random="jungle" />
     <region x="7000" y="11000" w="400" h="200" l="1" text="rock" random="mountain" />
     <region x="4000" y="9400" w="6200" h="1400" l="1" text="moss" random="jungle_west" />
     <region x="28600" y="13200" w="200" h="400" l="1" text="grass" random="savanna" />
@@ -543,7 +540,7 @@
     <region x="19600" y="13200" w="400" h="600" l="1" text="sedge" />
     <region x="31000" y="19400" w="200" h="200" l="1" text="sedge" />
     <region x="20200" y="5200" w="200" h="200" l="1" text="grass" random="savanna" />
-    <region x="14800" y="12600" w="400" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="14800" y="12600" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="34200" y="21000" w="200" h="200" l="1" text="sedge" />
     <region x="2800" y="12600" w="400" h="400" l="1" text="moss" random="jungle_west" />
     <region x="6800" y="11400" w="400" h="400" l="1" text="rock" random="mountain" />
@@ -574,7 +571,7 @@
     <region x="14600" y="26000" w="400" h="200" l="1" text="sedge" />
     <region x="18000" y="13000" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="29800" y="13800" w="400" h="200" l="1" text="grass" random="savanna" />
-    <region x="30400" y="18600" w="2200" h="200" l="1" text="sedge" random="swamp" />
+    <region x="30400" y="18600" w="2200" h="200" l="1" text="moss" random="jungle" />
     <region x="20600" y="5400" w="1000" h="1000" l="1" text="moss" random="jungle_north" />
     <region x="3600" y="9800" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="25800" y="12200" w="1000" h="400" l="1" text="moss" random="jungle" />
@@ -587,18 +584,18 @@
     <region x="6400" y="12200" w="400" h="200" l="1" text="rock" random="mountain" />
     <region x="14800" y="25000" w="200" h="200" l="1" text="moss" random="jungle_south" />
     <region x="29400" y="13200" w="200" h="400" l="1" text="dirt" />
-    <region x="20600" y="7400" w="200" h="800" l="1" text="moss" random="jungle" />
+    <region x="20600" y="7400" w="200" h="800" l="1" text="sedge" random="swamp" />
     <region x="3108" y="13000" w="9" h="14" l="1" text="moss" />
     <region x="9000" y="11800" w="200" h="200" l="1" text="dirt" />
     <region x="11200" y="21400" w="200" h="200" l="1" text="sedge" />
     <region x="39200" y="14000" w="400" h="200" l="1" text="grass" random="savanna" />
-    <region x="19400" y="3600" w="200" h="800" l="1" text="moss" random="jungle_north" />
+    <region x="19400" y="3600" w="200" h="600" l="1" text="moss" random="jungle_north" />
     <region x="34600" y="18000" w="2600" h="2400" l="1" text="moss" random="jungle" />
     <region x="22200" y="2800" w="600" h="400" l="1" text="sedge" random="swamp" />
     <region x="13600" y="23200" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="10800" y="5600" w="200" h="400" l="1" text="sedge" />
     <region x="14200" y="24600" w="200" h="200" l="1" text="moss" random="jungle_south" />
-    <region x="11200" y="8000" w="200" h="400" l="1" text="moss" random="jungle_north" />
+    <region x="11200" y="8000" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="24000" y="8000" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="7600" y="16000" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="17800" y="13200" w="800" h="1200" l="1" text="moss" random="jungle_west" />
@@ -609,9 +606,9 @@
     <region x="31000" y="13200" w="2600" h="3800" l="1" text="moss" random="jungle" />
     <region x="38600" y="13200" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="13000" y="24200" w="400" h="400" l="1" text="dirt" />
-    <region x="14000" y="12400" w="400" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="14000" y="12400" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="28400" y="13400" w="200" h="600" l="1" text="grass" random="savanna" />
-    <region x="30600" y="18800" w="1400" h="400" l="1" text="sedge" random="swamp" />
+    <region x="30600" y="18800" w="1400" h="400" l="1" text="moss" random="jungle" />
     <region x="7000" y="10800" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="26800" y="13000" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="9400" y="8400" w="200" h="200" l="1" text="moss" random="jungle_north" />
@@ -624,15 +621,15 @@
     <region x="11800" y="13400" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="7000" y="15400" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="1400" y="12400" w="200" h="200" l="1" text="moss" random="jungle_west" />
-    <region x="32600" y="17200" w="800" h="2000" l="1" text="sedge" random="swamp" />
+    <region x="32600" y="17200" w="800" h="2000" l="1" text="moss" random="jungle" />
     <region x="33400" y="17200" w="1200" h="2000" l="1" text="moss" random="jungle" />
     <region x="6200" y="11800" w="200" h="600" l="1" text="rock" random="mountain" />
-    <region x="20200" y="6000" w="200" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="20200" y="6000" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="10400" y="14000" w="1200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="11200" y="12600" w="200" h="800" l="1" text="moss" random="jungle_west" />
     <region x="24000" y="10800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="30200" y="13000" w="800" h="600" l="1" text="grass" random="savanna" />
-    <region x="16600" y="11800" w="200" h="400" l="1" text="moss" random="jungle_west" />
+    <region x="16600" y="11800" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="23200" y="12600" w="1200" h="1800" l="1" text="moss" random="jungle" />
     <region x="1600" y="19000" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="2200" y="10400" w="1800" h="200" l="1" text="moss" random="jungle_west" />
@@ -650,19 +647,19 @@
     <region x="34200" y="12200" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="8000" y="10800" w="400" h="600" l="1" text="moss" random="jungle_west" />
     <region x="24400" y="13800" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="18600" y="11400" w="200" h="200" l="1" text="sedge" />
+    <region x="18600" y="11400" w="200" h="400" l="1" text="sedge" />
     <region x="20000" y="12200" w="200" h="200" l="1" text="dirt" />
-    <region x="20000" y="9800" w="200" h="400" l="1" text="moss" random="jungle" />
+    <region x="20000" y="9800" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="11600" y="24200" w="400" h="1200" l="1" text="sedge" random="swamp" />
     <region x="22200" y="5400" w="800" h="200" l="1" text="moss" random="jungle_north" />
-    <region x="19800" y="6200" w="800" h="600" l="1" text="moss" random="jungle_north" />
-    <region x="18800" y="11200" w="400" h="600" l="1" text="moss" random="jungle" />
+    <region x="19800" y="6200" w="800" h="600" l="1" text="sedge" random="swamp" />
+    <region x="18800" y="11200" w="400" h="600" l="1" text="sedge" random="swamp" />
     <region x="23200" y="9000" w="400" h="1200" l="1" text="moss" random="jungle" />
     <region x="4800" y="10800" w="1600" h="600" l="1" text="moss" random="jungle_west" />
     <region x="12000" y="12800" w="3400" h="1600" l="1" text="moss" random="jungle_west" />
-    <region x="26400" y="17800" w="800" h="1000" l="1" text="sedge" random="swamp" />
+    <region x="26400" y="17800" w="800" h="1000" l="1" text="moss" random="jungle" />
     <region x="7400" y="11600" w="400" h="800" l="1" text="rock" random="mountain" />
-    <region x="18600" y="6600" w="400" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="18600" y="6600" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="21200" y="2800" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="13000" y="23200" w="400" h="200" l="1" text="grass" random="savanna" />
     <region x="36800" y="13200" w="200" h="600" l="1" text="moss" random="jungle" />
@@ -673,7 +670,7 @@
     <region x="10200" y="10400" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="23600" y="10000" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="10200" y="7200" w="200" h="600" l="1" text="moss" random="jungle_north" />
-    <region x="10400" y="7000" w="400" h="800" l="1" text="moss" random="jungle_north" />
+    <region x="10400" y="7000" w="400" h="800" l="1" text="sedge" random="swamp" />
     <region x="9400" y="6400" w="200" h="600" l="1" text="sedge" />
     <region x="10200" y="3400" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="23800" y="6400" w="400" h="200" l="1" text="moss" random="jungle" />
@@ -690,7 +687,7 @@
     <region x="12400" y="25800" w="200" h="400" l="1" text="sedge" />
     <region x="17600" y="22000" w="200" h="200" l="1" text="dirt" />
     <region x="15400" y="22000" w="2200" h="800" l="1" text="grass" random="savanna" />
-    <region x="15200" y="12400" w="200" h="400" l="1" text="moss" random="jungle_west" />
+    <region x="15200" y="12400" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="14800" y="25200" w="200" h="200" l="1" text="sedge" />
     <region x="17800" y="12800" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="22400" y="6000" w="1200" h="600" l="1" text="moss" random="jungle" />
@@ -699,11 +696,11 @@
     <region x="29600" y="12800" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="23400" y="19600" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="22200" y="2400" w="200" h="200" l="1" text="sedge" />
-    <region x="31400" y="17000" w="1200" h="400" l="1" text="sedge" random="swamp" />
+    <region x="31400" y="17000" w="1200" h="400" l="1" text="moss" random="jungle" />
     <region x="7800" y="16200" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="29800" y="14000" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="33600" y="12600" w="1200" h="1200" l="1" text="moss" random="jungle" />
-    <region x="19600" y="6200" w="200" h="400" l="1" text="moss" random="jungle_north" />
+    <region x="19600" y="6200" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="3400" y="10000" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="1600" y="12200" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="17800" y="11400" w="200" h="200" l="1" text="dirt" />
@@ -723,11 +720,11 @@
     <region x="24400" y="19600" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="10000" y="13400" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="17600" y="22800" w="200" h="200" l="1" text="sedge" />
-    <region x="9600" y="8000" w="1200" h="600" l="1" text="moss" random="jungle_north" />
+    <region x="9600" y="8000" w="1000" h="600" l="1" text="moss" random="jungle_north" />
     <region x="2800" y="12000" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="23200" y="4800" w="400" h="400" l="1" text="moss" random="jungle_north" />
     <region x="8200" y="11600" w="200" h="200" l="1" text="rock" random="mountain" />
-    <region x="20000" y="9000" w="200" h="600" l="1" text="moss" random="jungle" />
+    <region x="20000" y="9000" w="200" h="600" l="1" text="sedge" random="swamp" />
     <region x="26000" y="12000" w="400" h="200" l="1" text="moss" random="jungle" />
     <region x="16400" y="23600" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="7000" y="14200" w="200" h="600" l="1" text="grass" random="savanna" />
@@ -744,7 +741,7 @@
     <region x="15800" y="25000" w="200" h="200" l="1" text="sedge" />
     <region x="28600" y="15200" w="200" h="200" l="1" text="dirt" random="town" />
     <region x="13800" y="22000" w="1600" h="400" l="1" text="grass" random="savanna" />
-    <region x="13000" y="12200" w="400" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="13000" y="12200" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="6600" y="13400" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="7200" y="13400" w="2800" h="2400" l="1" text="moss" random="jungle_west" />
     <region x="36800" y="17600" w="400" h="400" l="1" text="moss" random="jungle" />
@@ -752,7 +749,6 @@
     <region x="31000" y="19200" w="400" h="200" l="1" text="sedge" />
     <region x="29400" y="13600" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="34600" y="17000" w="600" h="1000" l="1" text="moss" random="jungle" />
-    <region x="18600" y="11600" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="24400" y="14000" w="600" h="400" l="1" text="moss" random="jungle" />
     <region x="37200" y="17600" w="800" h="1200" l="1" text="moss" random="jungle" />
     <region x="13200" y="25200" w="400" h="400" l="1" text="grass" random="savanna" />
@@ -768,8 +764,7 @@
     <region x="18600" y="13600" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="18600" y="14000" w="200" h="200" l="1" text="dirt" />
     <region x="20000" y="13400" w="200" h="400" l="1" text="moss" random="jungle" />
-    <region x="19600" y="3200" w="800" h="1600" l="1" text="moss" random="jungle_north" />
-    <region x="17800" y="5600" w="200" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="17800" y="5600" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="3200" y="12000" w="1400" h="2600" l="1" text="moss" random="jungle_west" />
     <region x="7800" y="11400" w="200" h="800" l="1" text="shrubs" random="tundra" />
     <region x="3000" y="15400" w="600" h="200" l="1" text="moss" random="jungle_west" />
@@ -803,19 +798,18 @@
     <region x="28200" y="17800" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="35200" y="17600" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="14800" y="23200" w="600" h="800" l="1" text="grass" random="savanna" />
-    <region x="17800" y="11800" w="200" h="800" l="1" text="sedge" />
+    <region x="17800" y="11600" w="200" h="1000" l="1" text="sedge" />
     <region x="33600" y="14200" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="29400" y="18400" w="1000" h="400" l="1" text="sedge" />
+    <region x="29400" y="18400" w="1000" h="400" l="1" text="moss" random="jungle" />
     <region x="10000" y="1600" w="600" h="600" l="1" text="moss" random="forest_nord" />
     <region x="11200" y="23400" w="400" h="400" l="1" text="sedge" />
-    <region x="20400" y="5800" w="200" h="400" l="1" text="moss" random="jungle_north" />
-    <region x="18000" y="11400" w="200" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="20400" y="5800" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="7400" y="11000" w="200" h="400" l="1" text="shrubs" random="tundra" />
-    <region x="31000" y="17400" w="1600" h="1200" l="1" text="sedge" random="swamp" />
+    <region x="31000" y="17400" w="1600" h="1200" l="1" text="moss" random="jungle" />
     <region x="28800" y="13200" w="200" h="400" l="1" text="dirt" />
     <region x="7600" y="10800" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="11400" y="22600" w="200" h="600" l="1" text="grass" random="savanna" />
-    <region x="10800" y="8200" w="400" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="10800" y="8200" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="14400" y="24200" w="1000" h="800" l="1" text="moss" random="jungle_south" />
     <region x="33600" y="14600" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="19400" y="5600" w="200" h="400" l="1" text="grass" random="savanna" />
@@ -832,16 +826,15 @@
     <region x="9600" y="18000" w="400" h="800" l="1" text="moss" random="jungle_west" />
     <region x="9600" y="7000" w="600" h="1000" l="1" text="moss" random="jungle_north" />
     <region x="7400" y="10800" w="200" h="200" l="1" text="rock" random="mountain" />
-    <region x="19200" y="6000" w="400" h="400" l="1" text="moss" random="jungle_north" />
+    <region x="19200" y="6000" w="400" h="400" l="1" text="sedge" random="swamp" />
     <region x="38000" y="17800" w="200" h="800" l="1" text="moss" random="jungle" />
     <region x="17800" y="12600" w="400" h="200" l="1" text="sedge" />
-    <region x="16400" y="12000" w="200" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="16400" y="12000" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="12400" y="24600" w="1200" h="600" l="1" text="grass" random="savanna" />
     <region x="35200" y="16000" w="200" h="600" l="1" text="moss" random="jungle" />
     <region x="35600" y="20800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="21600" y="5400" w="400" h="200" l="1" text="moss" random="jungle_north" />
     <region x="24600" y="11400" w="200" h="400" l="1" text="moss" random="jungle" />
-    <region x="8800" y="800" w="200" h="600" l="1" text="moss" random="forest" />
     <region x="2200" y="12000" w="400" h="200" l="1" text="moss" random="jungle_west" />
     <region x="26400" y="14400" w="400" h="1000" l="1" text="moss" random="jungle" />
     <region x="12000" y="25200" w="600" h="600" l="1" text="sedge" />
@@ -850,7 +843,7 @@
     <region x="24800" y="13800" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="2200" y="15000" w="200" h="200" l="1" text="moss" random="jungle_west" />
     <region x="2000" y="14400" w="400" h="600" l="1" text="moss" random="jungle_west" />
-    <region x="17400" y="6000" w="200" h="400" l="1" text="moss" random="jungle_north" />
+    <region x="17400" y="6000" w="200" h="400" l="1" text="sedge" random="swamp" />
     <region x="29000" y="13800" w="800" h="600" l="1" text="grass" random="savanna" />
     <region x="31000" y="13000" w="600" h="200" l="1" text="grass" random="savanna" />
     <region x="30200" y="13600" w="800" h="800" l="1" text="moss" random="jungle" />
@@ -865,37 +858,34 @@
     <region x="19800" y="6300" w="0" h="200" l="1" text="moss" random="jungle" />
     <region x="18400" y="12600" w="200" h="600" l="1" text="sedge" />
     <region x="15800" y="24600" w="400" h="400" l="1" text="sedge" />
-    <region x="27200" y="17800" w="400" h="600" l="1" text="sedge" random="swamp" />
+    <region x="27200" y="17800" w="400" h="600" l="1" text="moss" random="jungle" />
     <region x="19200" y="12000" w="600" h="200" l="1" text="sedge" />
-    <region x="30400" y="17800" w="600" h="800" l="1" text="sedge" random="swamp" />
+    <region x="30400" y="17800" w="600" h="800" l="1" text="moss" random="jungle" />
     <region x="23600" y="8400" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="27400" y="13600" w="800" h="200" l="1" text="moss" random="jungle" />
     <region x="18600" y="21800" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="18400" y="11400" w="200" h="600" l="1" text="sedge" random="swamp" />
     <region x="19800" y="12000" w="400" h="200" l="1" text="moss" random="jungle" />
-    <region x="19000" y="11000" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="19000" y="11000" w="600" h="200" l="2" text="sedge" random="swamp" />
     <region x="18600" y="11800" w="600" h="400" l="1" text="sedge" random="swamp" />
     <region x="12200" y="25000" w="200" h="200" l="1" text="grass" random="savanna" />
     <region x="29800" y="14200" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="4600" y="12000" w="200" h="400" l="1" text="moss" random="jungle_west" />
     <region x="34200" y="12400" w="400" h="200" l="1" text="moss" random="jungle" />
-    <region x="28600" y="17800" w="1800" h="600" l="1" text="sedge" random="swamp" />
+    <region x="28600" y="17800" w="1800" h="600" l="1" text="moss" random="jungle" />
     <region x="12800" y="12400" w="600" h="200" l="1" text="moss" random="jungle_west" />
     <region x="33600" y="15200" w="1600" h="1800" l="1" text="moss" random="jungle" />
     <region x="20000" y="4800" w="400" h="200" l="1" text="moss" random="jungle_north" />
     <region x="38600" y="13000" w="400" h="200" l="1" text="grass" random="savanna" />
     <region x="25200" y="22400" w="600" h="200" l="1" text="moss" random="jungle" />
-    <region x="26800" y="23800" w="400" h="200" l="1" text="moss" random="jungle" />
-    <region x="27000" y="24000" w="200" h="400" l="1" text="moss" random="jungle" />
-    <region x="26600" y="24200" w="400" h="200" l="1" text="moss" random="jungle" />
-    <region x="26400" y="24400" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="27800" y="24200" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="28400" y="24200" w="600" h="600" l="1" text="moss" random="jungle" />
-    <region x="28400" y="24800" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="30800" y="24000" w="200" h="400" l="1" text="moss" random="jungle" />
-    <region x="31200" y="24000" w="200" h="200" l="1" text="moss" random="jungle" />
-    <region x="31400" y="24000" w="200" h="400" l="1" text="moss" random="jungle" />
-    <region x="31000" y="24200" w="400" h="400" l="1" text="moss" random="jungle" />
+    <region x="27000" y="23400" w="200" h="400" l="1" text="moss" random="jungle" />
+    <region x="26600" y="23600" w="400" h="200" l="1" text="moss" random="jungle" />
+    <region x="26400" y="23800" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="27800" y="23600" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="28400" y="23600" w="600" h="600" l="1" text="moss" random="jungle" />
+    <region x="30800" y="23400" w="200" h="400" l="1" text="moss" random="jungle" />
+    <region x="31400" y="23400" w="200" h="400" l="1" text="moss" random="jungle" />
+    <region x="31000" y="23600" w="400" h="400" l="1" text="moss" random="jungle" />
     <region x="33400" y="22400" w="200" h="200" l="1" text="moss" random="jungle" />
     <region x="33800" y="22400" w="200" h="400" l="1" text="moss" random="jungle" />
     <region x="37400" y="17400" w="200" h="200" l="1" text="moss" random="jungle" />
@@ -929,9 +919,8 @@
     <region x="1800" y="11000" w="200" h="600" l="1" text="moss" random="jungle_west" />
     <region x="26400" y="18800" w="400" h="200" l="1" text="sedge" random="swamp" />
     <region x="29200" y="18400" w="200" h="200" l="1" text="sedge" random="swamp" />
-    <region x="19200" y="14400" w="7200" h="4800" l="1" text="moss" />
-    <region x="12200" y="12600" w="2400" h="200" l="1" text="moss" random="jungle_west" />
-    <region x="17600" y="11400" w="200" h="800" l="1" text="moss" random="jungle_west" />
+    <region x="19200" y="14400" w="7200" h="4800" l="1" text="moss" random="jungle" />
+    <region x="17600" y="11400" w="200" h="800" l="1" text="sedge" random="swamp" />
     <region x="19600" y="5593" w="14" h="-14" l="1" text="wall" />
     <region x="19600" y="5600" w="400" h="200" l="1" text="dirt" />
     <region x="34000" y="15097" w="2" h="3" l="1" text="sand" />
@@ -1172,6 +1161,32 @@
     <region x="13800" y="24000" w="40" h="46" l="1" text="sand" />
     <region x="19800" y="5400" w="200" h="200" l="1" text="dirt" />
     <region x="39200" y="13800" w="200" h="200" l="1" text="dirt" />
+    <region x="26800" y="23200" w="400" h="200" l="1" text="moss" random="jungle" />
+    <region x="28400" y="24200" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="31209" y="23400" w="200" h="200" l="1" text="moss" random="jungle" />
+    <region x="12200" y="12600" w="1800" h="200" l="1" text="moss" random="jungle_west" />
+    <region x="14000" y="12600" w="600" h="200" l="1" text="sedge" random="swamp" />
+    <region x="15400" y="12600" w="2400" h="1800" l="1" text="moss" random="jungle_west" />
+    <region x="10600" y="8000" w="200" h="600" l="1" text="sedge" random="swamp" />
+    <region x="10800" y="6400" w="200" h="1200" l="1" text="sedge" />
+    <region x="10800" y="9400" w="200" h="600" l="1" text="moss" random="jungle_north" />
+    <region x="11000" y="9800" w="200" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="11800" y="11000" w="200" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="12000" y="11200" w="200" h="600" l="1" text="moss" random="jungle_north" />
+    <region x="11600" y="11200" w="400" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="12200" y="11600" w="600" h="200" l="1" text="moss" random="jungle_north" />
+    <region x="19600" y="3200" w="800" h="1600" l="1" text="moss" random="jungle_north" />
+    <region x="12000" y="3800" w="200" h="600" l="1" text="moss" random="forest" />
+    <region x="8800" y="800" w="200" h="600" l="1" text="moss" random="forest" />
+    <region x="12200" y="3800" w="200" h="200" l="1" text="moss" random="forest" />
+    <region x="17800" y="3200" w="200" h="200" l="1" text="moss" random="forest" />
+    <region x="17200" y="3000" w="400" h="200" l="1" text="moss" random="forest" />
+    <region x="17200" y="2600" w="400" h="200" l="1" text="moss" random="forest" />
+    <region x="17600" y="2800" w="200" h="600" l="1" text="moss" random="forest" />
+    <region x="17000" y="2400" w="200" h="200" l="1" text="moss" random="forest" />
+    <region x="17000" y="2800" w="200" h="200" l="1" text="moss" random="forest" />
+    <region x="16800" y="2600" w="200" h="200" l="1" text="moss" random="forest" />
+    <region x="16400" y="2800" w="400" h="200" l="1" text="moss" random="forest" />
     <region x="6152" y="11551" w="2" h="3" l="2" text="cliff" />
     <region x="6152" y="11557" w="1" h="3" l="2" text="cliff" />
     <region x="6154" y="11565" w="3" h="1" l="2" text="cliff" />
@@ -1414,13 +1429,6 @@
     <region x="15400" y="16200" w="600" h="400" l="2" text="ferns" random="cloud" />
     <region x="17400" y="15800" w="200" h="200" l="2" text="ferns" random="cloud" />
     <region x="18000" y="15400" w="200" h="400" l="2" text="ferns" random="cloud" />
-    <region x="33400" y="18000" w="400" h="1200" l="2" text="sedge" random="swamp" />
-    <region x="25200" y="18800" w="400" h="400" l="2" text="sedge" random="swamp" />
-    <region x="25600" y="18000" w="800" h="1200" l="2" text="sedge" random="swamp" />
-    <region x="26000" y="17200" w="400" h="800" l="2" text="sedge" random="swamp" />
-    <region x="31000" y="16600" w="1800" h="400" l="2" text="sedge" random="swamp" />
-    <region x="27400" y="16200" w="4400" h="400" l="2" text="sedge" random="swamp" />
-    <region x="28400" y="15800" w="1800" h="400" l="2" text="sedge" random="swamp" />
     <region x="10400" y="5600" w="200" h="200" l="2" text="sedge" random="swamp" />
     <region x="22600" y="3200" w="200" h="200" l="2" text="sedge" random="swamp" />
     <region x="16000" y="21800" w="800" h="200" l="2" text="grass" random="savanna" />
@@ -2045,10 +2053,10 @@
     <region x="39281" y="13822" w="2" h="3" l="2" text="sea" />
     <region x="39282" y="13820" w="1" h="2" l="2" text="sea" />
     <region x="39330" y="13806" w="0" h="14" l="2" text="water" />
-    <region x="39330" y="13806" w="1" h="16" l="2" text="water" />
+    <region x="39330" y="13806" w="1" h="16" l="2" text="sea" />
     <region x="39283" y="13800" w="47" h="25" l="2" text="sea" />
-    <region x="39331" y="13806" w="1" h="9" l="2" text="water" />
-    <region x="39332" y="13806" w="1" h="4" l="2" text="water" />
+    <region x="39331" y="13806" w="1" h="9" l="2" text="sea" />
+    <region x="39332" y="13806" w="1" h="4" l="2" text="sea" />
     <region x="39280" y="13808" w="3" h="1" l="2" text="sea" />
     <region x="39281" y="13809" w="2" h="2" l="2" text="sea" />
     <region x="39282" y="13811" w="1" h="3" l="2" text="sea" />
@@ -2178,6 +2186,16 @@
     <region x="39231" y="13807" w="7" h="7" l="2" text="wall_wood" />
     <region x="39249" y="13807" w="7" h="7" l="2" text="wall_wood" />
     <region x="39239" y="13807" w="7" h="6" l="2" text="wall_wood" />
+    <region x="15400" y="12600" w="800" h="400" l="2" text="sedge" random="swamp" />
+    <region x="16200" y="12600" w="800" h="200" l="2" text="sedge" random="swamp" />
+    <region x="20200" y="9000" w="400" h="800" l="2" text="sedge" random="swamp" />
+    <region x="20200" y="9800" w="200" h="200" l="2" text="sedge" random="swamp" />
+    <region x="19800" y="10200" w="400" h="200" l="2" text="sedge" random="swamp" />
+    <region x="19600" y="10400" w="400" h="400" l="2" text="sedge" random="swamp" />
+    <region x="19600" y="10800" w="200" h="200" l="2" text="sedge" random="swamp" />
+    <region x="19200" y="11200" w="200" h="200" l="2" text="sedge" random="swamp" />
+    <region x="19600" y="4600" w="200" h="200" l="2" text="sedge" random="swamp" />
+    <region x="19400" y="4200" w="200" h="200" l="1" text="sedge" random="swamp" />
     <region x="14869" y="23140" w="18" h="6" l="3" text="wall_adobe" />
     <region x="6166" y="11565" w="3" h="3" l="3" text="cliff" />
     <region x="14400" y="17400" w="200" h="400" l="3" text="rock" random="mountain" />

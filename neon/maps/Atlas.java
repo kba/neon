@@ -21,8 +21,8 @@ package neon.maps;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.jdbm.DB;
 import neon.core.Engine;
-import neon.objects.entities.Door;
-import neon.objects.entities.Player;
+import neon.entities.Door;
+import neon.entities.Player;
 
 /**
  * This class keeps track of all loaded maps and their connections.

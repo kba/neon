@@ -18,8 +18,8 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
-import neon.objects.property.Skill;
+import neon.entities.Creature;
+import neon.entities.property.Skill;
 
 public class DrainSkillHandler implements EffectHandler {
 	private Skill skill;

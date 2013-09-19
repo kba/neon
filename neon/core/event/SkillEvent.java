@@ -19,7 +19,8 @@
 package neon.core.event;
 
 import java.util.EventObject;
-import neon.objects.property.Skill;
+
+import neon.entities.property.Skill;
 
 @SuppressWarnings("serial")
 public class SkillEvent extends EventObject {

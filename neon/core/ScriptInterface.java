@@ -20,7 +20,8 @@ package neon.core;
 
 import java.io.InputStream;
 import java.util.Scanner;
-import neon.objects.entities.Entity;
+
+import neon.entities.Entity;
 import neon.ui.GamePanel;
 
 public class ScriptInterface {

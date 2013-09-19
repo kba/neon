@@ -19,17 +19,17 @@
 package neon.core.handlers;
 
 import neon.maps.*;
-import neon.objects.components.Lock;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.entities.Entity;
-import neon.objects.property.Condition;
-import neon.objects.property.Habitat;
-import neon.objects.property.Skill;
 import java.awt.Point;
 import java.util.Collection;
 import javax.swing.SwingConstants;
 import neon.core.Engine;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.Entity;
+import neon.entities.components.Lock;
+import neon.entities.property.Condition;
+import neon.entities.property.Habitat;
+import neon.entities.property.Skill;
 
 /**
  * This class takes care of all motion-related actions. Walking, climbing, swimming and teleporting 

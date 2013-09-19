@@ -19,13 +19,14 @@
 package neon.core.states;
 
 import neon.core.*;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.Player;
+
 import java.awt.event.*;
 import javax.swing.Popup;
 
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.entities.Player;
-import neon.objects.resources.RItem;
+import neon.resources.RItem;
 import neon.ui.GamePanel;
 import neon.util.fsm.*;
 

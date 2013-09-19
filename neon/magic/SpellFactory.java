@@ -19,8 +19,8 @@
 package neon.magic;
 
 import neon.core.Engine;
-import neon.objects.resources.LSpell;
-import neon.objects.resources.RSpell;
+import neon.resources.LSpell;
+import neon.resources.RSpell;
 import neon.util.Dice;
 
 /**

@@ -22,9 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import neon.core.event.TaskQueue;
+import neon.resources.*;
 import neon.systems.files.StringTranslator;
 import neon.systems.files.XMLTranslator;
-import neon.objects.resources.*;
 import org.jdom2.*;
 
 public class ModLoader {
@@ -32,12 +32,11 @@ public class ModLoader {
 	private Configuration config;
 	private TaskQueue queue;
 	
-	public ModLoader(Element mod, Configuration config, TaskQueue queue) {
+	public ModLoader(String mod, Configuration config, TaskQueue queue) {
 		this.config = config;
 		this.queue = queue;
-		path = mod.getText();
 		try {
-			path = Engine.getFileSystem().mount(path);
+			path = Engine.getFileSystem().mount(mod);
 		} catch (IOException e) {
 			Engine.getUI().showMessage("Invalid mod: " + path + ".", 3);
 		}
@@ -85,7 +84,7 @@ public class ModLoader {
 		
 		// events
 		if(Engine.getFileSystem().exists(path, "events.xml")) {
-			initEvents(path, "events.xml");
+			initTasks(path, "events.xml");
 		}
 		
 		// character creation
@@ -111,7 +110,7 @@ public class ModLoader {
 		}
 		if(info.getChild("currency") != null) {
 			if(info.getChild("currency").getAttributeValue("big") == null) {
-				config.setProperty("bigCoin", "â‚¬");
+				config.setProperty("bigCoin", "€");
 			} else {
 				config.setProperty("bigCoin", info.getChild("currency").getAttributeValue("big"));
 			}
@@ -140,8 +139,9 @@ public class ModLoader {
 		try {
 			for(String s : Engine.getFileSystem().listFiles(file)) {
 				s = s.substring(s.lastIndexOf("/") + 1);
-				String book = s.substring(s.lastIndexOf(File.separator) + 1);
-				Engine.getResources().addResource(book, RText.class, path, "books", book);
+				String id = s.substring(s.lastIndexOf(File.separator) + 1);
+				Resource book = new RText(id, Engine.getFileSystem(), path, "books", id);
+				Engine.getResources().addResource(book, "text");
 			}
 		} catch(Exception e) { 
 			Engine.getLogger().fine("No books in mod " + path);
@@ -151,7 +151,7 @@ public class ModLoader {
 	private ArrayList<String[]> initMaps(String... file) {
 		ArrayList<String[]> maps = new ArrayList<String[]>();
 		for(String s : Engine.getFileSystem().listFiles(file)) {
-			/* gefoefel om jar of folder files te krijgen:
+			/* gefoefel met separators om jar of folder files te krijgen:
 			 * substrings moeten er allebei instaan als het om jars gaat
 			 */
 			s = s.substring(s.lastIndexOf("/") + 1);
@@ -249,7 +249,7 @@ public class ModLoader {
 		}
 	}
 	
-	private void initEvents(String... file) {
+	private void initTasks(String... file) {
 		Document doc = Engine.getFileSystem().getFile(new XMLTranslator(), file);
 		for(Element e : doc.getRootElement().getChildren()) {
 			String[] ticks = e.getAttributeValue("tick").split(":");
@@ -257,19 +257,19 @@ public class ModLoader {
 			if(ticks.length == 1) {	// ene tick: gewoon toevoegen op dat tijdstip
 				queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
 			} else if(ticks.length == 2) {	// twee ticks
-				if(ticks[0] == "") { 
+				if(!ticks[0].isEmpty()) { 
 					ticks[0] = "0"; 
 				}
-				if(ticks[1] == "") {	// indien periode 0, maar 1 keer uitvoeren
+				if(!ticks[1].isEmpty()) {	// indien periode 0, maar 1 keer uitvoeren
 					queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
 				} else {	// anders met periode vanaf start
 					queue.add(rs.script, Integer.parseInt(ticks[0]), Integer.parseInt(ticks[1]), 0);
 				}
 			} else if(ticks.length == 3) {	// drie ticks
-				if(ticks[2] == "") { 
+				if(!ticks[2].isEmpty()) { 
 					ticks[2] = "0"; 
 				}
-				if(ticks[1] == "" || ticks[1] == "0") {	// indien periode 0, enkel op begin en eind uitvoeren
+				if(!ticks[1].isEmpty() || ticks[1].equals("0")) {	// indien periode 0, enkel op begin en eind uitvoeren
 					queue.add(rs.script, Integer.parseInt(ticks[0]), 0, 0);
 					queue.add(rs.script, Integer.parseInt(ticks[2]), 0, 0);
 				} else {	// anders met periode vanaf start tot stop

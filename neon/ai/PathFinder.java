@@ -19,17 +19,18 @@
 package neon.ai;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.util.Queue;
 import neon.core.Engine;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.property.Skill;
 import neon.maps.Region;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.property.Skill;
-import neon.objects.resources.RItem;
+import neon.resources.RItem;
 
 public class PathFinder {
 	private static HashMap<Point, Integer> evaluated;
@@ -142,7 +143,8 @@ public class PathFinder {
 		return 0;
 	}
 	
-	private static class NodeComparator implements Comparator<Point> {
+	@SuppressWarnings("serial")
+	private static class NodeComparator implements Comparator<Point>, Serializable {
 		public int compare(Point one, Point two) {
 			return (evaluated.get(one) + manhattan(one, to)) - (evaluated.get(two) + manhattan(two, to));
 	    }		

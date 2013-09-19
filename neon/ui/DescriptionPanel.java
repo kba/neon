@@ -27,16 +27,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import neon.objects.entities.Armor;
-import neon.objects.entities.Clothing;
-import neon.objects.entities.Container;
-import neon.objects.entities.Door;
-import neon.objects.entities.Entity;
-import neon.objects.entities.Item;
-import neon.objects.entities.Weapon;
-import neon.objects.resources.RClothing;
-import neon.objects.resources.RSpell;
-import neon.objects.resources.RWeapon;
+
+import neon.entities.Armor;
+import neon.entities.Clothing;
+import neon.entities.Container;
+import neon.entities.Door;
+import neon.entities.Entity;
+import neon.entities.Item;
+import neon.entities.Weapon;
+import neon.resources.RClothing;
+import neon.resources.RSpell;
+import neon.resources.RWeapon;
 
 @SuppressWarnings("serial")
 public class DescriptionPanel extends JPanel {

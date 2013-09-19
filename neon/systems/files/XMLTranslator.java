@@ -49,7 +49,9 @@ public class XMLTranslator implements Translator<Document> {
 		XMLOutputter outputter = new XMLOutputter(Format.getPrettyFormat());
 		try {
 			outputter.output(output, out);
-		} catch (IOException e) {} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 		return out;
 	}
 }

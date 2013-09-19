@@ -21,13 +21,15 @@ package neon.core.states;
 import neon.core.*;
 import neon.core.event.*;
 import neon.core.handlers.TurnHandler;
+import neon.entities.Player;
+import neon.resources.RScript;
 import neon.ui.*;
+import neon.ui.dialog.MapDialog;
+
 import java.awt.event.*;
 import java.io.InputStream;
 import java.util.Scanner;
 import neon.maps.Atlas;
-import neon.objects.entities.Player;
-import neon.objects.resources.RScript;
 import neon.util.fsm.*;
 import net.engio.mbassy.listener.Handler;
 import net.phys2d.raw.CollisionEvent;

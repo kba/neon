@@ -20,7 +20,7 @@ package neon.ai;
 
 import java.awt.Point;
 import neon.core.Engine;
-import neon.objects.entities.Creature;
+import neon.entities.Creature;
 
 // TODO: schedule in editor
 public class ScheduleAI extends AI {

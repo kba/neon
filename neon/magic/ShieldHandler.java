@@ -18,8 +18,8 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
-import neon.objects.property.Ability;
+import neon.entities.Creature;
+import neon.entities.property.Ability;
 
 public class ShieldHandler implements EffectHandler {
 	public Ability ability;

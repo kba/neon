@@ -18,7 +18,7 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
+import neon.entities.Creature;
 
 public class DrainStatHandler implements EffectHandler {
 	private String stat;

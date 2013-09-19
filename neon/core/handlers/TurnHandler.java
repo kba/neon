@@ -22,13 +22,13 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import neon.core.Configuration;
 import neon.core.Engine;
+import neon.entities.Creature;
+import neon.entities.Player;
+import neon.entities.property.Condition;
+import neon.entities.property.Habitat;
 import neon.maps.*;
 import neon.maps.Region.Modifier;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Player;
-import neon.objects.property.Condition;
-import neon.objects.property.Habitat;
-import neon.objects.resources.RRegionTheme;
+import neon.resources.RRegionTheme;
 import neon.systems.timing.TimerListener;
 import neon.ui.GamePanel;
 

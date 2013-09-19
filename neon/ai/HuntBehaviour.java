@@ -21,9 +21,9 @@ package neon.ai;
 import java.awt.Point;
 import neon.core.Engine;
 import neon.core.handlers.MagicHandler;
-import neon.objects.entities.Creature;
-import neon.objects.property.Skill;
-import neon.objects.resources.RSpell;
+import neon.entities.Creature;
+import neon.entities.property.Skill;
+import neon.resources.RSpell;
 import neon.util.Dice;
 
 public class HuntBehaviour implements Behaviour {

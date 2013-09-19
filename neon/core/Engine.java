@@ -26,12 +26,12 @@ import neon.core.event.*;
 import neon.core.handlers.CombatHandler;
 import neon.core.handlers.DeathHandler;
 import neon.core.states.*;
+import neon.entities.Player;
+import neon.entities.UIDStore;
 import neon.maps.Atlas;
 import neon.narrative.EventAdapter;
 import neon.narrative.QuestTracker;
-import neon.objects.ResourceManager;
-import neon.objects.UIDStore;
-import neon.objects.entities.Player;
+import neon.resources.ResourceManager;
 import neon.systems.physics.PhysicsSystem;
 import neon.systems.timing.Timer;
 import neon.systems.files.FileSystem;
@@ -47,21 +47,21 @@ import net.engio.mbassy.listener.Handler;
  * @author mdriesen
  */
 public class Engine extends FiniteStateMachine implements Runnable {
-	private static UserInterface UI;		// UI
+	private static UserInterface UI;
 	private static Timer timer;				// klok
-	private static Player player;			// de speler
-	private static ScriptEngine engine;		// de scriptengine
+	private static Player player;
+	private static ScriptEngine engine;	
 	private static FileSystem files;		// virtual file system
 	private static PhysicsSystem physics;	// de physics engine
-	private static Logger logger;			// de logger
-	private static QuestTracker quests;		// quest tracker
-	private static UIDStore store;			// UID store
-	private static ResourceManager resources;	// resources
-	private static Atlas atlas;
+	private static Logger logger;
+	private static QuestTracker quests;	
 	private static MBassador<EventObject> bus;	// event bus
-	private static TaskQueue queue; 		// task queue
+	private static TaskQueue queue;
 	
-	private Configuration config;			// configuration
+	private static UIDStore store;
+	private static ResourceManager resources;
+	private static Atlas atlas;
+	private Configuration config;
 
 	/**
 	 * Initializes the engine. 
@@ -80,7 +80,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		resources = new ResourceManager();
 		store = new UIDStore();
 		atlas = new Atlas();
-		config = new Configuration("neon.ini", queue);
+		config = new Configuration(queue);
 	}
 	
 	private void initEvents() {
@@ -147,8 +147,8 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	}
 	
 	/**
-	 * This method is the run method of the gamethread. It initializes the finite state machine and user interface,
-	 * and starts executing the first engine state.
+	 * This method is the run method of the gamethread. It initializes the finite state 
+	 * machine and user interface, and starts executing the first engine state.
 	 */
 	public void run() {
 		initFSM();

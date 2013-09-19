@@ -19,10 +19,10 @@
 package neon.core.states;
 
 import neon.core.*;
+import neon.entities.components.Lock;
 
 import java.awt.event.*;
 import javax.swing.Popup;
-import neon.objects.components.Lock;
 import neon.ui.GamePanel;
 import neon.util.fsm.*;
 

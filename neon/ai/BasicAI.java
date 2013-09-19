@@ -18,8 +18,8 @@
 
 package neon.ai;
 
-import neon.objects.entities.Creature;
 import neon.core.Engine;
+import neon.entities.Creature;
 
 public class BasicAI extends AI {
 	public BasicAI(Creature creature, byte aggression, byte confidence) {

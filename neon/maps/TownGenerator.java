@@ -21,10 +21,10 @@ package neon.maps;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import neon.core.Engine;
-import neon.objects.EntityFactory;
-import neon.objects.entities.Door;
-import neon.objects.resources.RRegionTheme;
-import neon.objects.resources.RTerrain;
+import neon.entities.Door;
+import neon.entities.EntityFactory;
+import neon.resources.RRegionTheme;
+import neon.resources.RTerrain;
 
 /**
  * This class generates random towns.

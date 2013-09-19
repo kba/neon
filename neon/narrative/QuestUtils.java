@@ -21,7 +21,7 @@ package neon.narrative;
 import java.util.ArrayList;
 import java.util.Collection;
 import neon.core.Engine;
-import neon.objects.resources.RQuest;
+import neon.resources.RQuest;
 
 public class QuestUtils {
 	/**

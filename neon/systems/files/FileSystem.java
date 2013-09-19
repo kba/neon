@@ -22,8 +22,6 @@ import java.util.*;
 import java.util.jar.*;
 import java.io.*;
 import neon.util.trees.PathTree;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 
 /*
  * structuur van VFS:
@@ -229,54 +227,7 @@ public class FileSystem {
 	public boolean exists(String... file) {
 		return(files.contains(file));
 	}
-	
-	/**
-	 * Copies all contents of a source directory to a destination directory
-	 * @param from	the source directory
-	 * @param to	the destination directory
-	 */
-	public static void copy(Path from, Path to) {
-		try {
-			Files.walkFileTree(from, new Visitor(from, to));
-		} catch (IOException e) {}
-	}
-	
-	private static class Visitor implements FileVisitor<Path> {
-        private final Path source;
-        private final Path target;
 
-        private Visitor(Path source, Path target) {
-            this.source = source;
-            this.target = target;
-        }
-        
-	    private void copyFile(Path source, Path target) {
-	    	try {
-	    		Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
-	    	} catch (IOException e) {}
-	    }
-
-	    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-	    	try {
-	    		Files.copy(dir, target.resolve(source.relativize(dir)));
-	    	} catch (IOException e) {}
-	    	return FileVisitResult.CONTINUE;
-	    }
-
-        public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
-            return FileVisitResult.CONTINUE;
-        }
-
-	    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-	    	copyFile(file, target.resolve(source.relativize(file)));
-            return FileVisitResult.CONTINUE;
-        }
-
-        public FileVisitResult visitFileFailed(Path file, IOException exc) {
-            return FileVisitResult.CONTINUE;
-        }
-	}
-		
 	/**
 	 * Saves a resource file to the given path in the temp directory, using a translator.
 	 * 
@@ -327,7 +278,7 @@ public class FileSystem {
 	 */
 	public void storeTemp(File destination) {
 		if(destination.isDirectory()) {
-			copy(temp.toPath(), destination.toPath());
+			FileUtils.copy(temp.toPath(), destination.toPath());
 		} 
 	}
 	
@@ -355,106 +306,5 @@ public class FileSystem {
 			}
 		}
 		file.delete();
-	}
-	
-	// geeft lijst terug van alle files in een directory en zijn subdirectories
-	private static List<File> listFiles(File dir) {
-		ArrayList<File> files = new ArrayList<File>();
-		for(File file : dir.listFiles()) {
-			if(file.isDirectory()) {
-				files.addAll(listFiles(file));
-			} else {
-				files.add(file);
-			}
-		}
-		return files;
-	}
-	
-	/**
-	 * Packs a directory into a jar file of the same name.
-	 * 
-	 * @param path	the path to the directory that has to be packed
-	 * @throws IOException 
-	 */
-	public static JarFile pack(String path, String modID) throws IOException {
-		// alle oudermappen wegknippen
-		String name = path.substring(Math.max(0, path.lastIndexOf(File.separator)));
-
-		File mod = new File(path);
-		File jar = new File(name + ".jar");
-
-		byte buffer[] = new byte[1024];
-		// open jar file
-		FileOutputStream stream = new FileOutputStream(jar);
-		JarOutputStream out = new JarOutputStream(stream);
-
-		for(File file : listFiles(mod)) {
-			String entry = file.getPath().replace(path + File.separator, "").replace(File.separator, "/");
-			System.out.println("Adding " + entry);
-
-			// add jar entry
-			out.putNextEntry(new JarEntry(entry));
-
-			// write file to jar
-			FileInputStream in = new FileInputStream(file);
-			while(true) {
-				int nRead = in.read(buffer, 0, buffer.length);
-				if(nRead <= 0) { break; }
-				out.write(buffer, 0, nRead);
-			}
-			in.close();
-		}
-		// manifest schrijven
-		Manifest mf = new Manifest();
-		mf.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
-		mf.getMainAttributes().putValue("Mod-ID", modID);
-		System.out.println(mf.getMainAttributes().getValue("Mod-ID"));
-
-		JarEntry manifest = new JarEntry("META-INF/MANIFEST.MF");
-		out.putNextEntry(manifest);
-		mf.write(out);
-
-		out.close();
-		stream.close();
-		System.out.println("Adding completed!");
-		return new JarFile(jar);
-	}
-	
-	/**
-	 * Unpacks a jar file to a directory of the same name.
-	 * 
-	 * @param path	the path to the jar file that has to be unpacked
-	 */
-	public static void unpack(String path) {
-		try(JarFile jar = new JarFile(new File(path))) {
-			File dir = new File(jar.getName().replace(".jar", ""));
-			dir.mkdir();
-						
-			Enumeration<JarEntry> entries = jar.entries();
-			
-			while(entries.hasMoreElements()) {
-				JarEntry entry = entries.nextElement();
-				String name = entry.getName();
-				File file = new File(dir.getPath() + File.separator + name);
-				if(!entry.isDirectory()) {
-					File parent = new File(file.getParent());
-					// directories worden niet uitgepakt, maar worden voor elke file gecontroleerd
-					if(!parent.exists()) {
-						parent.mkdir();
-					}
-					InputStream in = jar.getInputStream(jar.getEntry(entry.getName()));
-					OutputStream out = new FileOutputStream(file);
-					int nextByte;	// in.read leest een byte, maar steekt dat in een int?????
-					while((nextByte = in.read()) != -1) {
-						out.write((byte)nextByte);
-					}
-					out.write( '\n' );
-					out.flush();
-					out.close();
-				} 
-			}
-		} catch(IOException e) {
-			System.out.println("Error in FileSystem.unpack: " + e.getMessage());			
-		} 
 	}
 }

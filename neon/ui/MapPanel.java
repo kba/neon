@@ -21,9 +21,10 @@ package neon.ui;
 import javax.swing.JComponent;
 import java.awt.*;
 import neon.core.Engine;
-import neon.graphics.ZComparator;
 import neon.maps.Zone;
 import neon.maps.Region;
+import neon.ui.graphics.ZComparator;
+
 import java.util.*;
 
 /**

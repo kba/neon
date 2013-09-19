@@ -19,15 +19,15 @@
 package neon.core.handlers;
 
 import neon.core.Engine;
-import neon.objects.components.Inventory;
-import neon.objects.entities.Armor;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Entity;
-import neon.objects.entities.Weapon;
-import neon.objects.property.Skill;
-import neon.objects.property.Slot;
-import neon.objects.resources.RClothing;
-import neon.objects.resources.RWeapon.WeaponType;
+import neon.entities.Armor;
+import neon.entities.Creature;
+import neon.entities.Entity;
+import neon.entities.Weapon;
+import neon.entities.components.Inventory;
+import neon.entities.property.Skill;
+import neon.entities.property.Slot;
+import neon.resources.RClothing;
+import neon.resources.RWeapon.WeaponType;
 import neon.util.Dice;
 
 public class CombatUtils {

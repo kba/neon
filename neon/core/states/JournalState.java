@@ -21,13 +21,15 @@ package neon.core.states;
 import java.awt.*;
 import neon.core.*;
 import neon.core.handlers.CombatUtils;
+import neon.entities.Player;
+import neon.entities.property.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 import java.awt.event.*;
-import neon.objects.entities.Player;
-import neon.objects.property.*;
-import neon.objects.resources.RSpell;
+
+import neon.resources.RSpell;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
 

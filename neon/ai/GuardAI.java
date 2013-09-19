@@ -19,7 +19,8 @@
 package neon.ai;
 
 import neon.core.Engine;
-import neon.objects.entities.Creature;
+import neon.entities.Creature;
+
 import java.awt.Point;
 
 public class GuardAI extends AI {

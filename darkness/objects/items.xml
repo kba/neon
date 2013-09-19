@@ -35,11 +35,8 @@
   <armor id="leather cuirass" cost="10000" weight="12.5" color="steelBlue" char="[">
     <stats class="light" slot="cuirass" ar="5" />
   </armor>
-  <armor id="leather left bracer" cost="10000" weight="12.5" color="steelBlue" char="[">
-    <stats class="light" slot="bracer_left" ar="5" />
-  </armor>
-  <armor id="leather right bracer" cost="500" weight="1" color="saddleBrown" char="[">
-    <stats class="light" slot="BRACER_RIGHT" ar="5" />
+  <armor id="leather bracers" cost="10000" weight="12.5" color="steelBlue" char="[">
+    <stats class="light" slot="GAUNTLETS" ar="5" />
   </armor>
   <armor id="leather chausses" cost="10000" weight="12.5" color="steelBlue" char="[">
     <stats class="light" slot="chausses" ar="5" />
@@ -71,11 +68,11 @@
   <armor id="shield_tower" cost="3000" name="tower shield" weight="22.5" color="steelBlue" char="[">
     <stats class="heavy" slot="shield" ar="4" />
   </armor>
-  <armor id="chain mail left pauldron" weight="8" cost="2000" color="lightSteelBlue" char="]">
-    <stats class="medium" slot="PAULDRON_LEFT" ar="15" />
+  <armor id="chain mail pauldrons" weight="8" cost="2000" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="PAULDRONS" ar="15" />
   </armor>
-  <armor id="chain mail left gauntlet" weight="4" cost="1500" color="lightSteelBlue" char="]">
-    <stats class="medium" slot="GAUNTLET_LEFT" ar="15" />
+  <armor id="chain mail gauntlets" weight="4" cost="1500" color="lightSteelBlue" char="]">
+    <stats class="medium" slot="GAUNTLETS" ar="15" />
   </armor>
   <armor id="chain mail boots" weight="14.0" cost="3000" color="lightSteelBlue" char="]">
     <stats class="medium" slot="BOOTS" ar="15" />
@@ -86,23 +83,14 @@
   <armor id="leather shield" cost="600" weight="4" color="saddleBrown" char="[">
     <stats slot="SHIELD" class="light" ar="5" />
   </armor>
-  <armor id="chain mail right gauntlet" weight="4" cost="1500" color="lightSteelBlue" char="]">
-    <stats class="medium" slot="GAUNTLET_RIGHT" ar="15" />
-  </armor>
-  <armor id="leather left pauldron" cost="700" weight="4" color="saddleBrown" char="[">
-    <stats class="light" slot="PAULDRON_LEFT" ar="5" />
-  </armor>
-  <armor id="leather right pauldron" cost="700" weight="4" color="saddleBrown" char="[">
-    <stats class="light" slot="PAULDRON_RIGHT" ar="5" />
+  <armor id="leather left pauldrons" cost="700" weight="4" color="saddleBrown" char="[">
+    <stats class="light" slot="PAULDRONS" ar="5" />
   </armor>
   <armor id="leather helmet" cost="1000" weight="6.0" color="saddleBrown" char="[">
     <stats class="light" slot="HELMET" ar="5" />
   </armor>
   <armor id="chain mail helmet" weight="12" cost="2500" color="white" char="]">
     <stats class="medium" slot="HELMET" ar="15" />
-  </armor>
-  <armor id="chain mail right pauldron" weight="8" cost="2000" color="lightSteelBlue" char="]">
-    <stats class="medium" slot="PAULDRON_RIGHT" ar="15" />
   </armor>
   <armor id="chain mail chausses" weight="10" cost="3000" color="lightSteelBlue" char="]">
     <stats class="medium" slot="CHAUSSES" ar="15" />

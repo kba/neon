@@ -19,10 +19,11 @@
 package neon.ai;
 
 import java.awt.Point;
-import neon.objects.entities.Creature;
-import neon.objects.resources.RCreature;
-import neon.objects.resources.RPerson;
-import neon.objects.resources.RCreature.AIType;
+
+import neon.entities.Creature;
+import neon.resources.RCreature;
+import neon.resources.RPerson;
+import neon.resources.RCreature.AIType;
 
 public class AIFactory {
 	/**

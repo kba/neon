@@ -20,10 +20,10 @@ package neon.core.handlers;
 
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Item;
-import neon.objects.entities.Weapon;
-import neon.objects.property.Slot;
+import neon.entities.Creature;
+import neon.entities.Item;
+import neon.entities.Weapon;
+import neon.entities.property.Slot;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.References;

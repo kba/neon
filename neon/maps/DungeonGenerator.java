@@ -22,18 +22,18 @@ import java.awt.*;
 import java.awt.geom.*;
 import java.util.*;
 import neon.core.Engine;
+import neon.entities.Container;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.EntityFactory;
+import neon.entities.Item;
+import neon.entities.property.Habitat;
 import neon.maps.Region.Modifier;
-import neon.objects.EntityFactory;
 import neon.util.Dice;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Door;
-import neon.objects.entities.Item;
-import neon.objects.entities.Container;
-import neon.objects.property.Habitat;
-import neon.objects.resources.RItem;
-import neon.objects.resources.RCreature;
-import neon.objects.resources.RTerrain;
-import neon.objects.resources.RZoneTheme;
+import neon.resources.RCreature;
+import neon.resources.RItem;
+import neon.resources.RTerrain;
+import neon.resources.RZoneTheme;
 
 /**
  * Generates a single dungeon zone.

@@ -18,8 +18,8 @@
 
 package neon.magic;
 
-import neon.objects.entities.Creature;
-import neon.objects.property.Condition;
+import neon.entities.Creature;
+import neon.entities.property.Condition;
 
 /**
  * Handles all effects not handled by another {@code EffectHandler}.

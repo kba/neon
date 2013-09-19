@@ -20,11 +20,11 @@ package neon.core.handlers;
 
 import neon.core.Engine;
 import neon.core.event.SkillEvent;
-import neon.objects.entities.Creature;
-import neon.objects.entities.Player;
-import neon.objects.property.Feat;
-import neon.objects.property.Skill;
-import neon.objects.property.Trait;
+import neon.entities.Creature;
+import neon.entities.Player;
+import neon.entities.property.Feat;
+import neon.entities.property.Skill;
+import neon.entities.property.Trait;
 import neon.util.Dice;
 
 /*

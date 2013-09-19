@@ -27,23 +27,23 @@ import neon.core.event.MagicTask;
 import neon.core.event.ScriptAction;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.SkillHandler;
+import neon.entities.Entity;
+import neon.entities.EntityFactory;
+import neon.entities.Item;
+import neon.entities.Player;
+import neon.entities.UIDStore;
+import neon.entities.property.Ability;
+import neon.entities.property.Feat;
+import neon.entities.property.Gender;
+import neon.entities.property.Skill;
 import neon.magic.Effect;
 import neon.magic.Spell;
 import neon.magic.SpellFactory;
 import neon.maps.Map;
-import neon.objects.EntityFactory;
-import neon.objects.UIDStore;
-import neon.objects.entities.Entity;
-import neon.objects.entities.Item;
-import neon.objects.entities.Player;
-import neon.objects.property.Ability;
-import neon.objects.property.Feat;
-import neon.objects.property.Gender;
-import neon.objects.property.Skill;
-import neon.objects.resources.RCreature;
-import neon.objects.resources.RSign;
-import neon.objects.resources.RSpell.SpellType;
-import neon.systems.files.FileSystem;
+import neon.resources.RCreature;
+import neon.resources.RSign;
+import neon.resources.RSpell.SpellType;
+import neon.systems.files.FileUtils;
 import neon.systems.files.XMLTranslator;
 import org.apache.jdbm.DBMaker;
 import org.jdom2.*;
@@ -133,7 +133,7 @@ public class GameLoader {
 		// save map naar temp kopiëren
 		Path savePath = Paths.get("saves", save);
 		Path tempPath = Paths.get("temp");
-		FileSystem.copy(savePath, tempPath);
+		FileUtils.copy(savePath, tempPath);
 		
 		// engine initialiseren
 		initCache();

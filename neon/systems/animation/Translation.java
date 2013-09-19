@@ -20,7 +20,8 @@ package neon.systems.animation;
 
 import java.awt.Point;
 import javax.swing.JComponent;
-import neon.objects.entities.Entity;
+
+import neon.entities.Entity;
 
 public class Translation implements Runnable {
 	private JComponent component;

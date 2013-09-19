@@ -23,14 +23,18 @@ import java.util.HashMap;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.core.handlers.*;
+import neon.entities.Clothing;
+import neon.entities.Creature;
+import neon.entities.Door;
+import neon.entities.Item;
+import neon.entities.Weapon;
+import neon.entities.property.Condition;
+import neon.entities.property.Skill;
+import neon.entities.property.Slot;
 import neon.magic.Effect;
-import neon.objects.entities.*;
-import neon.objects.property.Condition;
-import neon.objects.property.Skill;
-import neon.objects.property.Slot;
-import neon.objects.resources.RItem;
-import neon.objects.resources.RSpell;
-import neon.objects.resources.RWeapon.WeaponType;
+import neon.resources.RItem;
+import neon.resources.RSpell;
+import neon.resources.RWeapon.WeaponType;
 
 /**
  * This class implements a creature's AI. 

@@ -47,7 +47,7 @@ public class KeyConfig {
 	public static int sneak = KeyEvent.VK_V;
 	public static int journal = KeyEvent.VK_J;
 	
-	public static int keys = NUMPAD;
+	private static int keys = NUMPAD;
 	
 	public static void setKeys(Element settings) {
 		if(settings != null) {
@@ -137,6 +137,10 @@ public class KeyConfig {
 			wait = KeyEvent.VK_S;
 			break;
 		}
+	}
+	
+	public int getSettings() {
+		return keys;
 	}
 	
 	private static int getKeyCode(String code) {

@@ -18,9 +18,9 @@
 
 package neon.magic;
 
-import neon.objects.entities.Entity;
-import neon.objects.resources.RSpell;
-import neon.objects.resources.RSpell.SpellType;
+import neon.entities.Entity;
+import neon.resources.RSpell;
+import neon.resources.RSpell.SpellType;
 
 /**
  * A spell contains all information about its casting.

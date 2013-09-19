@@ -19,9 +19,9 @@
 package neon.magic;
 
 import neon.core.handlers.SkillHandler;
-import neon.objects.entities.Clothing;
-import neon.objects.entities.Creature;
-import neon.objects.resources.RSpell;
+import neon.entities.Clothing;
+import neon.entities.Creature;
+import neon.resources.RSpell;
 
 public class MagicUtils {
 	/**
