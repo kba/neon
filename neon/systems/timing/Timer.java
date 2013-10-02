@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -18,16 +18,12 @@
 
 package neon.systems.timing;
 
-import java.util.*;
-
 /**
- * This class keeps track of the time. It contains a list of listeners that are notified when
- * the timer increases.
+ * This class keeps track of the time. 
  * 
  * @author mdriesen
  */
 public class Timer {
-	private ArrayList<TimerListener> listeners;
 	private int ticks;
 	
 	/**
@@ -35,38 +31,25 @@ public class Timer {
 	 */
 	public Timer() {
 		ticks = 0;
-		listeners = new ArrayList<TimerListener>();
 	}
 	
 	/**
-	 * Warns all current listeners that the timer has started.
+	 * Increases the timer with one tick.
 	 */
-	public void start() {
-		for(TimerListener listener : new ArrayList<TimerListener>(listeners)) {
-			listener.start(ticks);
-		}		
+	public int addTick() {
+		return ++ticks;
 	}
 	
 	/**
-	 * Increases the timer with one tick and notifies the listeners.
-	 */
-	public void addTick() {
-		ticks++;
-		// hier lokale kopie maken om concurrentModificationExceptions te voorkomen
-		for(TimerListener listener : new ArrayList<TimerListener>(listeners)) {
-			listener.tick(ticks);
-		}
-	}
-	
-	/**
-	 * Adds ticks to the timer. Listeners are not notified.
+	 * Adds ticks to the timer.
 	 * 
 	 * @param amount	the amount of ticks to add.
 	 */
-	public void addTicks(int amount) {
+	public int addTicks(int amount) {
 		for(int i = 0; i < amount; i++) {
 			addTick();
 		}
+		return ticks;
 	}
 	
 	/**
@@ -83,23 +66,5 @@ public class Timer {
 	 */
 	public void setTime(int time) {
 		ticks = time;
-	}
-	
-	/**
-	 * Adds a <code>TimerListener</code> to this timer.
-	 * 
-	 * @param listener	the <code>TimerListener</code> to add
-	 */
-	public void addListener(TimerListener listener) {
-		listeners.add(listener);
-	}
-	
-	/**
-	 * Removes the given <code>TimerListener</code> from this timer.
-	 * 
-	 * @param listener	the <code>TimerListener</code> to remove
-	 */
-	public void removeListener(TimerListener listener) {
-		listeners.remove(listener);
-	}
+	}	
 }

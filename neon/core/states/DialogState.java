@@ -23,6 +23,7 @@ import neon.entities.Creature;
 import neon.entities.Player;
 import neon.magic.MagicUtils;
 import neon.narrative.Topic;
+import neon.resources.CClient;
 import neon.resources.RPerson;
 import neon.resources.RSpell.SpellType;
 import neon.ui.dialog.ChargeDialog;
@@ -70,10 +71,11 @@ public class DialogState extends State implements KeyListener {
     private HTMLDocument doc;
     private String big, small;
 	
-	public DialogState(Engine engine, Configuration config) {
+	public DialogState(Engine engine) {
 		super(engine);
-		big = config.getProperty("smallCoin");
-		small = config.getProperty("smallCoin");
+		CClient ini = (CClient)Engine.getResources().getResource("client", "config");
+		big = ini.getSmall();
+		small = ini.getBig();
 		panel = new JPanel(new BorderLayout());
 
 		// instructies

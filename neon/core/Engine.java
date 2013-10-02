@@ -31,7 +31,9 @@ import neon.entities.UIDStore;
 import neon.maps.Atlas;
 import neon.narrative.EventAdapter;
 import neon.narrative.QuestTracker;
+import neon.resources.CClient;
 import neon.resources.ResourceManager;
+import neon.resources.builder.IniBuilder;
 import neon.systems.physics.PhysicsSystem;
 import neon.systems.timing.Timer;
 import neon.systems.files.FileSystem;
@@ -64,23 +66,31 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	private Configuration config;
 
 	/**
-	 * Initializes the engine. 
+	 * Initializes the engine. Most of the engine (server) configuration is 
+	 * done in the constructor. User interface (client) configuration is mainly
+	 * done in the {@code run()} method, as this is best done on the swing
+	 * event-dispatch thread.
 	 */
 	public Engine() {
 		// engine componenten opzetten
-		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		engine = new ScriptEngineManager().getEngineByName("JavaScript");
 		timer = new Timer();
 		files = new FileSystem();
 		physics = new PhysicsSystem();
-		quests = new QuestTracker();
-		timer.addListener(quests);
-		queue = new TaskQueue(timer);
-		initEvents();
+		queue = new TaskQueue();
+		
+		// create a resourcemanager to keep track of all the resources
 		resources = new ResourceManager();
+		// we use an IniBuilder to add all resources to the manager
+		new IniBuilder("neon.ini", files, queue).build(resources);
+
+		// nog engine componenten opzetten
+		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		quests = new QuestTracker();
+		initEvents();
 		store = new UIDStore();
-		atlas = new Atlas();
-		config = new Configuration(queue);
+		atlas = new Atlas(files);
+		config = new Configuration(resources);
 	}
 	
 	private void initEvents() {
@@ -91,14 +101,15 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		bus.subscribe(new CombatHandler());	
 		bus.subscribe(new DeathHandler());
 		bus.subscribe(adapter);
+		bus.subscribe(quests);
 	}
 	
 	private void initFSM() {
 		// main menu 
-		MainMenuState main = new MainMenuState(this, config);
+		MainMenuState main = new MainMenuState(this);
 
 		// alle game substates. 
-		GameState game = new GameState(this, queue, atlas);
+		GameState game = new GameState(this, queue, atlas, bus);
 		bus.subscribe(game);
 		// deuren
 		DoorState doors = new DoorState(game);
@@ -112,11 +123,11 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		AimState aim = new AimState(game, atlas);
 
 		// dialog state
-		DialogState dialog = new DialogState(this, config);
+		DialogState dialog = new DialogState(this);
 		// inventory state
-		InventoryState inventory = new InventoryState(this, config, atlas);
+		InventoryState inventory = new InventoryState(this, atlas);
 		// containers
-		ContainerState container = new ContainerState(this, config, atlas);
+		ContainerState container = new ContainerState(this, atlas);
 		// journal state
 		JournalState journal = new JournalState(this);
 		
@@ -153,7 +164,8 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	public void run() {
 		initFSM();
 		// UI dingen
-		UI = new UserInterface(config.getProperty("title"));
+		CClient client = (CClient)resources.getResource("client", "config");
+		UI = new UserInterface(client.getTitle());
 		UI.show();
 		// eerste state initialiseren en wachten op input
 		start(new TransitionEvent("start"));

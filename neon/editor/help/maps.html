@@ -1,0 +1,89 @@
+<html>
+<body>
+<h1>Map editing</h1>
+<h2>Map management</h2>
+All available maps are shown in a tree on the left side of the main editor screen. Each map can contain
+several zones. Outdoor (world) maps always have a single zone. Indoor (dungeon) maps may have no zones,
+in which case the complete dungeon can be randomly generated (according to a <i>dungeon theme</i>). If a 
+dungeon has one or more zones, these may be <i>fixed</i> (no random content) or <i>random</i> (randomly 
+generated according to a <i>zone theme</i>).
+<p>
+To add a map, right click on the map tree and choose <b>Add map</b>. You will be asked to give an <i>id</i> 
+(must be unique), an optional name (doesn't have to be unique), and map type (outdoor or indoor). For 
+outdoor maps, the map width or height must be given, and the base terrain type. For indoor maps, an optional 
+dungeon theme may be chosen. An outdoor map will be created with one zone present. Indoor map zones have to 
+be added manually.
+<p>
+To edit map info, right click on a map name and choose <b>Edit map</b>. In the dialog box, the map name
+and, in case of a dungeon map, the random dungeon theme can be changed. If a dungeon theme is chosen for a 
+map that already contains zones, a warning will be given. Setting a theme will delete all zones.
+<p>
+To add a zone to a map (indoor maps only), right click on a map name and choose <b>Add zone</b>. You will
+be asked for a name, width and height of the new zone and the base terrain type. A zone theme may be 
+specified. In that case, the width, height and terrain values will be ignored.
+<p>
+To edit zone info, right click on the name and select <b>Edit zone</b>. The zone name can be changed and
+a zone theme may be given. If a zone theme is specified, all zone content will be deleted. The contents
+of the zone are shown in a table and can be edited. For most content, only the position can be changed. For 
+doors and containers, double clicking the id opens the door or container instance editor.
+<p>
+To delete a zone or a map, right click on the name and select <b>Delete zone</b> or <b>Delete map</b>.
+
+<h2>Zone editing</h2>
+To view a zone, double click on its name. If it is a fixed zone, the content will be shown in the main
+editing pane. If it is a random zone, you will have the option of generating the zone content from the
+zone theme, or starting with a blank zone. Both options will remove the zone theme.  
+<p>
+To move terrain or objects (<i>instances</i>), click and drag with your mouse. To place new objects, drag 
+them onto the editing pane from the object tree at the right side of the window (on the <i>Object</i> tab).
+<p>
+Every instance is placed on a layer. 128 layers are available. Instances on a higher layer will be shown on 
+top of those on a lower layer. Layer 126 is reserved for creatures (including the player). Layer 125 is 
+reserved for items. Layers 0-124 can be used for terrain. Items that have the <b>Always on top</b> property 
+selected, will be shown on layer 127. In the toolbar, there is an option <b>Show only current layer</b>, 
+which lets you select a single layer you would like to examine.
+<p>
+Zooming in and out can be done with the <b>+</b> and <b>-</b> buttons in the toolbar. The standard zoom 
+level will show objects and terrain with a 12 pt font. Zooming in and out uses a factor 2. If possible, the
+upper left corner of the visible area will remain in the same position after zooming.
+<p>
+By default, <i>Select mode</i> is active. To draw terrain, <i>Draw mode</i> must be chosen by clicking the
+paintbrush in the toolbar. Clicking and dragging the mouse will now draw a piece of terrain (a <i>region</i>) 
+on the layer selected in the toolbar. The type of terrain can be selected from the list at the right side of 
+the window (on the <i>Terrain</i> tab).
+<p>
+The last operation performed can be undone by clicking the undo button in the toolbar.
+<p>
+Right clicking on instances opens a context menu. Choose <b>Cut</b> or <b>Copy</b> to cut and copy, choose 
+<b>Paste</b> to paste it on the required position. <b>Delete</b> removes an object or terrain from the 
+current zone.
+
+<h2>Instance properties</h2>
+Terrain and certain objects offer the <b>Properties...</b> option in their context menu. This allow editing
+certain properties of the selected instance.
+
+<h3>Terrain</h3>
+In the <i>Region instance editor</i>, the position and size of the selected region can be set. For regions 
+on an outdoor map, an optional theme can be set. Clicking <b>Generate randomly</b> with a theme selected will
+generate this type of terrain and remove the theme. Be careful when using this feature, as the generated 
+terrain can be quite large with many object instances. Optional scripts can be added to a region. These 
+scripts will be run when the player enters this region. To add or remove scripts, right click on the script 
+area.
+
+<h3>Containers</h3>
+By default, a container has no predetermined contents. These must be added for every instance. Right clicking
+on the contents area in the <i>Container instance editor</i> allows you to add or remove items.
+
+<h3>Doors</h3>
+Doors have two optional components: a <i>Lock</i> and a <i>Destination</i>. By setting the <b>lockable</b> 
+property, a lock is added. The state of the door, the difficulty of the lock and the key for this lock can be 
+selected. By setting the <b>portal</b> property, a destination is added. The destination map, zone and 
+coordinates can be chosen. If no map is selected, the destination will be the chosen coordinates on the 
+current zone. 
+<p>
+If the destination map or zone are random, the destination coordinates my be ignored. It is possible to 
+select a dungeon theme as destination. In that case, the map, zone and coordinates are ignored.
+<p>
+A door sign may be given, this will be displayed when the player looks at this door. 
+</body>
+</html>

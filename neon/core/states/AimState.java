@@ -35,6 +35,7 @@ import neon.maps.Zone;
 import java.util.*;
 import javax.swing.Popup;
 
+import neon.resources.CClient;
 import neon.resources.RWeapon.WeaponType;
 import neon.systems.animation.Translation;
 import neon.ui.GamePanel;
@@ -54,12 +55,14 @@ public class AimState extends State implements KeyListener {
 	private Popup popup;
 	private GamePanel panel;
 	private Atlas atlas;
+	private CClient keys;
 	
 	/**
 	 * Constructs a new AimModule.
 	 */
 	public AimState(State state, Atlas atlas) {
 		super(state);
+		keys = (CClient)Engine.getResources().getResource("client", "config");
 		this.atlas = atlas;
 		target = new Point();
 	}
@@ -89,39 +92,39 @@ public class AimState extends State implements KeyListener {
 	public void keyTyped(KeyEvent key) { }
 	public void keyPressed(KeyEvent key) {
 		int code = key.getKeyCode();
-		if(code == KeyConfig.up) {
+		if(code == keys.up) {
 			target.y--;
 			look();
-		} else if(code == KeyConfig.upright) {
+		} else if(code == keys.upright) {
 			target.x++; target.y--;
 			look();
-		} else if(code == KeyConfig.right) {
+		} else if(code == keys.right) {
 			target.x++;
 			look();
-		} else if(code == KeyConfig.downright) {
+		} else if(code == keys.downright) {
 			target.x++; target.y++;
 			look();
-		} else if(code == KeyConfig.down) {
+		} else if(code == keys.down) {
 			target.y++;
 			look();
-		} else if(code == KeyConfig.downleft) {
+		} else if(code == keys.downleft) {
 			target.x--;	target.y++;
 			look();
-		} else if(code == KeyConfig.left) {
+		} else if(code == keys.left) {
 			target.x--;
 			look();
-		} else if(code == KeyConfig.upleft) {
+		} else if(code == keys.upleft) {
 			target.x--; target.y--;
 			look();
-		} else if(code == KeyConfig.act) {
+		} else if(code == keys.act) {
 			act();
-		} else if(code == KeyConfig.look) {
+		} else if(code == keys.look) {
 			Engine.post(new TransitionEvent("return", "message", "Aiming cancelled."));
-		} else if(code == KeyConfig.shoot) {
+		} else if(code == keys.shoot) {
 			shoot();
-		} else if(code == KeyConfig.magic) {
+		} else if(code == keys.magic) {
 			cast();
-		} else if(code == KeyConfig.talk) {
+		} else if(code == keys.talk) {
 			talk();
 		}
 	}

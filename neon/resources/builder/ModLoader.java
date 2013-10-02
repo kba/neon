@@ -16,50 +16,62 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core;
+package neon.resources.builder;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import neon.core.Engine;
 import neon.core.event.TaskQueue;
 import neon.resources.*;
+import neon.systems.files.FileSystem;
 import neon.systems.files.StringTranslator;
 import neon.systems.files.XMLTranslator;
 import org.jdom2.*;
 
 public class ModLoader {
 	private String path;
-	private Configuration config;
 	private TaskQueue queue;
+	private FileSystem files;
 	
-	public ModLoader(String mod, Configuration config, TaskQueue queue) {
-		this.config = config;
+	public ModLoader(String mod, TaskQueue queue, FileSystem files) {
 		this.queue = queue;
+		this.files = files;
 		try {
-			path = Engine.getFileSystem().mount(mod);
+			path = files.mount(mod);
 		} catch (IOException e) {
 			Engine.getUI().showMessage("Invalid mod: " + path + ".", 3);
 		}
 	}
 
-	public void loadMod() {
+	public RMod loadMod(CGame game, CClient client) {
 		// main.xml laden
-		Element mod = Engine.getFileSystem().getFile(new XMLTranslator(), path, "main.xml").getRootElement();
-		config.addMod(mod.getAttributeValue("id"), initMaps(path, "maps"));
-		initMain(mod);
+		Element mod = files.getFile(new XMLTranslator(), path, "main.xml").getRootElement();
+
+		// cc.xml laden
+		Element cc = null;
+		if(files.exists(path, "cc.xml")) {
+			cc = files.getFile(new XMLTranslator(), path, "cc.xml").getRootElement();
+		} 
+
+		RMod rmod = new RMod(mod, cc);
+		rmod.addMaps(initMaps(path, "maps"));
+
+		initMain(client, mod);
 		if(mod.getName().equals("extension")) {
-			if(!config.getMods().keySet().contains(mod.getChild("master").getText())) {
+			ResourceManager resources = Engine.getResources();
+			if(!resources.hasResource(mod.getChild("master").getText(), "mods")) {
 				System.err.println("Extension master not found: " + path + ".");
 			}
 		}
 
 		// terrain
-		if(Engine.getFileSystem().exists(path, "terrain.xml")) {
+		if(files.exists(path, "terrain.xml")) {
 			initTerrain(path, "terrain.xml");
 		}
 
 		// books
-		if(Engine.getFileSystem().listFiles(path, "books") != null) {
+		if(files.listFiles(path, "books") != null) {
 			initBooks(path, "books");	// laden voor items, anders vindt book zijn text niet
 		}
 		
@@ -78,22 +90,22 @@ public class ModLoader {
 		
 		
 		// scripts
-		if(Engine.getFileSystem().listFiles(path, "scripts") != null) {
+		if(files.listFiles(path, "scripts") != null) {
 			initScripts(path, "scripts");
 		}
 		
 		// events
-		if(Engine.getFileSystem().exists(path, "events.xml")) {
+		if(files.exists(path, "events.xml")) {
 			initTasks(path, "events.xml");
 		}
 		
 		// character creation
-		if(Engine.getFileSystem().exists(path, "cc.xml")) {
-			config.initCC(path, "cc.xml");
+		if(files.exists(path, "cc.xml")) {
+			initCC(game, path, "cc.xml");
 		}
 		
 		// random quests
-		if(Engine.getFileSystem().listFiles(path, "quests") != null) {
+		if(files.listFiles(path, "quests") != null) {
 			initQuests(path, "quests");
 		}
 		
@@ -102,32 +114,30 @@ public class ModLoader {
 		initMagic(path, "objects", "alchemy.xml");	// alchemy
 		initMagic(path, "signs.xml");				// birth signs
 		initMagic(path, "tattoos.xml");				// tattoos
+		
+		return rmod;
 	}
 
-	private void initMain(Element info) {
+	private void initMain(CClient client, Element info) {
 		if(info.getChild("title") != null) {
-			config.setProperty("title", info.getChild("title").getText());			
+			client.setTitle(info.getChild("title").getText());			
 		}
 		if(info.getChild("currency") != null) {
-			if(info.getChild("currency").getAttributeValue("big") == null) {
-				config.setProperty("bigCoin", "€");
-			} else {
-				config.setProperty("bigCoin", info.getChild("currency").getAttributeValue("big"));
+			if(info.getChild("currency").getAttributeValue("big") != null) {
+				client.setBig(info.getChild("currency").getAttributeValue("big"));
 			}
-			if(info.getChild("currency").getAttributeValue("small") == null) {
-				config.setProperty("smallCoin", "c");
-			} else {
-				config.setProperty("smallCoin", info.getChild("currency").getAttributeValue("small"));
+			if(info.getChild("currency").getAttributeValue("small") != null) {
+				client.setSmall(info.getChild("currency").getAttributeValue("small"));
 			}
 		}		
 	}
 	
 	private void initQuests(String... file) {
 		try {
-			for(String s : Engine.getFileSystem().listFiles(file)) {
+			for(String s : files.listFiles(file)) {
 				s = s.substring(s.lastIndexOf("/") + 1);
 				String quest = s.substring(s.lastIndexOf(File.separator) + 1);
-				Document doc = Engine.getFileSystem().getFile(new XMLTranslator(), path, "quests", quest);
+				Document doc = files.getFile(new XMLTranslator(), path, "quests", quest);
 				Engine.getResources().addResource(new RQuest(quest, doc.getRootElement()), "quest");
 			}
 		} catch(Exception e) {	// gebeurt bij .svn directory
@@ -137,10 +147,10 @@ public class ModLoader {
 
 	private void initBooks(String... file) {
 		try {
-			for(String s : Engine.getFileSystem().listFiles(file)) {
+			for(String s : files.listFiles(file)) {
 				s = s.substring(s.lastIndexOf("/") + 1);
 				String id = s.substring(s.lastIndexOf(File.separator) + 1);
-				Resource book = new RText(id, Engine.getFileSystem(), path, "books", id);
+				Resource book = new RText(id, files, path, "books", id);
 				Engine.getResources().addResource(book, "text");
 			}
 		} catch(Exception e) { 
@@ -150,7 +160,7 @@ public class ModLoader {
 
 	private ArrayList<String[]> initMaps(String... file) {
 		ArrayList<String[]> maps = new ArrayList<String[]>();
-		for(String s : Engine.getFileSystem().listFiles(file)) {
+		for(String s : files.listFiles(file)) {
 			/* gefoefel met separators om jar of folder files te krijgen:
 			 * substrings moeten er allebei instaan als het om jars gaat
 			 */
@@ -163,8 +173,8 @@ public class ModLoader {
 	}
 
 	private void initCreatures(String... file) {
-		if(Engine.getFileSystem().exists(file)) {
-			Element creatures = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
+		if(files.exists(file)) {
+			Element creatures = files.getFile(new XMLTranslator(), file).getRootElement();
 			for(Element c : creatures.getChildren()) {
 				switch(c.getName()) {
 				case "npc": Engine.getResources().addResource(new RPerson(c)); break;
@@ -176,8 +186,8 @@ public class ModLoader {
 	}
 
 	private void initItems(String... file) {
-		if(Engine.getFileSystem().exists(file)) {
-			Element items = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
+		if(files.exists(file)) {
+			Element items = files.getFile(new XMLTranslator(), file).getRootElement();
 			for(Element e : items.getChildren()) {
 				switch(e.getName()) {
 				case "book":
@@ -197,15 +207,15 @@ public class ModLoader {
 	}
 
 	private void initTerrain(String... file) {
-		Element terrain = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
+		Element terrain = files.getFile(new XMLTranslator(), file).getRootElement();
 		for(Element e : terrain.getChildren()) {
 			Engine.getResources().addResource(new RTerrain(e), "terrain");
 		}		
 	}
 	
 	private void initThemes(String... file) {
-		if(Engine.getFileSystem().exists(file)) {
-			Element themes = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
+		if(files.exists(file)) {
+			Element themes = files.getFile(new XMLTranslator(), file).getRootElement();
 			for(Element theme : themes.getChildren()) {
 				switch(theme.getName()) {
 				case "dungeon": Engine.getResources().addResource(new RDungeonTheme(theme), "theme"); break;
@@ -217,8 +227,8 @@ public class ModLoader {
 	}
 	
 	private void initMagic(String... file) {
-		if(Engine.getFileSystem().exists(file)) {
-			Element resources = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
+		if(files.exists(file)) {
+			Element resources = files.getFile(new XMLTranslator(), file).getRootElement();
 			for(Element resource : resources.getChildren()) {
 				switch(resource.getName()) {
 				case "sign": Engine.getResources().addResource(new RSign(resource), "magic"); break;
@@ -235,13 +245,13 @@ public class ModLoader {
 
 	private void initScripts(String... file) {
 		try {
-			for(String s : Engine.getFileSystem().listFiles(file)) {
+			for(String s : files.listFiles(file)) {
 				s = s.substring(s.lastIndexOf("/") + 1);
 				s = s.substring(s.lastIndexOf(File.separator) + 1);
 				String[] path = new String[file.length + 1];
 				path[file.length] = s;
 				System.arraycopy(file, 0, path, 0, file.length);
-				RScript script = new RScript(s.replaceAll(".js", ""), Engine.getFileSystem().getFile(new StringTranslator(), path));
+				RScript script = new RScript(s.replaceAll(".js", ""), files.getFile(new StringTranslator(), path));
 				Engine.getResources().addResource(script, "script");
 			}
 		} catch(Exception e) { 
@@ -249,8 +259,34 @@ public class ModLoader {
 		}
 	}
 	
+	/*
+	 * Initializes all character creation data.
+	 * 
+	 * @param file
+	 */
+	private void initCC(CGame game, String... file) {
+		Element cc = files.getFile(new XMLTranslator(), file).getRootElement();
+		int x = Integer.parseInt(cc.getChild("map").getAttributeValue("x"));
+		int y = Integer.parseInt(cc.getChild("map").getAttributeValue("y"));
+		if(cc.getChild("map").getAttributeValue("z") != null) {
+			game.setStartZone(Integer.parseInt(cc.getChild("map").getAttributeValue("z")));
+		}
+		game.getStartPosition().setLocation(x, y);
+		String[] path = {file[0], "maps", cc.getChild("map").getAttributeValue("path") + ".xml"};
+		game.setStartMap(path);
+		for(Element e : cc.getChildren("race")) {
+			game.getPlayableRaces().add(e.getText());
+		}
+		for(Element e : cc.getChildren("item")) {
+			game.getStartingItems().add(e.getText());
+		}
+		for(Element e : cc.getChildren("spell")) {
+			game.getStartingSpells().add(e.getText());
+		}
+	}
+	
 	private void initTasks(String... file) {
-		Document doc = Engine.getFileSystem().getFile(new XMLTranslator(), file);
+		Document doc = files.getFile(new XMLTranslator(), file);
 		for(Element e : doc.getRootElement().getChildren()) {
 			String[] ticks = e.getAttributeValue("tick").split(":");
 			RScript rs = (RScript)Engine.getResources().getResource(e.getAttributeValue("script"), "script");

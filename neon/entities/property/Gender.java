@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2007 - Maarten Driesen
+ *	Copyright (C) 2010 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -16,25 +16,8 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.systems.timing;
+package neon.entities.property;
 
-/**
- * This interface describes a timer listener. 
- * 
- * @author mdriesen
- */
-public interface TimerListener {
-	/**
-	 * Notifies that a new clock tick has passed.
-	 * 
-	 * @param time	the current in-game time
-	 */
-	public void tick(int time);
-
-	/**
-	 * Notifies that the timer has started.
-	 * 
-	 * @param time	the current in-game time
-	 */
-	public void start(int time);
+public enum Gender {
+	MALE, FEMALE, OTHER;
 }

@@ -22,6 +22,7 @@ import java.awt.Rectangle;
 import java.util.Collection;
 import neon.core.Configuration;
 import neon.core.Engine;
+import neon.core.event.TurnEvent;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.entities.property.Condition;
@@ -29,10 +30,13 @@ import neon.entities.property.Habitat;
 import neon.maps.*;
 import neon.maps.Region.Modifier;
 import neon.resources.RRegionTheme;
-import neon.systems.timing.TimerListener;
 import neon.ui.GamePanel;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 
-public class TurnHandler implements TimerListener {
+@Listener(references = References.Strong)	// strong, om gc te vermijden
+public class TurnHandler {
 	private GamePanel panel;
 	private Generator generator;
 	
@@ -40,8 +44,7 @@ public class TurnHandler implements TimerListener {
 		this.panel = panel;
 	}
 	
-	public void start(int time) {}
-	public void tick(int time) {
+	@Handler public void tick(TurnEvent te) {
 		// indien beurt gedaan is (timer krijgt extra tick): 
 		//	1) random regions controleren
 		//	2) monsters controleren

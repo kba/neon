@@ -20,12 +20,13 @@ package neon.narrative;
 
 import java.util.*;
 import neon.core.Engine;
+import neon.core.event.TurnEvent;
 import neon.entities.Creature;
 import neon.resources.RQuest;
-import neon.systems.timing.TimerListener;
 import neon.util.fsm.TransitionEvent;
+import net.engio.mbassy.listener.Handler;
 
-public class QuestTracker implements TimerListener {
+public class QuestTracker {
 	private LinkedList<String> objects = new LinkedList<>();
 	private HashMap<String, Quest> quests = new HashMap<>();
 	// tijdelijke map voor quests die voor dialogmodule zijn geladen
@@ -146,15 +147,13 @@ public class QuestTracker implements TimerListener {
 		}		
 	}
 
-	public void start(int time) {
-		for(RQuest quest : Engine.getResources().getResources(RQuest.class)) {
-			if(quest.initial) {
-				startQuest(quest.id);
+	@Handler public void start(TurnEvent te) {
+		if(te.isStart()) {
+			for(RQuest quest : Engine.getResources().getResources(RQuest.class)) {
+				if(quest.initial) {
+					startQuest(quest.id);
+				}
 			}
-		}			
-	}
-
-	public void tick(int time) {
-
+		}
 	}
 }

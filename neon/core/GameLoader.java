@@ -40,7 +40,9 @@ import neon.magic.Effect;
 import neon.magic.Spell;
 import neon.magic.SpellFactory;
 import neon.maps.Map;
+import neon.resources.CGame;
 import neon.resources.RCreature;
+import neon.resources.RMod;
 import neon.resources.RSign;
 import neon.resources.RSpell.SpellType;
 import neon.systems.files.FileUtils;
@@ -81,23 +83,25 @@ public class GameLoader {
 			SkillHandler.checkFeat(skill, player);
 		}
 		
+		CGame game = (CGame)Engine.getResources().getResource("game", "config");
+		
 		// starting items
-		for(String i : config.getStartingItems()) {
+		for(String i : game.getStartingItems()) {
 			Item item = EntityFactory.getItem(i, Engine.getStore().createNewEntityUID());
 			Engine.getStore().addEntity(item);
 			InventoryHandler.addItem(player, item.getUID());
 		}
 		// starting spells
-		for(String i : config.getStartingSpells()) {
+		for(String i : game.getStartingSpells()) {
 			player.animus.addSpell(SpellFactory.getSpell(i));
 		}
 		
 		// player in positie brengen
-		player.getBounds().setLocation(config.getStartPosition().x, config.getStartPosition().y);
-		Map map = Engine.getAtlas().getMap(Engine.getStore().getMapUID(config.getStartMap()));
+		player.getBounds().setLocation(game.getStartPosition().x, game.getStartPosition().y);
+		Map map = Engine.getAtlas().getMap(Engine.getStore().getMapUID(game.getStartMap()));
 		Engine.getScriptEngine().put("map", map);
 		Engine.getAtlas().setMap(map);
-		Engine.getAtlas().setCurrentZone(config.getStartZone());
+		Engine.getAtlas().setCurrentZone(game.getStartZone());
 	}
 	
 	private void setSign(Player player, RSign sign) {
@@ -130,7 +134,7 @@ public class GameLoader {
 		}
 		Element root = doc.getRootElement();
 		
-		// save map naar temp kopiÃ«ren
+		// save map naar temp kopiëren
 		Path savePath = Paths.get("saves", save);
 		Path tempPath = Paths.get("temp");
 		FileUtils.copy(savePath, tempPath);
@@ -252,17 +256,17 @@ public class GameLoader {
 		Engine.getStore().setCache(DBMaker.openFile("temp/store").disableLocking().make());
 		
 		// mods en maps in uidstore steken
-		for(String mod : config.getMods().keySet()) {
-			if(Engine.getStore().getModUID(mod) == 0) {
-				Engine.getStore().addMod(mod);
+		for(RMod mod : Engine.getResources().getResources(RMod.class)) {
+			if(Engine.getStore().getModUID(mod.id) == 0) {
+				Engine.getStore().addMod(mod.id);
 			}
-			for(String[] path : config.getMods().get(mod))
+			for(String[] path : mod.getMaps())
 			try {	// maps zitten in twowaymap, en worden dus niet in cache opgeslagen
 				Element map = Engine.getFileSystem().getFile(new XMLTranslator(), path).getRootElement();
 				short mapUID = Short.parseShort(map.getChild("header").getAttributeValue("uid"));
 				int uid = UIDStore.getMapUID(Engine.getStore().getModUID(path[0]), mapUID);
 				Engine.getStore().addMap(uid, path);
-			} catch(Exception e) {	// gebeurt bij .svn directory
+			} catch(Exception e) {
 				Engine.getLogger().fine("Map error in mod " + path[0]);
 			}			
 		}

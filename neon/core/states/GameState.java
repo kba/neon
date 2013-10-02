@@ -22,15 +22,17 @@ import neon.core.*;
 import neon.core.event.*;
 import neon.core.handlers.TurnHandler;
 import neon.entities.Player;
+import neon.resources.CClient;
 import neon.resources.RScript;
 import neon.ui.*;
 import neon.ui.dialog.MapDialog;
-
 import java.awt.event.*;
 import java.io.InputStream;
+import java.util.EventObject;
 import java.util.Scanner;
 import neon.maps.Atlas;
 import neon.util.fsm.*;
+import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.listener.Handler;
 import net.phys2d.raw.CollisionEvent;
 import net.phys2d.raw.CollisionListener;
@@ -40,9 +42,11 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	private GamePanel panel;
 	private GameSaver saver;
 	private Atlas atlas;
+	private CClient keys;
 	
-	public GameState(Engine engine, TaskQueue queue, Atlas atlas) {
+	public GameState(Engine engine, TaskQueue queue, Atlas atlas, MBassador<EventObject> bus) {
 		super(engine, "game module");
+		keys = (CClient)Engine.getResources().getResource("client", "config");
 		saver = new GameSaver(queue, atlas);
 		panel = new GamePanel();
 		this.atlas = atlas;
@@ -50,7 +54,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		
 		// maakt functies beschikbaar voor scripting:
 		Engine.getScriptEngine().put("engine", new ScriptInterface(panel));
-		Engine.getTimer().addListener(new TurnHandler(panel));
+		bus.subscribe(new TurnHandler(panel));
 	}
 
 	@Override
@@ -60,7 +64,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 			player = Engine.getPlayer();
 			Engine.getPhysicsEngine().addListener(this);
 			// in geval spel start, moeten de events van de huidige kloktick nu uitgevoerd worden
-			Engine.getTimer().start();
+			Engine.post(new TurnEvent(Engine.getTimer().getTime(), true));
 		}
 		panel.setVisible(true);
 		panel.addKeyListener(this);
@@ -106,12 +110,12 @@ public class GameState extends State implements KeyListener, CollisionListener {
 			Engine.getUI().showConsole(Engine.getScriptEngine());
 			break;
 		default:
-			if(code == KeyConfig.map) {
+			if(code == keys.map) {
 				new MapDialog(Engine.getUI().getWindow(), atlas.getCurrentZone()).show();
-			} else if(code == KeyConfig.sneak) {
+			} else if(code == keys.sneak) {
 				player.setSneaking(!player.isSneaking());
 				panel.repaint();
-			} else if(code == KeyConfig.journal) {
+			} else if(code == keys.journal) {
 				Engine.post(new TransitionEvent("journal"));
 			}
 		}

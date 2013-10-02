@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import neon.core.*;
+import neon.resources.CClient;
 import neon.ui.dialog.LoadGameDialog;
 import neon.ui.dialog.NewGameDialog;
 import neon.ui.dialog.OptionDialog;
@@ -37,12 +38,10 @@ import neon.util.fsm.TransitionEvent;
 public class MainMenuState extends State {
 	private JPanel main;
 	private Engine engine;
-	private Configuration config;
 	
-	public MainMenuState(Engine engine, Configuration config) {
+	public MainMenuState(Engine engine) {
 		super(engine, "main menu");
 		this.engine = engine;
-		this.config = config;
 		
 		// het main menu JPanel zelf
 		main = new JPanel(new BorderLayout());
@@ -50,23 +49,26 @@ public class MainMenuState extends State {
 		JPanel buttons = new JPanel(new GridLayout(0,1));
 		buttons.setBorder(new EmptyBorder(70,120,70,120));
 
+		CClient ini = (CClient)Engine.getResources().getResource("client", "config");
+
 		JLabel title = new JLabel("<html><font size=\"18\">" + 
-				config.getProperty("title") + "</font></html>", JLabel.CENTER);
+				ini.getTitle() + "</font></html>", JLabel.CENTER);
+		
 		
 		// de knoppen op het menu
-		String newString = config.getString("$newGame");
+		String newString = ini.getString("$newGame");
 		Action n = new ButtonAction(newString, "n");
 		JButton newGame = new JButton(n);
 		newGame.setMnemonic(newString.charAt(0));
-		String loadString = config.getString("$loadGame");
+		String loadString = ini.getString("$loadGame");
 		Action l = new ButtonAction(loadString, "l");    
 		JButton load = new JButton(l);
 		load.setMnemonic(loadString.charAt(0));
-		String optionString = config.getString("$options");
+		String optionString = ini.getString("$options");
 		Action o = new ButtonAction(optionString, "o");
 		JButton options = new JButton(o);
 		options.setMnemonic(optionString.charAt(0));
-		String quitString = config.getString("$quit");
+		String quitString = ini.getString("$quit");
 		Action q = new ButtonAction(quitString, "q");
 		JButton quit = new JButton(q);
 		quit.setMnemonic(quitString.charAt(0));
@@ -118,7 +120,7 @@ public class MainMenuState extends State {
 			} else if(e.getActionCommand().equals("l")) {
 				new LoadGameDialog(Engine.getUI().getWindow(), engine.getConfig()).show();
 			} else if(e.getActionCommand().equals("o")) {
-				new OptionDialog(Engine.getUI().getWindow(), config.getKeyConfig()).show();
+				new OptionDialog(Engine.getUI().getWindow()).show();
 			} else if(e.getActionCommand().equals("q")) {
 				System.exit(0);
 			}

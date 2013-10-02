@@ -18,10 +18,10 @@
 
 package neon.core.states;
 
-import neon.core.Configuration;
 import neon.core.Engine;
 import neon.maps.Atlas;
 import neon.maps.Zone;
+import neon.resources.CClient;
 import neon.ui.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -59,7 +59,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 	// lijstjes
 	private HashMap<String, Integer> cData, iData;
 	
-	public ContainerState(Engine engine, Configuration config, Atlas atlas) {
+	public ContainerState(Engine engine, Atlas atlas) {
 		super(engine);
 		this.atlas = atlas;
 		
@@ -79,7 +79,8 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
     	center.add(iScroll);
 
     	// description panel klaarmaken
-    	description = new DescriptionPanel(config.getProperty("smallCoin"));
+		CClient ini = (CClient)Engine.getResources().getResource("client", "config");
+    	description = new DescriptionPanel(ini.getSmall());
     	center.add(description);
     	
         // container panel klaarmaken

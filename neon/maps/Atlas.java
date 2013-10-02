@@ -23,6 +23,7 @@ import org.apache.jdbm.DB;
 import neon.core.Engine;
 import neon.entities.Door;
 import neon.entities.Player;
+import neon.systems.files.FileSystem;
 
 /**
  * This class keeps track of all loaded maps and their connections.
@@ -34,6 +35,11 @@ public class Atlas {
 	private ConcurrentMap<Integer, Map> maps;
 	private int currentZone = 0;
 	private int currentMap = 0;
+	private FileSystem files;
+	
+	public Atlas(FileSystem files) {
+		this.files = files;
+	}
 	
 	public void setCache(DB cache) {
 		db = cache;
@@ -76,7 +82,7 @@ public class Atlas {
 	 */
 	public Map getMap(int uid) {
 		if(!maps.containsKey(uid)) {
-			Map map = MapLoader.loadMap(Engine.getStore().getMapPath(uid), uid);
+			Map map = MapLoader.loadMap(Engine.getStore().getMapPath(uid), uid, files);
 			maps.put(uid, map);
 		} 
 		return maps.get(uid);

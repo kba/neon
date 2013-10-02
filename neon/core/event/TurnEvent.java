@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -22,15 +22,33 @@ import java.util.EventObject;
 
 @SuppressWarnings("serial")
 public class TurnEvent extends EventObject {
-	private int turn;
+	private int time;
+	private boolean start = false;
 	
 	public TurnEvent(int turn) {
 		super(turn);
-		this.turn = turn;
+		this.time = turn;
+	}
+	
+	public TurnEvent(int turn, boolean start) {
+		super(turn);
+		this.time = turn;
+		this.start = true;
+	}
+	
+	public int getTime() {
+		return time;
+	}
+	
+	/**
+	 * @return	whether this {@code TurnEvent} indicates the start of a game
+	 */
+	public boolean isStart() {
+		return start;
 	}
 	
 	@Override
 	public String toString() {
-		return "turn " + turn;
+		return "turn " + time;
 	}
 }

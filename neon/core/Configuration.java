@@ -21,13 +21,9 @@ package neon.core;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
-import org.jdom2.*;
 import de.muntjak.tinylookandfeel.Theme;
-import neon.core.event.TaskQueue;
 import neon.resources.CServer;
-import neon.resources.RMod;
-import neon.systems.files.XMLTranslator;
-import java.awt.Point;
+import neon.resources.ResourceManager;
 import javax.swing.UIManager;
 
 public class Configuration {
@@ -35,27 +31,14 @@ public class Configuration {
 	public static boolean audio = false;	// audio aan of uit?
 	public static boolean gThread = true;	// terrain generation threaded of niet?
 
-	private ArrayList<String> playableRaces;
-	private ArrayList<String> startingItems;
-	private ArrayList<String> startingSpells;
-	private Point startPos;
-	private String[] startMap;
-	private int startZone = 0;	// default
-	private HashMap<String, String> properties = new HashMap<String, String>();
-	private HashMap<String, Collection<String[]>> mods = new HashMap<String, Collection<String[]>>();
-//	private ArrayList<RMod> rmods = new ArrayList<RMod>();
-	private CServer config;
-	private KeyConfig keys = new KeyConfig();
+	private HashMap<String, String> properties = new HashMap<>();
 	
 	/**
-	 * Loads a configuration file, containing a list of mods.
-	 * 
-	 * @param ini	a configuration file
+	 * Loads all kinds of stuff.
 	 */
-	public Configuration(TaskQueue queue) {
+	public Configuration(ResourceManager resources) {
 		// ini file inladen
-		config = new CServer("neon.ini");
-		config.load();
+		CServer config = (CServer)resources.getResource("ini", "config");
 
 		// look and feel setten
 		try {
@@ -76,82 +59,9 @@ public class Configuration {
 			e.printStackTrace();
 		}
 
-		// keyboard inlezen
-		KeyConfig.setKeys(config.getKeys());
-		
 		// threading
 		gThread = config.isMapThreaded();
 		logger.config("Map generation thread: " + gThread);
-
-		// alle data dirs en jars afgaan
-		for(String file : config.getMods()) {
-			new ModLoader(file, this, queue).loadMod();
-		}		
-	}
-	
-	public KeyConfig getKeyConfig() {
-		return keys;
-	}
-	
-	/**
-	 * Adds a mod to the list.
-	 * 
-	 * @param mod
-	 * @param maps	a {@code Collection} of all maps in the given mod
-	 */
-	public void addMod(String mod, Collection<String[]> maps) {
-		mods.put(mod, maps);
-	}
-	
-	/**
-	 * Returns all mods and all maps in these mods.
-	 * 
-	 * @return
-	 */
-	public HashMap<String, Collection<String[]>> getMods() {
-		return mods;
-	}
-	
-	/**
-	 * @return	a list with all playable races
-	 */
-	public ArrayList<String> getPlayableRaces() {
-		return playableRaces;
-	}
-		
-	/**
-	 * @return	a list of items the player starts with
-	 */
-	public ArrayList<String> getStartingItems() {
-		return startingItems;
-	}
-	
-	/**
-	 * @return	a list of spells the player starts with
-	 */
-	public ArrayList<String> getStartingSpells() {
-		return startingSpells;
-	}
-
-	/**
-	 * @return	the starting position of the player character
-	 */
-	public Point getStartPosition() {
-		return startPos;
-	}
-	
-	/**
-	 * @return	the starting map zone
-	 */
-	public int getStartZone() {
-		return startZone;
-	}
-	
-	/**
-	 * @return	the starting map
-	 */
-	public String[] getStartMap() {
-		return startMap;
 	}
 	
 	/**
@@ -170,44 +80,5 @@ public class Configuration {
 	 */
 	public void setProperty(String property, String value) {
 		properties.put(property, value);
-	}
-	
-	/**
-	 * Return the string value with the given name.
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public String getString(String name) {
-		return config.getStrings().getProperty(name);
-	}
-	
-	/**
-	 * Initializes all character creation data.
-	 * 
-	 * @param file
-	 */
-	public void initCC(String... file) {
-		Element cc = Engine.getFileSystem().getFile(new XMLTranslator(), file).getRootElement();
-		int x = Integer.parseInt(cc.getChild("map").getAttributeValue("x"));
-		int y = Integer.parseInt(cc.getChild("map").getAttributeValue("y"));
-		if(cc.getChild("map").getAttributeValue("z") != null) {
-			startZone = Integer.parseInt(cc.getChild("map").getAttributeValue("z"));
-		}
-		startPos = new Point(x, y);
-		String[] path = {file[0], "maps", cc.getChild("map").getAttributeValue("path") + ".xml"};
-		startMap = path;
-		playableRaces = new ArrayList<String>();
-		for(Element e : cc.getChildren("race")) {
-			playableRaces.add(e.getText());
-		}
-		startingItems = new ArrayList<String>();
-		for(Element e : cc.getChildren("item")) {
-			startingItems.add(e.getText());
-		}
-		startingSpells = new ArrayList<String>();
-		for(Element e : cc.getChildren("spell")) {
-			startingSpells.add(e.getText());
-		}
 	}
 }

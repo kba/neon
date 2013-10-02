@@ -22,10 +22,9 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import neon.core.Configuration;
 import neon.core.Engine;
-import neon.core.KeyConfig;
 import neon.core.event.CombatEvent;
+import neon.core.event.TurnEvent;
 import neon.core.handlers.*;
 import neon.entities.Container;
 import neon.entities.Creature;
@@ -36,9 +35,9 @@ import neon.entities.Player;
 import neon.entities.property.Condition;
 import neon.entities.property.Slot;
 import neon.maps.Atlas;
+import neon.resources.CClient;
 import neon.resources.RItem;
 import neon.ui.GamePanel;
-import neon.ui.WavePlayer;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
 
@@ -46,10 +45,12 @@ public class MoveState extends State implements KeyListener {
 	private Player player;
 	private GamePanel panel;
 	private Atlas atlas;
+	private CClient keys;
 
 	public MoveState(State parent, Atlas atlas) {
 		super(parent, "move module");
 		this.atlas = atlas;
+		keys = (CClient)Engine.getResources().getResource("client", "config");
 	}
 	
 	@Override
@@ -72,7 +73,7 @@ public class MoveState extends State implements KeyListener {
 		if(other != null && !other.hasCondition(Condition.DEAD)) {
 			if(other.brain.isHostile()) {
 				Engine.post(new CombatEvent(player, other));
-				Engine.getTimer().addTick();	// volgende beurt
+				Engine.post(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 			} else {
 				Engine.post(new TransitionEvent("bump", "creature", other));
 			}
@@ -83,10 +84,10 @@ public class MoveState extends State implements KeyListener {
 						Engine.post(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 					}
 				}
-			} else if(Configuration.audio) {
-				new WavePlayer("data/step.wav").start();
+//			} else if(Configuration.audio) {	// TODO: audio hoort hier niet thuis
+//				new WavePlayer("data/step.wav").start();
 			}
-			Engine.getTimer().addTick();	// volgende beurt
+			Engine.post(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 		}
 	}
 	
@@ -133,40 +134,40 @@ public class MoveState extends State implements KeyListener {
 	public void keyTyped(KeyEvent key) { }
 	public void keyPressed(KeyEvent key) {
 		int code = key.getKeyCode();
-		if(code == KeyConfig.up) {
+		if(code == keys.up) {
 			move(0, - 1);
-		} else if(code == KeyConfig.upright) {
+		} else if(code == keys.upright) {
 			move(1, - 1);
-		} else if(code == KeyConfig.right) {
+		} else if(code == keys.right) {
 			move(1, 0);
-		} else if(code == KeyConfig.downright) {
+		} else if(code == keys.downright) {
 			move(1, 1);
-		} else if(code == KeyConfig.down) {
+		} else if(code == keys.down) {
 			move(0, 1);
-		} else if(code == KeyConfig.downleft) {
+		} else if(code == keys.downleft) {
 			move(- 1, 1);
-		} else if(code == KeyConfig.left) {
+		} else if(code == keys.left) {
 			move(- 1, 0);
-		} else if(code == KeyConfig.upleft) {
+		} else if(code == keys.upleft) {
 			move(- 1, - 1);
-		} else if(code == KeyConfig.wait) {
+		} else if(code == keys.wait) {
 			move(0, 0);
-		} else if(code == KeyConfig.act) {
+		} else if(code == keys.act) {
 			act();
-		} else if(code == KeyConfig.look) {
+		} else if(code == keys.look) {
 			Engine.post(new TransitionEvent("aim"));
-		} else if(code == KeyConfig.shoot) {
+		} else if(code == keys.shoot) {
 			Engine.post(new TransitionEvent("aim"));
-		} else if(code == KeyConfig.talk) {
+		} else if(code == keys.talk) {
 			Engine.post(new TransitionEvent("aim"));
-		} else if(code == KeyConfig.unmount) {
+		} else if(code == keys.unmount) {
 			if(player.isMounted()) {
 				Creature mount = player.getMount();
 				player.unmount();
 				atlas.getCurrentZone().addCreature(mount);
 				mount.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
 			}
-		} else if(code == KeyConfig.magic) {
+		} else if(code == keys.magic) {
 			int out = MagicHandler.RANGE;
 			if(player.animus.getSpell() != null) {
 				out = MagicHandler.cast(player, player.animus.getSpell());

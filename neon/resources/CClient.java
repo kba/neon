@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -16,46 +16,141 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core;
+package neon.resources;
 
 import java.awt.event.KeyEvent;
-import org.jdom2.Element;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
-public class KeyConfig {
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+
+public class CClient extends Resource {
+	// keyboard settings
 	public static final int NUMPAD = 0;
 	public static final int AZERTY = 1;
 	public static final int QWERTY = 2;
 	public static final int QWERTZ = 3;
 
-	public static int up = KeyEvent.VK_NUMPAD8;
-	public static int upright = KeyEvent.VK_NUMPAD9;
-	public static int right = KeyEvent.VK_NUMPAD6;
-	public static int downright = KeyEvent.VK_NUMPAD3;
-	public static int down = KeyEvent.VK_NUMPAD2;
-	public static int downleft = KeyEvent.VK_NUMPAD1;
-	public static int left = KeyEvent.VK_NUMPAD4;
-	public static int upleft = KeyEvent.VK_NUMPAD7;
-	public static int wait = KeyEvent.VK_NUMPAD5;
+	public int up = KeyEvent.VK_NUMPAD8;
+	public int upright = KeyEvent.VK_NUMPAD9;
+	public int right = KeyEvent.VK_NUMPAD6;
+	public int downright = KeyEvent.VK_NUMPAD3;
+	public int down = KeyEvent.VK_NUMPAD2;
+	public int downleft = KeyEvent.VK_NUMPAD1;
+	public int left = KeyEvent.VK_NUMPAD4;
+	public int upleft = KeyEvent.VK_NUMPAD7;
+	public int wait = KeyEvent.VK_NUMPAD5;
 	
-	public static int map = KeyEvent.VK_M;
-	public static int magic = KeyEvent.VK_G;
-	public static int shoot = KeyEvent.VK_F;
-	public static int look = KeyEvent.VK_L;
-	public static int act = KeyEvent.VK_SPACE;
-	public static int talk = KeyEvent.VK_T;
-	public static int unmount = KeyEvent.VK_U;
-	public static int sneak = KeyEvent.VK_V;
-	public static int journal = KeyEvent.VK_J;
+	public int map = KeyEvent.VK_M;
+	public int magic = KeyEvent.VK_G;
+	public int shoot = KeyEvent.VK_F;
+	public int look = KeyEvent.VK_L;
+	public int act = KeyEvent.VK_SPACE;
+	public int talk = KeyEvent.VK_T;
+	public int unmount = KeyEvent.VK_U;
+	public int sneak = KeyEvent.VK_V;
+	public int journal = KeyEvent.VK_J;
 	
-	private static int keys = NUMPAD;
+	private int keys = NUMPAD;
 	
-	public static void setKeys(Element settings) {
+	// language settings
+	private Properties strings;
+	
+	// other settings
+	private String bigCoin = "€";
+	private String smallCoin = "c";
+	private String title = "";
+	
+	public CClient(String... path) {
+		super("client", path);
+		
+		// file inladen
+		Document doc = new Document();
+		try (FileInputStream in = new FileInputStream(path[0])){
+			doc = new SAXBuilder().build(in);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		Element root = doc.getRootElement();
+
+		// keyboard
+		setKeys(root.getChild("keys"));
+		
+		// taal
+		Properties defaults = new Properties();	// locale.en laden als default
+		try (FileInputStream stream = new FileInputStream("data/locale/locale.en"); 
+				InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"))){
+			defaults.load(reader);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} 
+
+		String lang = root.getChild("lang").getText();
+		strings = new Properties(defaults);		// locale initialiseren met 'en' defaults
+		try (FileInputStream stream = new FileInputStream("data/locale/locale." + lang); 
+				InputStreamReader reader = new InputStreamReader(stream, Charset.forName("UTF-8"))){
+			strings.load(reader);
+		} catch(IOException e) {
+			e.printStackTrace();
+		} 
+	}
+
+	@Override
+	public void load() {}
+
+	@Override
+	public void unload() {}
+	
+	/**
+	 * Return the string value with the given name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public String getString(String name) {
+		return strings.getProperty(name);
+	}
+	
+	public String getBig() {
+		return bigCoin;
+	}
+	
+	public void setBig(String name) {
+		bigCoin = name;
+	}
+	
+	public String getSmall() {
+		return smallCoin;
+	}
+	
+	public void setSmall(String name) {
+		smallCoin = name;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public int getSettings() {
+		return keys;
+	}
+
+	public void setKeys(Element settings) {
 		if(settings != null) {
 			// movement keys
 			switch(settings.getText()) {
-			case "azerty": KeyConfig.setKeys(KeyConfig.AZERTY); break;
-			case "qwerty": KeyConfig.setKeys(KeyConfig.QWERTY); break;
-			case "qwertz": KeyConfig.setKeys(KeyConfig.QWERTZ); break;
+			case "azerty": setKeys(AZERTY); break;
+			case "qwerty": setKeys(QWERTY); break;
+			case "qwertz": setKeys(QWERTZ); break;
 			}
 
 			// andere keys
@@ -89,7 +184,7 @@ public class KeyConfig {
 		}
 	}
 	
-	public static void setKeys(int choice) {
+	public void setKeys(int choice) {
 		keys = choice;
 		switch(keys) {
 		case NUMPAD: 
@@ -137,10 +232,6 @@ public class KeyConfig {
 			wait = KeyEvent.VK_S;
 			break;
 		}
-	}
-	
-	public int getSettings() {
-		return keys;
 	}
 	
 	private static int getKeyCode(String code) {

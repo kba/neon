@@ -19,6 +19,7 @@
 package neon.core.states;
 
 import neon.core.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.BorderLayout;
@@ -32,6 +33,7 @@ import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.property.Skill;
 import neon.maps.Atlas;
+import neon.resources.CClient;
 import neon.resources.RItem;
 import neon.resources.RText;
 import neon.ui.DescriptionPanel;
@@ -46,12 +48,10 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 	private HashMap<String, Integer> listData;
 	private JPanel panel;
 	private DescriptionPanel description;
-	private Configuration config;
 	private Atlas atlas;
 	
-	public InventoryState(Engine engine, Configuration config, Atlas atlas) {
+	public InventoryState(Engine engine, Atlas atlas) {
 		super(engine, "inventory module");
-		this.config = config;
 		this.atlas = atlas;
 		panel = new JPanel(new BorderLayout());
 		
@@ -74,7 +74,8 @@ public class InventoryState extends State implements KeyListener, MouseListener 
     	scroller.setBorder(new TitledBorder("Inventory"));
     	contents.add(scroller);
     	
-    	description = new DescriptionPanel(config.getProperty("smallCoin"));    	
+		CClient ini = (CClient)Engine.getResources().getResource("client", "config");
+    	description = new DescriptionPanel(ini.getSmall());    	
     	contents.add(description);
     	
 		// instructies
@@ -144,7 +145,8 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		} else {
 			int gold = money/100;
 			int copper = money%100;
-			return gold + " " + config.getProperty("bigCoin") + " and " + copper + " " + config.getProperty("smallCoin");
+			CClient ini = (CClient)Engine.getResources().getResource("client", "config");
+			return gold + " " + ini.getBig() + " and " + copper + " " + ini.getSmall();
 		}
 	}
 	

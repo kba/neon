@@ -35,6 +35,7 @@ import neon.resources.RRegionTheme;
 import neon.resources.RSpell;
 import neon.resources.RTerrain;
 import neon.resources.RZoneTheme;
+import neon.systems.files.FileSystem;
 import neon.systems.files.XMLTranslator;
 
 /**
@@ -50,8 +51,8 @@ public class MapLoader {
 	 * @param uid		the unique identifier of this map
 	 * @return		the <code>Map</code> described by the map file
 	 */
-	public static Map loadMap(String[] path, int uid) {
-		Document doc = Engine.getFileSystem().getFile(new XMLTranslator(), path);
+	public static Map loadMap(String[] path, int uid, FileSystem files) {
+		Document doc = files.getFile(new XMLTranslator(), path);
 		Element root = doc.getRootElement();
 //		System.out.println("loadmap(" + path + ")");
 		if(root.getName().equals("world")) {
