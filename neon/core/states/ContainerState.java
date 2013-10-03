@@ -19,7 +19,6 @@
 package neon.core.states;
 
 import neon.core.Engine;
-import neon.maps.Atlas;
 import neon.maps.Zone;
 import neon.resources.CClient;
 import neon.ui.*;
@@ -47,7 +46,6 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 	
 	private Player player;
 	private Object container;
-	private Atlas atlas;
 
 	// onderdelen van het JPanel
 	private JPanel panel;
@@ -59,9 +57,8 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 	// lijstjes
 	private HashMap<String, Integer> cData, iData;
 	
-	public ContainerState(Engine engine, Atlas atlas) {
+	public ContainerState(Engine engine) {
 		super(engine);
-		this.atlas = atlas;
 		
 		panel = new JPanel(new BorderLayout());
         JPanel center = new JPanel(new java.awt.GridLayout(0,3));
@@ -145,7 +142,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 						((Container)container).addItem(item.getUID());
 					} else if(container instanceof Zone) {	// itempositie aanpassen
 						item.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
-						atlas.getCurrentZone().addItem(item);
+						Engine.getAtlas().getCurrentZone().addItem(item);
 					} else if(container instanceof Creature) {
 						InventoryHandler.addItem(((Creature)container), item.getUID());
 					}
@@ -163,7 +160,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 						Engine.post(new TransitionEvent("container", "holder", item));
 					} else {
 						if(container instanceof Zone) {
-							atlas.getCurrentZone().removeItem((Item)item);
+							Engine.getAtlas().getCurrentZone().removeItem((Item)item);
 						} else if(container instanceof Creature) {
 							InventoryHandler.removeItem(((Creature)container), item.getUID());
 						} else {

@@ -30,7 +30,6 @@ import java.awt.event.*;
 import java.io.InputStream;
 import java.util.EventObject;
 import java.util.Scanner;
-import neon.maps.Atlas;
 import neon.util.fsm.*;
 import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.listener.Handler;
@@ -41,15 +40,13 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	private Player player;
 	private GamePanel panel;
 	private GameSaver saver;
-	private Atlas atlas;
 	private CClient keys;
 	
-	public GameState(Engine engine, TaskQueue queue, Atlas atlas, MBassador<EventObject> bus) {
+	public GameState(Engine engine, TaskQueue queue, MBassador<EventObject> bus) {
 		super(engine, "game module");
 		keys = (CClient)Engine.getResources().getResource("client", "config");
-		saver = new GameSaver(queue, atlas);
+		saver = new GameSaver(queue);
 		panel = new GamePanel();
-		this.atlas = atlas;
 		setVariable("panel", panel);
 		
 		// maakt functies beschikbaar voor scripting:
@@ -111,7 +108,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 			break;
 		default:
 			if(code == keys.map) {
-				new MapDialog(Engine.getUI().getWindow(), atlas.getCurrentZone()).show();
+				new MapDialog(Engine.getUI().getWindow(), Engine.getAtlas().getCurrentZone()).show();
 			} else if(code == keys.sneak) {
 				player.setSneaking(!player.isSneaking());
 				panel.repaint();

@@ -49,9 +49,8 @@ import net.engio.mbassy.listener.Handler;
  * @author mdriesen
  */
 public class Engine extends FiniteStateMachine implements Runnable {
+	// wordt door engine geïnitialiseerd
 	private static UserInterface UI;
-	private static Timer timer;				// klok
-	private static Player player;
 	private static ScriptEngine engine;	
 	private static FileSystem files;		// virtual file system
 	private static PhysicsSystem physics;	// de physics engine
@@ -59,10 +58,11 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	private static QuestTracker quests;	
 	private static MBassador<EventObject> bus;	// event bus
 	private static TaskQueue queue;
-	
-	private static UIDStore store;
 	private static ResourceManager resources;
-	private static Atlas atlas;
+
+	// wordt extern geset
+	private static Game game;
+	
 	private Configuration config;
 
 	/**
@@ -74,7 +74,6 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	public Engine() {
 		// engine componenten opzetten
 		engine = new ScriptEngineManager().getEngineByName("JavaScript");
-		timer = new Timer();
 		files = new FileSystem();
 		physics = new PhysicsSystem();
 		queue = new TaskQueue();
@@ -88,8 +87,6 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		quests = new QuestTracker();
 		initEvents();
-		store = new UIDStore();
-		atlas = new Atlas(files);
 		config = new Configuration(resources);
 	}
 	
@@ -109,25 +106,25 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		MainMenuState main = new MainMenuState(this);
 
 		// alle game substates. 
-		GameState game = new GameState(this, queue, atlas, bus);
+		GameState game = new GameState(this, queue, bus);
 		bus.subscribe(game);
 		// deuren
 		DoorState doors = new DoorState(game);
 		// locks
 		LockState locks = new LockState(game);
 		// bumpen
-		BumpState bump = new BumpState(game, atlas);
+		BumpState bump = new BumpState(game);
 		// move
-		MoveState move = new MoveState(game, atlas);
+		MoveState move = new MoveState(game);
 		// aim
-		AimState aim = new AimState(game, atlas);
+		AimState aim = new AimState(game);
 
 		// dialog state
 		DialogState dialog = new DialogState(this);
 		// inventory state
-		InventoryState inventory = new InventoryState(this, atlas);
+		InventoryState inventory = new InventoryState(this);
 		// containers
-		ContainerState container = new ContainerState(this, atlas);
+		ContainerState container = new ContainerState(this);
 		// journal state
 		JournalState journal = new JournalState(this);
 		
@@ -208,7 +205,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	 * @return	the player
 	 */
 	public static Player getPlayer() {
-		return player;
+		return game.getPlayer();
 	}
 	
 	public static QuestTracker getQuestTracker() {
@@ -226,7 +223,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	 * @return	the timer
 	 */
 	public static Timer getTimer() {
-		return timer;
+		return game.getTimer();
 	}
 	
 	/**
@@ -262,7 +259,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	}
 	
 	public static UIDStore getStore() {
-		return store;
+		return game.getStore();
 	}
 	
 	public static ResourceManager getResources() {
@@ -270,7 +267,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	}
 
 	public static Atlas getAtlas() {
-		return atlas;
+		return game.getAtlas();
 	}
 	
 	public static TaskQueue getQueue() {
@@ -285,9 +282,11 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	 * 
 	 * @param p	the player
 	 */
-	public static void setPlayer(Player p) {
-		player = p;
-		// toevoegen aan script engine
+	public static void startGame(Game g) {
+		game = g;
+		Player player = g.getPlayer();
+		
+		// player registreren
 		engine.put("journal", player.getJournal());	
 		engine.put("player", player);
 		engine.put("PC", player);

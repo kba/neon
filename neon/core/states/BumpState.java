@@ -27,7 +27,6 @@ import neon.core.handlers.MotionHandler;
 import neon.entities.Animal;
 import neon.entities.Creature;
 import neon.entities.Player;
-import neon.maps.Atlas;
 import neon.resources.RCreature.Size;
 import neon.ui.GamePanel;
 import neon.util.fsm.State;
@@ -37,11 +36,9 @@ public class BumpState extends State implements KeyListener {
 	private Creature creature;
 	private Popup popup;
 	private GamePanel panel;
-	private Atlas atlas;
 	
-	public BumpState(State parent, Atlas atlas) {
+	public BumpState(State parent) {
 		super(parent);
-		this.atlas = atlas;
 	}
 	
 	@Override
@@ -97,7 +94,7 @@ public class BumpState extends State implements KeyListener {
 				Player player = Engine.getPlayer();
 				player.mount(creature);
 				player.getBounds().setLocation(creature.getBounds().x, creature.getBounds().y);
-				atlas.getCurrentZone().removeCreature(creature.getUID());
+				Engine.getAtlas().getCurrentZone().removeCreature(creature.getUID());
 				panel.repaint();
 				Engine.post(new TransitionEvent("return"));
 			}

@@ -36,11 +36,9 @@ import org.jdom2.Element;
 
 public class GameSaver {
 	private TaskQueue queue;
-	private Atlas atlas;
 	
-	public GameSaver(TaskQueue queue, Atlas atlas) {
+	public GameSaver(TaskQueue queue) {
 		this.queue = queue;
-		this.atlas = atlas;
 	}
 	
 	/**
@@ -70,8 +68,8 @@ public class GameSaver {
 			dir.mkdir();
 		}
 		
-		// eerst alles vanuit temp naar save kopiÃ«ren, zodat savedoc zeker niet overschreven wordt
-		atlas.getCache().commit();
+		// eerst alles vanuit temp naar save kopiëren, zodat savedoc zeker niet overschreven wordt
+		Engine.getAtlas().getCache().commit();
 		Engine.getStore().getCache().commit();
 		Engine.getFileSystem().storeTemp(dir);
 		Engine.getFileSystem().saveFile(doc, new XMLTranslator(), "saves", player.getName(), "save.xml");
@@ -142,6 +140,7 @@ public class GameSaver {
 		
 		PC.setAttribute("spec", player.getSpecialisation().toString());
 		
+		Atlas atlas = Engine.getAtlas();
 		PC.setAttribute("map", Integer.toString(atlas.getCurrentMap().getUID()));
 		int l = atlas.getCurrentZoneIndex();
 		PC.setAttribute("l", Integer.toString(l));

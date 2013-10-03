@@ -20,6 +20,8 @@ package neon.maps;
 
 import java.util.concurrent.ConcurrentMap;
 import org.apache.jdbm.DB;
+import org.apache.jdbm.DBMaker;
+
 import neon.core.Engine;
 import neon.entities.Door;
 import neon.entities.Player;
@@ -31,18 +33,22 @@ import neon.systems.files.FileSystem;
  * @author mdriesen
  */
 public class Atlas {
-	private DB db;
+	private DB db = null;
 	private ConcurrentMap<Integer, Map> maps;
 	private int currentZone = 0;
 	private int currentMap = 0;
 	private FileSystem files;
 	
-	public Atlas(FileSystem files) {
+	/**
+	 * Initializes this {@code Atlas} with the given {@code FileSystem} and
+	 * cache path. The cache is lazy initialised. 
+	 * 
+	 * @param files	a {@code FileSystem}
+	 * @param file	the path to the file used for caching
+	 */
+	public Atlas(FileSystem files, String path) {
 		this.files = files;
-	}
-	
-	public void setCache(DB cache) {
-		db = cache;
+		db = DBMaker.openFile(path).disableLocking().make();
 		
 		if(db.getHashMap("maps") != null) {
 			maps = db.getHashMap("maps");

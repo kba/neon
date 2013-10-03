@@ -47,7 +47,6 @@ import neon.resources.RSign;
 import neon.resources.RSpell.SpellType;
 import neon.systems.files.FileUtils;
 import neon.systems.files.XMLTranslator;
-import org.apache.jdbm.DBMaker;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
@@ -70,19 +69,20 @@ public class GameLoader {
 	 */
 	public void initGame(String race, String name, Gender gender, 
 			Player.Specialisation spec, String profession, RSign sign) {
-		// engine initialiseren
-		initCache();
 		
 		// speler initialiseren
 		RCreature species = new RCreature(((RCreature)Engine.getResources().getResource(race)).toElement());
 		Player player = new Player(species, name, gender, spec, profession);
 		player.species.text = "@";
-		Engine.setPlayer(player);		
+		Engine.startGame(new Game(player, Engine.getFileSystem()));
 		setSign(player, sign);
 		for(Skill skill : Skill.values()) {
 			SkillHandler.checkFeat(skill, player);
 		}
 		
+		// maps initialiseren
+		initMaps();
+
 		CGame game = (CGame)Engine.getResources().getResource("game", "config");
 		
 		// starting items
@@ -139,8 +139,8 @@ public class GameLoader {
 		Path tempPath = Paths.get("temp");
 		FileUtils.copy(savePath, tempPath);
 		
-		// engine initialiseren
-		initCache();
+		// maps initialiseren
+		initMaps();
 		
 		// tijd juist zetten (met setTime(), anders worden listeners aangeroepen)
 		Engine.getTimer().setTime(Integer.parseInt(root.getChild("timer").getAttributeValue("ticks")));
@@ -204,10 +204,10 @@ public class GameLoader {
 	private void loadPlayer(Element playerData) {
 		// player aanmaken
 		RCreature species = (RCreature)Engine.getResources().getResource(playerData.getAttributeValue("race"));
-		Engine.setPlayer(new Player(new RCreature(species.toElement()), playerData.getAttributeValue("name"), 
+		Player player = new Player(new RCreature(species.toElement()), playerData.getAttributeValue("name"), 
 				Gender.valueOf(playerData.getAttributeValue("gender").toUpperCase()), Player.Specialisation.valueOf(playerData.getAttributeValue("spec")),
-				playerData.getAttributeValue("prof")));
-		Player player = Engine.getPlayer();
+				playerData.getAttributeValue("prof"));
+		Engine.startGame(new Game(player, Engine.getFileSystem()));
 		player.getBounds().setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
 		player.setSign(playerData.getAttributeValue("sign"));
 		player.species.text = "@";
@@ -251,10 +251,7 @@ public class GameLoader {
 		player.addMoney(Integer.parseInt(playerData.getChildText("money")));		
 	}
 
-	private void initCache() {
-		Engine.getAtlas().setCache(DBMaker.openFile("temp/atlas").disableLocking().make());
-		Engine.getStore().setCache(DBMaker.openFile("temp/store").disableLocking().make());
-		
+	private void initMaps() {
 		// mods en maps in uidstore steken
 		for(RMod mod : Engine.getResources().getResources(RMod.class)) {
 			if(Engine.getStore().getModUID(mod.id) == 0) {

@@ -34,7 +34,6 @@ import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.property.Condition;
 import neon.entities.property.Slot;
-import neon.maps.Atlas;
 import neon.resources.CClient;
 import neon.resources.RItem;
 import neon.ui.GamePanel;
@@ -44,12 +43,10 @@ import neon.util.fsm.State;
 public class MoveState extends State implements KeyListener {
 	private Player player;
 	private GamePanel panel;
-	private Atlas atlas;
 	private CClient keys;
 
-	public MoveState(State parent, Atlas atlas) {
+	public MoveState(State parent) {
 		super(parent, "move module");
-		this.atlas = atlas;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
 	}
 	
@@ -69,7 +66,7 @@ public class MoveState extends State implements KeyListener {
 		Point p = new Point(player.getBounds().x + x, player.getBounds().y + y);
 
 		// kijken of creature in de weg staat
-		Creature other = atlas.getCurrentZone().getCreature(p);
+		Creature other = Engine.getAtlas().getCurrentZone().getCreature(p);
 		if(other != null && !other.hasCondition(Condition.DEAD)) {
 			if(other.brain.isHostile()) {
 				Engine.post(new CombatEvent(player, other));
@@ -79,7 +76,7 @@ public class MoveState extends State implements KeyListener {
 			}
 		} else {	// niemand in de weg, dus moven
 			if(MotionHandler.move(player, p) == MotionHandler.DOOR) {
-				for(long uid : atlas.getCurrentZone().getItems(p)) {
+				for(long uid : Engine.getAtlas().getCurrentZone().getItems(p)) {
 					if(Engine.getStore().getEntity(uid) instanceof Door) {
 						Engine.post(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 					}
@@ -96,8 +93,8 @@ public class MoveState extends State implements KeyListener {
 	 */
 	private void act() {
 		// hier de lijst klonen, anders concurrentmodificationexceptions bij item oppakken
-		ArrayList<Long> items = new ArrayList<Long>(atlas.getCurrentZone().getItems(player.bounds));
-		Creature c = atlas.getCurrentZone().getCreature(player.bounds.getLocation());
+		ArrayList<Long> items = new ArrayList<Long>(Engine.getAtlas().getCurrentZone().getItems(player.bounds));
+		Creature c = Engine.getAtlas().getCurrentZone().getCreature(player.bounds.getLocation());
 		if(c != null) {
 			items.add(c.getUID());
 		}
@@ -117,16 +114,16 @@ public class MoveState extends State implements KeyListener {
 				}
 			} else if(entity instanceof Door) {
 				if(MotionHandler.teleport(player, (Door)entity) == MotionHandler.OK) {
-					Engine.getTimer().addTick();
+					Engine.post(new TurnEvent(Engine.getTimer().addTick()));
 				}
 			} else if(entity instanceof Creature){
 				Engine.post(new TransitionEvent("container", "holder", entity));							
 			} else {
-				atlas.getCurrentZone().removeItem((Item)entity);
+				Engine.getAtlas().getCurrentZone().removeItem((Item)entity);
 				InventoryHandler.addItem(player, entity.getUID());
 			}
 		} else if(items.size() > 1) {
-			Engine.post(new TransitionEvent("container", "holder", atlas.getCurrentZone()));
+			Engine.post(new TransitionEvent("container", "holder", Engine.getAtlas().getCurrentZone()));
 		}
 	}
 
@@ -164,7 +161,7 @@ public class MoveState extends State implements KeyListener {
 			if(player.isMounted()) {
 				Creature mount = player.getMount();
 				player.unmount();
-				atlas.getCurrentZone().addCreature(mount);
+				Engine.getAtlas().getCurrentZone().addCreature(mount);
 				mount.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
 			}
 		} else if(code == keys.magic) {

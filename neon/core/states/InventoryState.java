@@ -19,7 +19,6 @@
 package neon.core.states;
 
 import neon.core.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.BorderLayout;
@@ -32,7 +31,6 @@ import neon.core.handlers.SkillHandler;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.property.Skill;
-import neon.maps.Atlas;
 import neon.resources.CClient;
 import neon.resources.RItem;
 import neon.resources.RText;
@@ -48,11 +46,9 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 	private HashMap<String, Integer> listData;
 	private JPanel panel;
 	private DescriptionPanel description;
-	private Atlas atlas;
 	
-	public InventoryState(Engine engine, Atlas atlas) {
+	public InventoryState(Engine engine) {
 		super(engine, "inventory module");
-		this.atlas = atlas;
 		panel = new JPanel(new BorderLayout());
 		
 		// info
@@ -178,7 +174,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 				Item item = inventory.getSelectedValue();
 				InventoryHandler.removeItem(player, item.getUID());
 				item.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
-				atlas.getCurrentZone().addItem(item);
+				Engine.getAtlas().getCurrentZone().addItem(item);
 				initList();
 				inventory.setSelectedIndex(0);
 				inventory.repaint();

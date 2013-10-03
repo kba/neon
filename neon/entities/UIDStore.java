@@ -24,9 +24,9 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.jdbm.DB;
+import org.apache.jdbm.DBMaker;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-
 import neon.entities.serialization.EntitySerializer;
 
 /**
@@ -55,9 +55,9 @@ public class UIDStore {
 	 * 
 	 * @param cache
 	 */
-	public void setCache(DB cache) {
-		// db initialiseren
-		db = cache;
+	public UIDStore(String file) {
+		db = DBMaker.openFile(file).disableLocking().make();
+
 		if(db.getHashMap("objects") != null) {
 			objects = db.getHashMap("objects");
 			mods = db.getHashMap("mods");			
