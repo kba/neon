@@ -26,7 +26,7 @@
   <type id="wall_adobe" color="tan" char="#" mod="block">an adobe wall</type>
   <type id="ore_iron" color="steelBlue" char="#" mod="block">iron ore</type>
   <type id="ice" color="snow" char="#" mod="block" />
-  <type id="tubers" color="darkOliveGreen" char="ҩ" />
+  <type id="tubers" color="darkOliveGreen" char="ϡ" />
   <type id="tomatoes" color="darkOliveGreen" char="ω" />
   <type id="pumpkins" color="darkOliveGreen" char="ж" />
   <type id="cucumbers" color="darkOliveGreen" char="Ϡ" />
