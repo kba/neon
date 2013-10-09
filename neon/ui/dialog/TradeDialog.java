@@ -34,6 +34,7 @@ import neon.entities.Creature;
 import neon.entities.Entity;
 import neon.entities.Item;
 import neon.entities.Player;
+import neon.ui.Client;
 import neon.ui.DescriptionPanel;
 
 public class TradeDialog implements KeyListener, ListSelectionListener {
@@ -159,9 +160,9 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 				}
 			} catch (Exception e) {
 				if(sellList.hasFocus()) {
-					Engine.getUI().showMessage("There is nothing left to sell.", 2);
+					Client.getUI().showMessage("There is nothing left to sell.", 2);
 				} else {
-					Engine.getUI().showMessage("There is nothing left to buy.", 2);
+					Client.getUI().showMessage("There is nothing left to buy.", 2);
 				}
 			} 
 			break;
@@ -198,7 +199,7 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 	private void buy(Item item) {
 		int price = item.resource.cost;
 		if(price > player.getMoney()) {
-			Engine.getUI().showMessage("Not enough money to buy this item.", 2);
+			Client.getUI().showMessage("Not enough money to buy this item.", 2);
 		} else {
 			InventoryHandler.removeItem(trader, item.getUID());
 			player.inventory.addItem(item.getUID());				

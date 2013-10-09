@@ -33,6 +33,7 @@ import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.resources.RCraft;
+import neon.ui.Client;
 
 public class CrafterDialog implements KeyListener {
 	private JDialog frame;
@@ -111,13 +112,13 @@ public class CrafterDialog implements KeyListener {
 					Engine.getStore().addEntity(item);
 					player.inventory.addItem(item.getUID());
 					player.addMoney(-craft.cost);
-					Engine.getUI().showMessage("Item crafted.", 2);
+					Client.getUI().showMessage("Item crafted.", 2);
 					initItems();
 				} else {
-					Engine.getUI().showMessage("You don't have enough money.", 2);
+					Client.getUI().showMessage("You don't have enough money.", 2);
 				}
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Engine.getUI().showMessage("No item selected.", 2);
+				Client.getUI().showMessage("No item selected.", 2);
 			}
 			break;
 		}

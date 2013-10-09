@@ -16,17 +16,16 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import neon.core.*;
 import neon.entities.Creature;
 import neon.entities.Door;
 import neon.entities.Player;
-
 import java.awt.event.*;
 import javax.swing.Popup;
-
 import neon.resources.RItem;
+import neon.ui.Client;
 import neon.ui.GamePanel;
 import neon.util.fsm.*;
 
@@ -47,14 +46,14 @@ public class DoorState extends State implements KeyListener {
 			
 		if(Engine.getPlayer().bounds.getLocation().distance(door.bounds.getLocation()) < 2) {
 			if(door.lock.isClosed()) {
-				popup = Engine.getUI().showPopup("1) open door 2) lock door 0) cancel");
+				popup = Client.getUI().showPopup("1) open door 2) lock door 0) cancel");
 			} else if(door.lock.isLocked()) {
-				popup = Engine.getUI().showPopup("1) pick lock 2) unlock door 3) bash door 0) cancel");
+				popup = Client.getUI().showPopup("1) pick lock 2) unlock door 3) bash door 0) cancel");
 			} else {
-				popup = Engine.getUI().showPopup("1) close door 2) lock door 0) cancel");
+				popup = Client.getUI().showPopup("1) close door 2) lock door 0) cancel");
 			} 
 		} else {
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 		}
 	}
 
@@ -74,51 +73,51 @@ public class DoorState extends State implements KeyListener {
 		case KeyEvent.VK_NUMPAD1:
 			if(door.lock.isClosed()) {
 				door.lock.open();
-				Engine.getUI().showMessage("Door opened.", 1);
+				Client.getUI().showMessage("Door opened.", 1);
 				panel.repaint();
 			} else if(door.lock.isLocked()) {
 				if(player.pickLock(door.lock)) {
 					door.lock.unlock();
-					Engine.getUI().showMessage("Lock picked.", 1);
+					Client.getUI().showMessage("Lock picked.", 1);
 				} else {
-					Engine.getUI().showMessage("The lock doesn't budge.", 1);
+					Client.getUI().showMessage("The lock doesn't budge.", 1);
 				}
 			} else if(door.lock.isOpen()) {
 				door.lock.close();
-				Engine.getUI().showMessage("Door closed.", 1);
+				Client.getUI().showMessage("Door closed.", 1);
 			}
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_2:
 		case KeyEvent.VK_NUMPAD2:
 			if(door.lock.getLockDC() == 0) {
-				Engine.getUI().showMessage("This door has no lock.", 1);
+				Client.getUI().showMessage("This door has no lock.", 1);
 			} else if(door.lock.getKey() != null && hasItem(player, door.lock.getKey())) {
 				if(door.lock.isClosed() || door.lock.isOpen()) {
 					door.lock.lock();
-					Engine.getUI().showMessage("Door locked.", 1);
+					Client.getUI().showMessage("Door locked.", 1);
 				} else if(door.lock.isLocked()) {
 					door.lock.unlock();	
-					Engine.getUI().showMessage("Door unlocked.", 1);
+					Client.getUI().showMessage("Door unlocked.", 1);
 				}
 			} else {
-				Engine.getUI().showMessage("No key for this door.", 1);
+				Client.getUI().showMessage("No key for this door.", 1);
 			}
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_3: 
 		case KeyEvent.VK_NUMPAD3: 
 			if(door.lock.isLocked()) {
 				door.lock.open();
 				door.lock.setLockDC(0);
-				Engine.getUI().showMessage("Lock broken", 1);
+				Client.getUI().showMessage("Lock broken", 1);
 				panel.repaint();
 			}
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_NUMPAD0: 
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		}
 	}

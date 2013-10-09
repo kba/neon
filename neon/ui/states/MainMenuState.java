@@ -16,7 +16,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import neon.core.*;
 import neon.resources.CClient;
+import neon.ui.Client;
 import neon.ui.dialog.LoadGameDialog;
 import neon.ui.dialog.NewGameDialog;
 import neon.ui.dialog.OptionDialog;
@@ -37,11 +38,9 @@ import neon.util.fsm.TransitionEvent;
 
 public class MainMenuState extends State {
 	private JPanel main;
-	private Engine engine;
 	
-	public MainMenuState(Engine engine) {
-		super(engine, "main menu");
-		this.engine = engine;
+	public MainMenuState(State parent) {
+		super(parent, "main menu");
 		
 		// het main menu JPanel zelf
 		main = new JPanel(new BorderLayout());
@@ -103,7 +102,7 @@ public class MainMenuState extends State {
 	
 	@Override
 	public void enter(TransitionEvent t) {
-		Engine.getUI().showPanel(main);
+		Client.getUI().showPanel(main);
 	}
 	
 	// knop action
@@ -116,11 +115,11 @@ public class MainMenuState extends State {
 		
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("n")) {
-				new NewGameDialog(Engine.getUI().getWindow(), engine).show();
+				new NewGameDialog(Client.getUI().getWindow(), MainMenuState.this).show();
 			} else if(e.getActionCommand().equals("l")) {
-				new LoadGameDialog(Engine.getUI().getWindow(), engine.getConfig()).show();
+				new LoadGameDialog(Client.getUI().getWindow(), MainMenuState.this).show();
 			} else if(e.getActionCommand().equals("o")) {
-				new OptionDialog(Engine.getUI().getWindow()).show();
+				new OptionDialog(Client.getUI().getWindow()).show();
 			} else if(e.getActionCommand().equals("q")) {
 				System.exit(0);
 			}

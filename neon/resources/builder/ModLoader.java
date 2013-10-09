@@ -37,10 +37,11 @@ public class ModLoader {
 	public ModLoader(String mod, TaskQueue queue, FileSystem files) {
 		this.queue = queue;
 		this.files = files;
+		
 		try {
 			path = files.mount(mod);
 		} catch (IOException e) {
-			Engine.getUI().showMessage("Invalid mod: " + path + ".", 3);
+			e.printStackTrace();
 		}
 	}
 

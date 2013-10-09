@@ -56,6 +56,7 @@ public class FiniteStateMachine extends State {
 		}
 	}
 
+	@Override
 	public void transition(TransitionEvent event) {
 		// hier een kopie van currents maken, omdat currents kan aangepast worden
 		for(State current : new ArrayList<State>(currents)) {

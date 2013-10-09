@@ -64,6 +64,7 @@ public class GamePanel extends JComponent {
 		
         // stats field (mottige manier om dit semi-transparant te krijgen)
 		stats = new JPanel(new GridLayout(0, 1)) {
+			@Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(new Color(0, 0, 0, 150));
@@ -151,6 +152,7 @@ public class GamePanel extends JComponent {
 		text.append(message + "\n");
     }
 	
+	@Override
 	public void repaint() {
 		if(Engine.getPlayer() != null) {
 			drawStats();

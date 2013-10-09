@@ -31,6 +31,7 @@ import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.Weapon;
+import neon.ui.Client;
 
 public class RepairDialog implements KeyListener {
 	private JDialog frame;
@@ -101,9 +102,9 @@ public class RepairDialog implements KeyListener {
 					((Weapon)item).setState(100);					
 				}
 				initItems();
-				Engine.getUI().showMessage("Item repaired.", 2);
+				Client.getUI().showMessage("Item repaired.", 2);
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Engine.getUI().showMessage("No item selected.", 2);
+				Client.getUI().showMessage("No item selected.", 2);
 			}
 			break;
 		}

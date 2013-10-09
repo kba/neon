@@ -36,6 +36,7 @@ import neon.entities.Weapon;
 import neon.entities.components.Enchantment;
 import neon.magic.Effect;
 import neon.resources.RSpell;
+import neon.ui.Client;
 
 public class EnchantDialog implements KeyListener, ListSelectionListener {
 	private JDialog frame;
@@ -133,10 +134,10 @@ public class EnchantDialog implements KeyListener, ListSelectionListener {
 				Item item = itemList.getSelectedValue();
 				RSpell spell = new RSpell(effect.toString(), 0, 0, effect.name(), 0, 0, "enchant");
 				item.enchantment = new Enchantment(spell, 100, item.getUID());
-				Engine.getUI().showMessage("Item enchanted.", 2);
+				Client.getUI().showMessage("Item enchanted.", 2);
 				initLists();
 			} else {
-				Engine.getUI().showMessage("No enchantment selected!", 2);				
+				Client.getUI().showMessage("No enchantment selected!", 2);				
 			}
 		}
 	}

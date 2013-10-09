@@ -16,7 +16,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -36,6 +36,7 @@ import neon.entities.property.Condition;
 import neon.entities.property.Slot;
 import neon.resources.CClient;
 import neon.resources.RItem;
+import neon.ui.Client;
 import neon.ui.GamePanel;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
@@ -72,13 +73,13 @@ public class MoveState extends State implements KeyListener {
 				Engine.post(new CombatEvent(player, other));
 				Engine.post(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 			} else {
-				Engine.post(new TransitionEvent("bump", "creature", other));
+				transition(new TransitionEvent("bump", "creature", other));
 			}
 		} else {	// niemand in de weg, dus moven
 			if(MotionHandler.move(player, p) == MotionHandler.DOOR) {
 				for(long uid : Engine.getAtlas().getCurrentZone().getItems(p)) {
 					if(Engine.getStore().getEntity(uid) instanceof Door) {
-						Engine.post(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
+						transition(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 					}
 				}
 //			} else if(Configuration.audio) {	// TODO: audio hoort hier niet thuis
@@ -105,25 +106,25 @@ public class MoveState extends State implements KeyListener {
 				Container container = (Container)entity;
 				if(container.lock.isLocked()) {
 					if(container.lock.hasKey() && hasItem(player, container.lock.getKey())) {
-						Engine.post(new TransitionEvent("container", "holder", entity));
+						transition(new TransitionEvent("container", "holder", entity));
 					} else {
-						Engine.post(new TransitionEvent("lock", "lock", container.lock));						
+						transition(new TransitionEvent("lock", "lock", container.lock));						
 					}
 				} else {
-					Engine.post(new TransitionEvent("container", "holder", entity));
+					transition(new TransitionEvent("container", "holder", entity));
 				}
 			} else if(entity instanceof Door) {
 				if(MotionHandler.teleport(player, (Door)entity) == MotionHandler.OK) {
 					Engine.post(new TurnEvent(Engine.getTimer().addTick()));
 				}
 			} else if(entity instanceof Creature){
-				Engine.post(new TransitionEvent("container", "holder", entity));							
+				transition(new TransitionEvent("container", "holder", entity));							
 			} else {
 				Engine.getAtlas().getCurrentZone().removeItem((Item)entity);
 				InventoryHandler.addItem(player, entity.getUID());
 			}
 		} else if(items.size() > 1) {
-			Engine.post(new TransitionEvent("container", "holder", Engine.getAtlas().getCurrentZone()));
+			transition(new TransitionEvent("container", "holder", Engine.getAtlas().getCurrentZone()));
 		}
 	}
 
@@ -152,11 +153,11 @@ public class MoveState extends State implements KeyListener {
 		} else if(code == keys.act) {
 			act();
 		} else if(code == keys.look) {
-			Engine.post(new TransitionEvent("aim"));
+			transition(new TransitionEvent("aim"));
 		} else if(code == keys.shoot) {
-			Engine.post(new TransitionEvent("aim"));
+			transition(new TransitionEvent("aim"));
 		} else if(code == keys.talk) {
-			Engine.post(new TransitionEvent("aim"));
+			transition(new TransitionEvent("aim"));
 		} else if(code == keys.unmount) {
 			if(player.isMounted()) {
 				Creature mount = player.getMount();
@@ -173,15 +174,15 @@ public class MoveState extends State implements KeyListener {
 				out = MagicHandler.cast(player, item);
 			} 
 			switch(out) {
-			case MagicHandler.MANA: Engine.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
-			case MagicHandler.NONE: Engine.getUI().showMessage("No spell equiped.", 1); break;
-			case MagicHandler.SKILL: Engine.getUI().showMessage("Casting failed.", 1); break;
-			case MagicHandler.OK: Engine.getUI().showMessage("Spell cast.", 1); break;
-			case MagicHandler.NULL: Engine.getUI().showMessage("No spell equiped!", 1); break;
-			case MagicHandler.LEVEL: Engine.getUI().showMessage("Spell is too difficult to cast.", 1); break;
-			case MagicHandler.SILENCED: Engine.getUI().showMessage("You are silenced", 1); break;
-			case MagicHandler.INTERVAL: Engine.getUI().showMessage("Can't cast this power yet.", 1); break;
-			case MagicHandler.RANGE: Engine.post(new TransitionEvent("aim")); break;
+			case MagicHandler.MANA: Client.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
+			case MagicHandler.NONE: Client.getUI().showMessage("No spell equiped.", 1); break;
+			case MagicHandler.SKILL: Client.getUI().showMessage("Casting failed.", 1); break;
+			case MagicHandler.OK: Client.getUI().showMessage("Spell cast.", 1); break;
+			case MagicHandler.NULL: Client.getUI().showMessage("No spell equiped!", 1); break;
+			case MagicHandler.LEVEL: Client.getUI().showMessage("Spell is too difficult to cast.", 1); break;
+			case MagicHandler.SILENCED: Client.getUI().showMessage("You are silenced", 1); break;
+			case MagicHandler.INTERVAL: Client.getUI().showMessage("Can't cast this power yet.", 1); break;
+			case MagicHandler.RANGE: transition(new TransitionEvent("aim")); break;
 			}
 		}
 	}

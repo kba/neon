@@ -69,4 +69,8 @@ public class State {
 	boolean isBlocked() {
 		return blocked;
 	}
+	
+	public void transition(TransitionEvent event) {
+		parent.transition(event);
+	}
 }

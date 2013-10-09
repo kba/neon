@@ -28,6 +28,7 @@ import javax.swing.border.*;
 import neon.core.Engine;
 import neon.entities.Item;
 import neon.entities.Player;
+import neon.ui.Client;
 
 public class ChargeDialog implements KeyListener {
 	private Player player;
@@ -94,9 +95,9 @@ public class ChargeDialog implements KeyListener {
 			try {
 				Item item = (Item)items.getSelectedValue();
 				item.enchantment.setModifier(0);
-				Engine.getUI().showMessage("Item charged.", 2);
+				Client.getUI().showMessage("Item charged.", 2);
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Engine.getUI().showMessage("No item selected.", 2);
+				Client.getUI().showMessage("No item selected.", 2);
 			}
 			break;
 		}

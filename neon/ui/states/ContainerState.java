@@ -16,7 +16,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import neon.core.Engine;
 import neon.maps.Zone;
@@ -57,8 +57,8 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 	// lijstjes
 	private HashMap<String, Integer> cData, iData;
 	
-	public ContainerState(Engine engine) {
-		super(engine);
+	public ContainerState(State parent) {
+		super(parent);
 		
 		panel = new JPanel(new BorderLayout());
         JPanel center = new JPanel(new java.awt.GridLayout(0,3));
@@ -102,7 +102,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 		container = t.getParameter("holder");
 		cScroll.setBorder(new TitledBorder(new LineBorder(line), container.toString()));
 		player = Engine.getPlayer();
-		Engine.getUI().showPanel(panel);
+		Client.getUI().showPanel(panel);
 		update();
 		iList.requestFocus();
 		iList.setSelectedIndex(0);
@@ -115,7 +115,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 		switch (key.getKeyCode()) {
 		case KeyEvent.VK_CONTROL: 
 		case KeyEvent.VK_ESCAPE: 
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_RIGHT:
@@ -150,14 +150,14 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 				} else {	// iets oppakken
 					Entity item = (Entity)cList.getSelectedValue();
 					if(item instanceof Container) {
-						Engine.post(new TransitionEvent("return"));
-						Engine.post(new TransitionEvent("container", "holder", item));
+						transition(new TransitionEvent("return"));
+						transition(new TransitionEvent("container", "holder", item));
 					} else if(item instanceof Door) {
 						MotionHandler.teleport(player, (Door)item);
-						Engine.post(new TransitionEvent("return"));
+						transition(new TransitionEvent("return"));
 					} else if(item instanceof Creature) {
-						Engine.post(new TransitionEvent("return"));
-						Engine.post(new TransitionEvent("container", "holder", item));
+						transition(new TransitionEvent("return"));
+						transition(new TransitionEvent("container", "holder", item));
 					} else {
 						if(container instanceof Zone) {
 							Engine.getAtlas().getCurrentZone().removeItem((Item)item);
@@ -172,9 +172,9 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 				}
 			} catch (ArrayIndexOutOfBoundsException e) {
 				if(iList.hasFocus()) {
-					Engine.getUI().showMessage("There is nothing left to drop.", 2);
+					Client.getUI().showMessage("There is nothing left to drop.", 2);
 				} else {
-					Engine.getUI().showMessage("There is nothing left to pick up.", 2);
+					Client.getUI().showMessage("There is nothing left to pick up.", 2);
 				}
 			} 
 		}

@@ -34,7 +34,7 @@ public class CServer extends Resource {
 	private String log = "FINEST";
 	private boolean gThread = true;
 //	private boolean audio = false;
-//	private int ai = 20;
+	private int ai = 20;
 	
 	public CServer(String... path) {
 		super("ini", path);
@@ -59,6 +59,9 @@ public class CServer extends Resource {
 		
 		// map generation thread
 		gThread = root.getChild("threads").getAttributeValue("generate").equals("on");
+		
+		// ai range
+		ai = Integer.parseInt(root.getChildText("ai"));
 	}
 
 
@@ -78,5 +81,9 @@ public class CServer extends Resource {
 	
 	public boolean isMapThreaded() {
 		return gThread;
+	}
+	
+	public int getAIRange() {
+		return ai;
 	}
 }

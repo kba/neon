@@ -23,11 +23,11 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.*;
-import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.magic.Effect;
 import neon.resources.RSpell;
+import neon.ui.Client;
 
 public class SpellMakerDialog {
 	private JDialog frame;
@@ -134,7 +134,7 @@ public class SpellMakerDialog {
 				player.animus.addSpell(createSpell());
 				frame.dispose();
 			} else {
-				Engine.getUI().showMessage("Please fill in all required fields.", 2);
+				Client.getUI().showMessage("Please fill in all required fields.", 2);
 			}
 		}
 	}

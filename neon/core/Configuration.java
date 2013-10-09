@@ -27,7 +27,7 @@ import neon.resources.ResourceManager;
 import javax.swing.UIManager;
 
 public class Configuration {
-	public static final String version = "0.4.1";	// huidige versie
+	public static final String version = "0.4.2";	// huidige versie
 	public static boolean audio = false;	// audio aan of uit?
 	public static boolean gThread = true;	// terrain generation threaded of niet?
 

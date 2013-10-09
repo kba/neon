@@ -29,7 +29,9 @@ import neon.entities.property.Condition;
 import neon.entities.property.Habitat;
 import neon.maps.*;
 import neon.maps.Region.Modifier;
+import neon.resources.CServer;
 import neon.resources.RRegionTheme;
+import neon.ui.Client;
 import neon.ui.GamePanel;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
@@ -39,9 +41,13 @@ import net.engio.mbassy.listener.References;
 public class TurnHandler {
 	private GamePanel panel;
 	private Generator generator;
+	private int range;
 	
 	public TurnHandler(GamePanel panel) {
 		this.panel = panel;
+		
+		CServer ini = (CServer)Engine.getResources().getResource("ini", "config");
+		range = ini.getAIRange();
 	}
 	
 	@Handler public void tick(TurnEvent te) {
@@ -62,7 +68,6 @@ public class TurnHandler {
 
 		// monsters controleren
 		Player player = Engine.getPlayer();
-		int range = (panel.getVisibleRectangle().width + panel.getVisibleRectangle().width)/4;
 		for(long uid : Engine.getAtlas().getCurrentZone().getCreatures()) {
 			Creature creature = (Creature)Engine.getStore().getEntity(uid);
 			if(!creature.hasCondition(Condition.DEAD)) {
@@ -91,16 +96,16 @@ public class TurnHandler {
 		player.animus.addMana(player.getWis()/100f);
 		
 		// en systems updaten
-//		long tijd = System.currentTimeMillis();
 		Engine.getPhysicsEngine().update();
-//		System.out.println("physics time = " + (System.currentTimeMillis() - tijd));
-		Engine.getUI().update();
+		Client.getUI().update();
 	}
 	
 	private class Generator extends Thread {
+		@Override
 		public void run() {
+			// enkel repainten nadat er iets gegenereerd is
 			if(checkRegions()) {
-				panel.repaint();	// anders wordt er teveel gerepaint
+				Client.getUI().update();
 			}
 		}
 	}

@@ -16,7 +16,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import java.awt.Point;
 import neon.core.*;
@@ -35,6 +35,7 @@ import javax.swing.Popup;
 import neon.resources.CClient;
 import neon.resources.RWeapon.WeaponType;
 import neon.systems.animation.Translation;
+import neon.ui.Client;
 import neon.ui.GamePanel;
 import neon.ui.graphics.DefaultRenderable;
 import neon.util.fsm.*;
@@ -114,7 +115,7 @@ public class AimState extends State implements KeyListener {
 		} else if(code == keys.act) {
 			act();
 		} else if(code == keys.look) {
-			Engine.post(new TransitionEvent("return", "message", "Aiming cancelled."));
+			transition(new TransitionEvent("return", "message", "Aiming cancelled."));
 		} else if(code == keys.shoot) {
 			shoot();
 		} else if(code == keys.magic) {
@@ -137,24 +138,24 @@ public class AimState extends State implements KeyListener {
 						shoot(ammo, victim);
 						Engine.post(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
-						Engine.getUI().showMessage("No arrows equiped!", 1);
+						Client.getUI().showMessage("No arrows equiped!", 1);
 					}
 				} else if(CombatUtils.getWeaponType(player) == WeaponType.CROSSBOW) {
 					if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.BOLT) {
 						Engine.post(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
-						Engine.getUI().showMessage("No bolts equiped!", 1);
+						Client.getUI().showMessage("No bolts equiped!", 1);
 					}
 				} else {
-					Engine.getUI().showMessage("No ranged weapon equiped!", 1);
+					Client.getUI().showMessage("No ranged weapon equiped!", 1);
 				}
 			} else {
-				Engine.getUI().showMessage("No target!", 1);
+				Client.getUI().showMessage("No target!", 1);
 			}
 		} else {
-			Engine.getUI().showMessage("Out of range!", 1);
+			Client.getUI().showMessage("Out of range!", 1);
 		}		
-		Engine.post(new TransitionEvent("return"));			
+		transition(new TransitionEvent("return"));			
 	}
 	
 	private void shoot(Item projectile, Creature victim) {
@@ -170,15 +171,17 @@ public class AimState extends State implements KeyListener {
 			if(creature != null) {
 				if(creature.hasDialog()) {
 					// dialog module
-					Engine.post(new TransitionEvent("dialog", "speaker", creature));
+					TransitionEvent te = new TransitionEvent("dialog", "speaker", creature);
+					Engine.post(te);
+					transition(te);
 				} else {
-					Engine.post(new TransitionEvent("return", "message", "Creature can't talk."));
+					transition(new TransitionEvent("return", "message", "Creature can't talk."));
 				}
 			} else {
-				Engine.post(new TransitionEvent("return", "message", "No person to talk to selected."));
+				transition(new TransitionEvent("return", "message", "No person to talk to selected."));
 			}
 		} else {
-			Engine.getUI().showMessage("Too far away.", 1);
+			Client.getUI().showMessage("Too far away.", 1);
 		}		
 	}
 	
@@ -193,14 +196,14 @@ public class AimState extends State implements KeyListener {
 		}
 
 		switch(out) {
-		case MagicHandler.MANA: Engine.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
-		case MagicHandler.RANGE: Engine.getUI().showMessage("Target out of range.", 1); break;
-		case MagicHandler.NONE: Engine.getUI().showMessage("No spell equiped.", 1); break;
-		case MagicHandler.SKILL: Engine.getUI().showMessage("Casting failed.", 1); break;
-		case MagicHandler.OK: Engine.getUI().showMessage("Spell cast.", 1); break;
-		case MagicHandler.NULL: Engine.getUI().showMessage("No target selected.", 1); break;
+		case MagicHandler.MANA: Client.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
+		case MagicHandler.RANGE: Client.getUI().showMessage("Target out of range.", 1); break;
+		case MagicHandler.NONE: Client.getUI().showMessage("No spell equiped.", 1); break;
+		case MagicHandler.SKILL: Client.getUI().showMessage("Casting failed.", 1); break;
+		case MagicHandler.OK: Client.getUI().showMessage("Spell cast.", 1); break;
+		case MagicHandler.NULL: Client.getUI().showMessage("No target selected.", 1); break;
 		}
-		Engine.post(new TransitionEvent("return"));
+		transition(new TransitionEvent("return"));
 	}
 	
 	private void look() {
@@ -222,16 +225,16 @@ public class AimState extends State implements KeyListener {
 			if(creature != null) {
 				actors = ", " + creature.toString();
 			}
-			popup = Engine.getUI().showPopup(zone.getRegion(target) + items + actors);
+			popup = Client.getUI().showPopup(zone.getRegion(target) + items + actors);
 		} else {
-			popup = Engine.getUI().showPopup("Too far away.");			
+			popup = Client.getUI().showPopup("Too far away.");			
 		}
 	}
 	
 	private void act() {
 		for(long uid : Engine.getAtlas().getCurrentZone().getItems(target)) {
 			if(Engine.getStore().getEntity(uid) instanceof Door) {
-				Engine.post(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
+				transition(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 				break;
 			}
 		}

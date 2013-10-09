@@ -29,6 +29,8 @@ import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.entities.property.Skill;
+import neon.ui.Client;
+import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 import neon.resources.RPerson;
 
@@ -39,8 +41,10 @@ public class TrainingDialog implements KeyListener {
 	private JList<Skill> skills;
 	private Creature trainer;	// uw trainer
 	private JScrollPane scroller;
+	private State dialog;
 	
-	public TrainingDialog(JFrame parent) {
+	public TrainingDialog(JFrame parent, State dialog) {
+		this.dialog = dialog;
 		this.parent = parent;
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
@@ -98,12 +102,12 @@ public class TrainingDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				train(skills.getSelectedValue());
-				Engine.getUI().showMessage("Training finished.", 2);
+				Client.getUI().showMessage("Training finished.", 2);
 				// terug naar gameModule
 				frame.dispose();
-				Engine.post(new TransitionEvent("return"));
+				dialog.transition(new TransitionEvent("return"));
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Engine.getUI().showMessage("No skill selected.", 2);
+				Client.getUI().showMessage("No skill selected.", 2);
 			}
 			break;
 		}

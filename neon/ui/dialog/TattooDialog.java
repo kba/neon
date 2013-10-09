@@ -29,6 +29,7 @@ import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.resources.RTattoo;
+import neon.ui.Client;
 
 public class TattooDialog implements KeyListener {
 	private JDialog frame;
@@ -101,17 +102,17 @@ public class TattooDialog implements KeyListener {
 				if(!player.getTattoos().contains(tattoo)) {
 					if(player.getMoney() >= tattoo.cost) {
 						player.addTattoo(tattoo);
-						Engine.getUI().showMessage("You got the tattoo '" + tattoo.name + "'.", 2);
+						Client.getUI().showMessage("You got the tattoo '" + tattoo.name + "'.", 2);
 						player.addMoney(-tattoo.cost);
 						initTattoos();
 					} else {
-						Engine.getUI().showMessage("You don't have enough money.", 2);						
+						Client.getUI().showMessage("You don't have enough money.", 2);						
 					}
 				} else {
-					Engine.getUI().showMessage("You already have that tattoo.", 2);
+					Client.getUI().showMessage("You already have that tattoo.", 2);
 				}
 			} catch (Exception f) {
-				Engine.getUI().showMessage("There is nothing left to buy.", 2);
+				Client.getUI().showMessage("There is nothing left to buy.", 2);
 			} 
 			break;
 		}

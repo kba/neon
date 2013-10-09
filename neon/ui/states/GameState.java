@@ -16,7 +16,7 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import neon.core.*;
 import neon.core.event.*;
@@ -42,8 +42,8 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	private GameSaver saver;
 	private CClient keys;
 	
-	public GameState(Engine engine, TaskQueue queue, MBassador<EventObject> bus) {
-		super(engine, "game module");
+	public GameState(State parent, TaskQueue queue, MBassador<EventObject> bus) {
+		super(parent, "game module");
 		keys = (CClient)Engine.getResources().getResource("client", "config");
 		saver = new GameSaver(queue);
 		panel = new GamePanel();
@@ -56,7 +56,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 
 	@Override
 	public void enter(TransitionEvent e) {
-		Engine.getUI().showPanel(panel);
+		Client.getUI().showPanel(panel);
 		if(e.toString().equals("start")) {
 			player = Engine.getPlayer();
 			Engine.getPhysicsEngine().addListener(this);
@@ -89,7 +89,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		int code = key.getKeyCode();
 		switch(code) {
 		case KeyEvent.VK_CONTROL:
-			Engine.post(new TransitionEvent("inventory"));
+			transition(new TransitionEvent("inventory"));
 			break;
 		case KeyEvent.VK_F5:
 			save(false); break;
@@ -98,30 +98,30 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		case KeyEvent.VK_F1:
 			InputStream input = Engine.class.getResourceAsStream("help.html");
 			String help = new Scanner(input, "UTF-8").useDelimiter("\\A").next();
-			Engine.getUI().showHelp(help);
+			Client.getUI().showHelp(help);
 			break;
 		case KeyEvent.VK_F2:
 			panel.toggleHUD();
 			break;
 		case KeyEvent.VK_F3:
-			Engine.getUI().showConsole(Engine.getScriptEngine());
+			Client.getUI().showConsole(Engine.getScriptEngine());
 			break;
 		default:
 			if(code == keys.map) {
-				new MapDialog(Engine.getUI().getWindow(), Engine.getAtlas().getCurrentZone()).show();
+				new MapDialog(Client.getUI().getWindow(), Engine.getAtlas().getCurrentZone()).show();
 			} else if(code == keys.sneak) {
 				player.setSneaking(!player.isSneaking());
 				panel.repaint();
 			} else if(code == keys.journal) {
-				Engine.post(new TransitionEvent("journal"));
+				transition(new TransitionEvent("journal"));
 			}
 		}
 	}
 	
 	private void save(boolean quit) {
 		if(quit) {
-			if(Engine.getUI().showQuestion("Do you wish to quit?")) {
-				if(Engine.getUI().showQuestion("Do you wish to save?")) {
+			if(Client.getUI().showQuestion("Do you wish to quit?")) {
+				if(Client.getUI().showQuestion("Do you wish to save?")) {
 					saver.saveGame();
 				} 
 				Engine.quit();
@@ -129,7 +129,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 				panel.repaint();
 			}
 		} else {
-			if(Engine.getUI().showQuestion("Do you wish to save?")) {
+			if(Client.getUI().showQuestion("Do you wish to save?")) {
 				saver.saveGame();
 			}
 			panel.repaint();

@@ -16,13 +16,13 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import neon.core.*;
 import neon.entities.components.Lock;
-
 import java.awt.event.*;
 import javax.swing.Popup;
+import neon.ui.Client;
 import neon.ui.GamePanel;
 import neon.util.fsm.*;
 
@@ -41,9 +41,9 @@ public class LockState extends State implements KeyListener {
 		panel.addKeyListener(this);
 		lock = (Lock)e.getParameter("lock");
 		if(lock.isLocked()) {
-			popup = Engine.getUI().showPopup("1) pick lock 2) bash lock 0) cancel");
+			popup = Client.getUI().showPopup("1) pick lock 2) bash lock 0) cancel");
 		} else {
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 		} 
 	}
 
@@ -62,25 +62,25 @@ public class LockState extends State implements KeyListener {
 		case KeyEvent.VK_NUMPAD1:
 			if(Engine.getPlayer().pickLock(lock)) {
 				lock.unlock();
-				Engine.getUI().showMessage("Lock picked.", 1);
+				Client.getUI().showMessage("Lock picked.", 1);
 			} else {
-				Engine.getUI().showMessage("The lock doesn't budge.", 1);
+				Client.getUI().showMessage("The lock doesn't budge.", 1);
 			}
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_2:
 		case KeyEvent.VK_NUMPAD2:
 			if(lock.isLocked()) {
 				lock.open();
 				lock.setLockDC(0);
-				Engine.getUI().showMessage("Lock broken", 1);
+				Client.getUI().showMessage("Lock broken", 1);
 				panel.repaint();
 			}
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_NUMPAD0: 
-			Engine.post(new TransitionEvent("return"));
+			transition(new TransitionEvent("return"));
 			break;
 		}
 	}

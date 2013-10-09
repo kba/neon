@@ -16,20 +16,19 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.states;
+package neon.ui.states;
 
 import java.awt.*;
 import neon.core.*;
 import neon.core.handlers.CombatUtils;
 import neon.entities.Player;
 import neon.entities.property.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 import java.awt.event.*;
-
 import neon.resources.RSpell;
+import neon.ui.Client;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
 
@@ -51,8 +50,8 @@ public class JournalState extends State implements FocusListener {
 	// spells panel
 	private JList<RSpell> sList;
 
-	public JournalState(Engine engine)  {
-		super(engine);
+	public JournalState(State parent)  {
+		super(parent);
 		main = new JPanel(new BorderLayout());
 		
 		// cardlayout om verschillende panels weer te geven.
@@ -126,7 +125,7 @@ public class JournalState extends State implements FocusListener {
 		instructions.setText("<html>Press J or esc to quit, Q to see quests, " +
 				"S to view spells and C for your character sheet. Use arrow keys " +
 				"to scroll through lists, shift + arrow keys to change list.</html>");
-		Engine.getUI().showPanel(main);		
+		Client.getUI().showPanel(main);		
 		skillScroller.requestFocus();
 	}
 	
@@ -246,7 +245,7 @@ public class JournalState extends State implements FocusListener {
 			System.out.println(command);
 			switch(command) {
 			case "esc":
-				Engine.post(new TransitionEvent("cancel"));
+				transition(new TransitionEvent("cancel"));
 				break;
 			case "right":
 				if(skillScroller.hasFocus()) {

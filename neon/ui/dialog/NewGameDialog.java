@@ -31,6 +31,8 @@ import neon.entities.property.Gender;
 import neon.resources.CGame;
 import neon.resources.RCreature;
 import neon.resources.RSign;
+import neon.ui.Client;
+import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 
 public class NewGameDialog {
@@ -43,10 +45,10 @@ public class NewGameDialog {
 	private JPanel main;
 	private JTextField name, prof;
 	private HashMap<String, String> raceList;
-	private Engine engine;
+	private State menu;
 		
-	public NewGameDialog(JFrame parent, Engine engine) {
-		this.engine = engine;
+	public NewGameDialog(JFrame parent, State menu) {
+		this.menu = menu;
 		this.parent = parent;
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
@@ -147,17 +149,17 @@ public class NewGameDialog {
 		
 		public void actionPerformed(ActionEvent e) {
 			if(name.getText().equals("")) {
-				Engine.getUI().showMessage("Please give a name.", 2);
+				Client.getUI().showMessage("Please give a name.", 2);
 				name.requestFocus();
 			} else if(checkSaves(name.getText())) {
-				Engine.getUI().showMessage("There is already a character with the given name. <br>" +
+				Client.getUI().showMessage("There is already a character with the given name. <br>" +
 						"Choose another name or remove the existing character.", 3);
 				name.requestFocus();
 			} else {
-				new GameLoader(engine.getConfig()).initGame(raceList.get(race.getSelectedItem()), name.getText(), 
+				new GameLoader(Engine.getConfig()).initGame(raceList.get(race.getSelectedItem()), name.getText(), 
 						(Gender)gender.getSelectedItem(), (Player.Specialisation)spec.getSelectedItem(), 
 						prof.getText(), (RSign)signBox.getSelectedItem());
-				Engine.post(new TransitionEvent("start"));
+				menu.transition(new TransitionEvent("start"));
 				frame.dispose();
 			}
 		}

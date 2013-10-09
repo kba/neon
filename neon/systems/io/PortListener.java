@@ -16,31 +16,10 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.narrative;
+package neon.systems.io;
 
-import neon.core.event.CombatEvent;
-import neon.core.event.SkillEvent;
-import neon.util.fsm.TransitionEvent;
-import net.engio.mbassy.listener.Handler;
+import java.util.EventObject;
 
-public class EventAdapter {
-	private QuestTracker tracker;
-	
-	public EventAdapter(QuestTracker tracker) {
-		this.tracker = tracker;
-	}
-	
-	@Handler public void handleSkill(SkillEvent se) {
-
-	}
-
-	@Handler public void handleCombat(CombatEvent ce) {
-		
-	}
-	
-	@Handler public void transition(TransitionEvent event) {
-		if(event.toString().equals("dialog")) {
-			tracker.checkTransition(event);
-		}
-	}
+public interface PortListener {
+	public void receive(EventObject event);
 }

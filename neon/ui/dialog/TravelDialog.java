@@ -30,6 +30,8 @@ import org.jdom2.Element;
 import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
+import neon.ui.Client;
+import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 import neon.resources.RPerson;
 
@@ -42,8 +44,10 @@ public class TravelDialog implements KeyListener {
 	private HashMap<String, Point> listData;
 	private HashMap<String, Integer> costData;
 	private JScrollPane scroller;
+	private State dialog;
 	
-	public TravelDialog(JFrame parent) {
+	public TravelDialog(JFrame parent, State dialog) {
+		this.dialog = dialog;
 		this.parent = parent;
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
@@ -104,12 +108,12 @@ public class TravelDialog implements KeyListener {
 					travel(destinations.getSelectedValue());
 					player.addMoney(-costData.get(destinations.getSelectedValue()));
 					frame.dispose();
-					Engine.post(new TransitionEvent("return"));
+					dialog.transition(new TransitionEvent("return"));
 				} else {
-					Engine.getUI().showMessage("You don't have enough money to go there.", 2);
+					Client.getUI().showMessage("You don't have enough money to go there.", 2);
 				}
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Engine.getUI().showMessage("No destination selected.", 2);
+				Client.getUI().showMessage("No destination selected.", 2);
 			}
 			break;
 		}

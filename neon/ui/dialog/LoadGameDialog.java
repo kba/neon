@@ -24,10 +24,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.*;
 import javax.swing.border.*;
-
-import neon.core.Configuration;
 import neon.core.Engine;
 import neon.core.GameLoader;
+import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 
 public class LoadGameDialog {
@@ -35,10 +34,10 @@ public class LoadGameDialog {
 	private JFrame parent;
 	private JList<String> games;
 	private JPanel menu;
-	private Configuration config;
+	private State state;
 	
-	public LoadGameDialog(JFrame parent, Configuration config) {
-		this.config = config;
+	public LoadGameDialog(JFrame parent, State state) {
+		this.state = state;
 		this.parent = parent;
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
@@ -136,8 +135,8 @@ public class LoadGameDialog {
 		
 		public void actionPerformed(ActionEvent a) {
 			if(a.getActionCommand().equals("ok")) {
-				new GameLoader(config).loadGame((String)games.getSelectedValue());
-				Engine.post(new TransitionEvent("start"));
+				new GameLoader(Engine.getConfig()).loadGame((String)games.getSelectedValue());
+				state.transition(new TransitionEvent("start"));
 				frame.dispose();
 			} else if(a.getActionCommand().equals("esc")) {
 				frame.dispose();

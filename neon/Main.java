@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -18,6 +18,10 @@
 
 package neon;
 
+import neon.core.Engine;
+import neon.systems.io.LocalPort;
+import neon.ui.Client;
+
 /**
  * The main class of the neon roguelike engine.
  * 
@@ -25,15 +29,27 @@ package neon;
  */
 public class Main {
     /**
-     * The application's main method. Creates a new Engine instance and runs it. Everything must be run 
-     * on the swing event-dispatch thread to avoid errors with the user interface.
+     * The application's main method. This method creates an {@code Engine} and 
+     * a {@code UserInterface} instance and connects them.
      * 
      * @param args	the command line arguments
      */
+	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
+		// poorten aanmaken en verbinden
+		LocalPort cPort = new LocalPort();
+		LocalPort sPort = new LocalPort();
+		cPort.connect(sPort);
+		sPort.connect(cPort);
+		
+		// engine en ui aanmaken
+		Engine engine = new Engine(sPort);
+		Client client = new Client(cPort, engine.getQueue(), engine.getBus());
+		
 		// custom look and feels zijn soms wat strenger als gewone, blijkbaar
 		// is het grootste probleem dat in modules als main menu delen van de ui buiten 
 		// de swing thread worden aangemaakt. Daarom alles maar op event-dispatch thread.
-		javax.swing.SwingUtilities.invokeLater(new neon.core.Engine());
+		javax.swing.SwingUtilities.invokeLater(client);
+		engine.run();
 	}
 }

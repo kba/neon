@@ -20,27 +20,24 @@ package neon.core;
 
 import java.util.EventObject;
 import java.util.logging.Logger;
-import neon.ui.UserInterface;
 import javax.script.*;
 import neon.core.event.*;
 import neon.core.handlers.CombatHandler;
 import neon.core.handlers.DeathHandler;
-import neon.core.states.*;
 import neon.entities.Player;
 import neon.entities.UIDStore;
 import neon.maps.Atlas;
 import neon.narrative.EventAdapter;
 import neon.narrative.QuestTracker;
-import neon.resources.CClient;
 import neon.resources.ResourceManager;
 import neon.resources.builder.IniBuilder;
 import neon.systems.physics.PhysicsSystem;
 import neon.systems.timing.Timer;
 import neon.systems.files.FileSystem;
-import neon.util.fsm.*;
+import neon.systems.io.Port;
+import neon.systems.io.PortListener;
 import net.engio.mbassy.bus.BusConfiguration;
 import net.engio.mbassy.bus.MBassador;
-import net.engio.mbassy.listener.Handler;
 
 /**
  * The engine class is the core of the neon roguelike engine. It is essentially
@@ -48,9 +45,8 @@ import net.engio.mbassy.listener.Handler;
  * 
  * @author mdriesen
  */
-public class Engine extends FiniteStateMachine implements Runnable {
+public class Engine implements Runnable {
 	// wordt door engine geïnitialiseerd
-	private static UserInterface UI;
 	private static ScriptEngine engine;	
 	private static FileSystem files;		// virtual file system
 	private static PhysicsSystem physics;	// de physics engine
@@ -59,20 +55,19 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	private static MBassador<EventObject> bus;	// event bus
 	private static TaskQueue queue;
 	private static ResourceManager resources;
+	private static Configuration config;
+	private Port port;
 
 	// wordt extern geset
 	private static Game game;
 	
-	private Configuration config;
-
 	/**
-	 * Initializes the engine. Most of the engine (server) configuration is 
-	 * done in the constructor. User interface (client) configuration is mainly
-	 * done in the {@code run()} method, as this is best done on the swing
-	 * event-dispatch thread.
+	 * Initializes the engine. 
 	 */
-	public Engine() {
+	public Engine(Port port) {
 		// engine componenten opzetten
+		this.port = port;
+		port.addListener(new BusAdapter());
 		engine = new ScriptEngineManager().getEngineByName("JavaScript");
 		files = new FileSystem();
 		physics = new PhysicsSystem();
@@ -93,7 +88,6 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	private void initEvents() {
 		EventAdapter adapter = new EventAdapter(quests);
 		bus = new MBassador<EventObject>(BusConfiguration.Default());
-		bus.subscribe(this);
 		bus.subscribe(queue);
 		bus.subscribe(new CombatHandler());	
 		bus.subscribe(new DeathHandler());
@@ -101,71 +95,10 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		bus.subscribe(quests);
 	}
 	
-	private void initFSM() {
-		// main menu 
-		MainMenuState main = new MainMenuState(this);
-
-		// alle game substates. 
-		GameState game = new GameState(this, queue, bus);
-		bus.subscribe(game);
-		// deuren
-		DoorState doors = new DoorState(game);
-		// locks
-		LockState locks = new LockState(game);
-		// bumpen
-		BumpState bump = new BumpState(game);
-		// move
-		MoveState move = new MoveState(game);
-		// aim
-		AimState aim = new AimState(game);
-
-		// dialog state
-		DialogState dialog = new DialogState(this);
-		// inventory state
-		InventoryState inventory = new InventoryState(this);
-		// containers
-		ContainerState container = new ContainerState(this);
-		// journal state
-		JournalState journal = new JournalState(this);
-		
-		// start states setten
-		addStartStates(main, move);
-		
-		// transitions
-		addTransition(new Transition(main, game, "start"));
-		addTransition(new Transition(journal, game, "cancel"));
-		addTransition(new Transition(game, journal, "journal"));
-		addTransition(new Transition(inventory, game, "cancel"));
-		addTransition(new Transition(game, inventory, "inventory"));
-		addTransition(new Transition(aim, move, "return"));
-		addTransition(new Transition(move, aim, "aim"));
-		addTransition(new Transition(aim, dialog, "dialog"));
-		addTransition(new Transition(dialog, game, "return"));
-		addTransition(new Transition(move, doors, "door"));
-		addTransition(new Transition(aim, doors, "door"));
-		addTransition(new Transition(doors, move, "return"));
-		addTransition(new Transition(move, locks, "lock"));
-		addTransition(new Transition(locks, move, "return"));
-		addTransition(new Transition(game, container, "container"));
-		addTransition(new Transition(container, game, "return"));
-		addTransition(new Transition(dialog, game, "return"));
-		addTransition(new Transition(move, bump, "bump"));
-		addTransition(new Transition(bump, move, "return"));
-		addTransition(new Transition(bump, dialog, "dialog"));
-	}
-	
 	/**
-	 * This method is the run method of the gamethread. It initializes the finite state 
-	 * machine and user interface, and starts executing the first engine state.
+	 * This method is the run method of the gamethread. It does nothing at the moment.
 	 */
 	public void run() {
-		initFSM();
-		// UI dingen
-		CClient client = (CClient)resources.getResource("client", "config");
-		UI = new UserInterface(client.getTitle());
-		UI.show();
-		// eerste state initialiseren en wachten op input
-		start(new TransitionEvent("start"));
 	}
 	
 	/**
@@ -175,10 +108,6 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	 */
 	public static void post(EventObject message) {
 		bus.publishAsync(message);
-	}
-	
-	@Handler public void handleTransition(TransitionEvent te) {
-		transition(te);
 	}
 	
 /*
@@ -208,15 +137,12 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		return game.getPlayer();
 	}
 	
-	public static QuestTracker getQuestTracker() {
-		return quests;
+	public MBassador<EventObject> getBus() {
+		return bus;
 	}
 	
-	/**
-	 * @return	the main window of the user interface
-	 */
-	public static UserInterface getUI() {
-		return UI;
+	public static QuestTracker getQuestTracker() {
+		return quests;
 	}
 	
 	/**
@@ -254,7 +180,7 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		return logger;
 	}
 	
-	public Configuration getConfig() {
+	public static Configuration getConfig() {
 		return config;
 	}
 	
@@ -274,13 +200,8 @@ public class Engine extends FiniteStateMachine implements Runnable {
 		return queue;
 	}
 
-/*
- * alle setters
- */	
 	/**
-	 * Sets the player.
-	 * 
-	 * @param p	the player
+	 * Starts a new game.
 	 */
 	public static void startGame(Game g) {
 		game = g;
@@ -298,5 +219,12 @@ public class Engine extends FiniteStateMachine implements Runnable {
 	 */
 	public static void quit() {
 		System.exit(0);
+	}
+	
+	private class BusAdapter implements PortListener {
+		@Override
+		public void receive(EventObject event) {
+			bus.publishAsync(event);
+		}
 	}
 }

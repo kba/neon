@@ -16,31 +16,40 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.narrative;
+package neon.systems.io;
 
-import neon.core.event.CombatEvent;
-import neon.core.event.SkillEvent;
-import neon.util.fsm.TransitionEvent;
-import net.engio.mbassy.listener.Handler;
+import java.util.EventObject;
 
-public class EventAdapter {
-	private QuestTracker tracker;
+public class LocalPort extends Port {
+	private LocalPort peer;
 	
-	public EventAdapter(QuestTracker tracker) {
-		this.tracker = tracker;
-	}
-	
-	@Handler public void handleSkill(SkillEvent se) {
-
+	@Override
+	public void write(EventObject event) {
+		peer.receive(event);
 	}
 
-	@Handler public void handleCombat(CombatEvent ce) {
-		
+	@Override
+	public EventObject read() {
+		return null;
 	}
 	
-	@Handler public void transition(TransitionEvent event) {
-		if(event.toString().equals("dialog")) {
-			tracker.checkTransition(event);
+	/**
+	 * Connects this {@code LocalPort} to another {@code LocalPort}.
+	 * 
+	 * @param peer	another {@code LocalPort}
+	 */
+	public void connect(LocalPort peer) {
+		this.peer = peer;
+	}
+	
+	private void receive(EventObject event) {
+		for(PortListener listener : listeners) {
+			listener.receive(event);
 		}
+	}
+
+	@Override
+	public Mode getMode() {
+		return Mode.EVENT;
 	}
 }

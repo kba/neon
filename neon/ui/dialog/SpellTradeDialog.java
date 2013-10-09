@@ -26,10 +26,10 @@ import java.awt.event.KeyListener;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.border.*;
-import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.resources.RSpell;
+import neon.ui.Client;
 
 public class SpellTradeDialog implements KeyListener {
 	private JDialog frame;
@@ -119,16 +119,16 @@ public class SpellTradeDialog implements KeyListener {
 				if(player.getMoney() >= spell.cost) {
 					if(!player.animus.getSpells().contains(spell)) {
 						player.animus.addSpell(spell);
-						Engine.getUI().showMessage("You bought the spell " + spell + ".", 2);
+						Client.getUI().showMessage("You bought the spell " + spell + ".", 2);
 						initSpells();
 					} else {
-						Engine.getUI().showMessage("You already have that spell.", 2);
+						Client.getUI().showMessage("You already have that spell.", 2);
 					}
 				} else {
-					Engine.getUI().showMessage("You don't have enough money.", 2);						
+					Client.getUI().showMessage("You don't have enough money.", 2);						
 				}
 			} catch (Exception f) {
-				Engine.getUI().showMessage("There is nothing left to buy.", 2);
+				Client.getUI().showMessage("There is nothing left to buy.", 2);
 			} 
 			break;
 		}
