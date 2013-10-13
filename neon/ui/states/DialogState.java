@@ -22,11 +22,11 @@ import neon.core.*;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.magic.MagicUtils;
-import neon.narrative.Topic;
 import neon.resources.CClient;
 import neon.resources.RPerson;
 import neon.resources.RSpell.SpellType;
-import neon.ui.Client;
+import neon.resources.quest.Topic;
+import neon.ui.UserInterface;
 import neon.ui.dialog.ChargeDialog;
 import neon.ui.dialog.CrafterDialog;
 import neon.ui.dialog.EnchantDialog;
@@ -40,6 +40,8 @@ import neon.ui.dialog.TrainingDialog;
 import neon.ui.dialog.TravelDialog;
 import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
+import net.engio.mbassy.bus.MBassador;
+import java.util.EventObject;
 import java.util.Vector;
 import org.jdom2.Element;
 import javax.swing.*;
@@ -71,9 +73,13 @@ public class DialogState extends State implements KeyListener {
     private HTMLEditorKit kit = new HTMLEditorKit();
     private HTMLDocument doc;
     private String big, small;
+    private MBassador<EventObject> bus;
+    private UserInterface ui;
 	
-	public DialogState(State parent) {
+	public DialogState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent);
+		this.bus = bus;
+		this.ui = ui;
 		CClient ini = (CClient)Engine.getResources().getResource("client", "config");
 		big = ini.getSmall();
 		small = ini.getBig();
@@ -133,11 +139,11 @@ public class DialogState extends State implements KeyListener {
 			Engine.getScriptEngine().put("NPC", target);
 			initDialog();
 			initServices();
-			Client.getUI().showPanel(panel);
+			ui.showPanel(panel);
 			list = subjects;
 			list.setSelectedIndex(0);
 		} else {
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 		}
 	}
 	
@@ -151,7 +157,7 @@ public class DialogState extends State implements KeyListener {
 	public void keyPressed(KeyEvent ke) {
 		switch(ke.getKeyCode()) {
 		case KeyEvent.VK_ESCAPE: 
-			transition(new TransitionEvent("return")); 
+			bus.publishAsync(new TransitionEvent("return")); 
 			break;
 		case KeyEvent.VK_UP: 
 		case KeyEvent.VK_NUMPAD8:
@@ -182,29 +188,29 @@ public class DialogState extends State implements KeyListener {
 			} else {
 				String value = list.getSelectedValue().toString();
 				if(value.equals("travel")) {
-					new TravelDialog(Client.getUI().getWindow(), this).show(Engine.getPlayer(), target);
+					new TravelDialog(ui, bus).show(Engine.getPlayer(), target);
 				} else if(value.equals("training")) {
-					new TrainingDialog(Client.getUI().getWindow(), this).show(Engine.getPlayer(), target);
+					new TrainingDialog(ui, bus).show(Engine.getPlayer(), target);
 				} else if(value.equals("spells")) {
-					new SpellTradeDialog(Client.getUI().getWindow(), big, small).show(Engine.getPlayer(), target);
+					new SpellTradeDialog(ui, big, small).show(Engine.getPlayer(), target);
 				} else if(value.equals("trade")) {
-					new TradeDialog(Client.getUI().getWindow(), big, small).show(Engine.getPlayer(), target);
+					new TradeDialog(ui, big, small).show(Engine.getPlayer(), target);
 				} else if(value.equals("spell maker")) {
-					new SpellMakerDialog(Client.getUI().getWindow()).show(Engine.getPlayer(), target);
+					new SpellMakerDialog(ui).show(Engine.getPlayer(), target);
 				} else if(value.equals("potion maker")){
-					new PotionDialog(Client.getUI().getWindow(), small).show(Engine.getPlayer(), target);
+					new PotionDialog(ui, small).show(Engine.getPlayer(), target);
 				} else if(value.equals("healer")) {
 					heal();
 				} else if(value.equals("charge")) {
-					new ChargeDialog(Client.getUI().getWindow()).show(Engine.getPlayer());
+					new ChargeDialog(ui).show(Engine.getPlayer());
 				} else if(value.equals("craft")) {
-					new CrafterDialog(Client.getUI().getWindow(), small).show(Engine.getPlayer(), target);
+					new CrafterDialog(ui, small, bus).show(Engine.getPlayer(), target);
 				} else if(value.equals("enchant")) {
-					new EnchantDialog(Client.getUI().getWindow()).show(Engine.getPlayer(), target);
+					new EnchantDialog(ui).show(Engine.getPlayer(), target);
 				} else if(value.equals("repair")) {
-					new RepairDialog(Client.getUI().getWindow()).show(Engine.getPlayer(), target);
+					new RepairDialog(ui).show(Engine.getPlayer(), target);
 				} else if(value.equals("tattoos")) {
-					new TattooDialog(Client.getUI().getWindow(), small).show(Engine.getPlayer(), target);
+					new TattooDialog(ui, small).show(Engine.getPlayer(), target);
 				} else {
 					System.out.println("not implemented");
 				}
@@ -220,7 +226,7 @@ public class DialogState extends State implements KeyListener {
 		MagicUtils.cure(player, SpellType.CURSE);
 		MagicUtils.cure(player, SpellType.DISEASE);
 		MagicUtils.cure(player, SpellType.POISON);
-		Client.getUI().showMessage("You have been healed!", 2);
+		ui.showMessage("You have been healed!", 2);
 	}
 	
 	private void initDialog() {

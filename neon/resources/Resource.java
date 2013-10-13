@@ -30,6 +30,12 @@ public abstract class Resource {
 	public final String id;
 	protected String[] path;
 	
+	/**
+	 * Initializes a resource with the given id and path.
+	 * 
+	 * @param id
+	 * @param path
+	 */
 	public Resource(String id, String... path) {
 		this.id = id;
 		this.path = path;
@@ -38,10 +44,18 @@ public abstract class Resource {
 	public abstract void load();
 	public abstract void unload();
 	
+	/**
+	 * @return	the location of this file in the VFS
+	 */
 	public String[] getPath() {
 		return path;
 	}
 	
+	/**
+	 * Sets the location of this file in the VFS.
+	 * 
+	 * @param path
+	 */
 	public void setPath(String... path) {
 		this.path = path;
 	}

@@ -23,6 +23,7 @@ import neon.core.Engine;
 import neon.core.event.TurnEvent;
 import neon.entities.Creature;
 import neon.resources.RQuest;
+import neon.resources.quest.Topic;
 import neon.util.fsm.TransitionEvent;
 import net.engio.mbassy.listener.Handler;
 
@@ -60,11 +61,11 @@ public class QuestTracker {
 	
 	public void doAction(Topic topic) {
 		HashMap<String, Object> objects = new HashMap<>();
-		if(quests.containsKey(topic.quest)) {
-			objects.putAll(quests.get(topic.quest).getObjects());
-		} else if(temp.containsKey(topic.quest)) {
-			objects.putAll(temp.get(topic.quest).getObjects());			
-		}
+//		if(quests.containsKey(topic.quest)) {
+//			objects.putAll(quests.get(topic.quest).getObjects());
+//		} else if(temp.containsKey(topic.quest)) {
+//			objects.putAll(temp.get(topic.quest).getObjects());			
+//		}
 		for(Map.Entry<String, Object> entry : objects.entrySet()) {
 			Engine.getScriptEngine().put(entry.getKey(), entry.getValue());
 		}

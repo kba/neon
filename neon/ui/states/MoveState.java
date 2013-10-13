@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.EventObject;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.core.event.TurnEvent;
@@ -36,18 +37,23 @@ import neon.entities.property.Condition;
 import neon.entities.property.Slot;
 import neon.resources.CClient;
 import neon.resources.RItem;
-import neon.ui.Client;
 import neon.ui.GamePanel;
+import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
+import net.engio.mbassy.bus.MBassador;
 
 public class MoveState extends State implements KeyListener {
 	private Player player;
 	private GamePanel panel;
 	private CClient keys;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 
-	public MoveState(State parent) {
+	public MoveState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent, "move module");
+		this.bus = bus;
+		this.ui = ui;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
 	}
 	
@@ -70,22 +76,22 @@ public class MoveState extends State implements KeyListener {
 		Creature other = Engine.getAtlas().getCurrentZone().getCreature(p);
 		if(other != null && !other.hasCondition(Condition.DEAD)) {
 			if(other.brain.isHostile()) {
-				Engine.post(new CombatEvent(player, other));
-				Engine.post(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
+				bus.publishAsync(new CombatEvent(player, other));
+				bus.publishAsync(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 			} else {
-				transition(new TransitionEvent("bump", "creature", other));
+				bus.publishAsync(new TransitionEvent("bump", "creature", other));
 			}
 		} else {	// niemand in de weg, dus moven
 			if(MotionHandler.move(player, p) == MotionHandler.DOOR) {
 				for(long uid : Engine.getAtlas().getCurrentZone().getItems(p)) {
 					if(Engine.getStore().getEntity(uid) instanceof Door) {
-						transition(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
+						bus.publishAsync(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 					}
 				}
 //			} else if(Configuration.audio) {	// TODO: audio hoort hier niet thuis
 //				new WavePlayer("data/step.wav").start();
 			}
-			Engine.post(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
+			bus.publishAsync(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 		}
 	}
 	
@@ -106,25 +112,25 @@ public class MoveState extends State implements KeyListener {
 				Container container = (Container)entity;
 				if(container.lock.isLocked()) {
 					if(container.lock.hasKey() && hasItem(player, container.lock.getKey())) {
-						transition(new TransitionEvent("container", "holder", entity));
+						bus.publishAsync(new TransitionEvent("container", "holder", entity));
 					} else {
-						transition(new TransitionEvent("lock", "lock", container.lock));						
+						bus.publishAsync(new TransitionEvent("lock", "lock", container.lock));						
 					}
 				} else {
-					transition(new TransitionEvent("container", "holder", entity));
+					bus.publishAsync(new TransitionEvent("container", "holder", entity));
 				}
 			} else if(entity instanceof Door) {
 				if(MotionHandler.teleport(player, (Door)entity) == MotionHandler.OK) {
-					Engine.post(new TurnEvent(Engine.getTimer().addTick()));
+					bus.publishAsync(new TurnEvent(Engine.getTimer().addTick()));
 				}
 			} else if(entity instanceof Creature){
-				transition(new TransitionEvent("container", "holder", entity));							
+				bus.publishAsync(new TransitionEvent("container", "holder", entity));							
 			} else {
 				Engine.getAtlas().getCurrentZone().removeItem((Item)entity);
 				InventoryHandler.addItem(player, entity.getUID());
 			}
 		} else if(items.size() > 1) {
-			transition(new TransitionEvent("container", "holder", Engine.getAtlas().getCurrentZone()));
+			bus.publishAsync(new TransitionEvent("container", "holder", Engine.getAtlas().getCurrentZone()));
 		}
 	}
 
@@ -153,11 +159,11 @@ public class MoveState extends State implements KeyListener {
 		} else if(code == keys.act) {
 			act();
 		} else if(code == keys.look) {
-			transition(new TransitionEvent("aim"));
+			bus.publishAsync(new TransitionEvent("aim"));
 		} else if(code == keys.shoot) {
-			transition(new TransitionEvent("aim"));
+			bus.publishAsync(new TransitionEvent("aim"));
 		} else if(code == keys.talk) {
-			transition(new TransitionEvent("aim"));
+			bus.publishAsync(new TransitionEvent("aim"));
 		} else if(code == keys.unmount) {
 			if(player.isMounted()) {
 				Creature mount = player.getMount();
@@ -174,15 +180,15 @@ public class MoveState extends State implements KeyListener {
 				out = MagicHandler.cast(player, item);
 			} 
 			switch(out) {
-			case MagicHandler.MANA: Client.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
-			case MagicHandler.NONE: Client.getUI().showMessage("No spell equiped.", 1); break;
-			case MagicHandler.SKILL: Client.getUI().showMessage("Casting failed.", 1); break;
-			case MagicHandler.OK: Client.getUI().showMessage("Spell cast.", 1); break;
-			case MagicHandler.NULL: Client.getUI().showMessage("No spell equiped!", 1); break;
-			case MagicHandler.LEVEL: Client.getUI().showMessage("Spell is too difficult to cast.", 1); break;
-			case MagicHandler.SILENCED: Client.getUI().showMessage("You are silenced", 1); break;
-			case MagicHandler.INTERVAL: Client.getUI().showMessage("Can't cast this power yet.", 1); break;
-			case MagicHandler.RANGE: transition(new TransitionEvent("aim")); break;
+			case MagicHandler.MANA: ui.showMessage("Not enough mana to cast this spell.", 1); break;
+			case MagicHandler.NONE: ui.showMessage("No spell equiped.", 1); break;
+			case MagicHandler.SKILL: ui.showMessage("Casting failed.", 1); break;
+			case MagicHandler.OK: ui.showMessage("Spell cast.", 1); break;
+			case MagicHandler.NULL: ui.showMessage("No spell equiped!", 1); break;
+			case MagicHandler.LEVEL: ui.showMessage("Spell is too difficult to cast.", 1); break;
+			case MagicHandler.SILENCED: ui.showMessage("You are silenced", 1); break;
+			case MagicHandler.INTERVAL: ui.showMessage("Can't cast this power yet.", 1); break;
+			case MagicHandler.RANGE: bus.publishAsync(new TransitionEvent("aim")); break;
 			}
 		}
 	}

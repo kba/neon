@@ -29,11 +29,9 @@ import javax.swing.border.*;
 public class BookDialog implements KeyListener {
 	private JDialog frame;
 	private JEditorPane area;
-	private JFrame parent;
 	private JScrollPane scroller;
 	
 	public BookDialog(JFrame parent) {
-		this.parent = parent;
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -67,7 +65,7 @@ public class BookDialog implements KeyListener {
 		area.setCaretPosition(0);
 		scroller.setBorder(new TitledBorder(title));
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 

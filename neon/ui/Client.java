@@ -18,41 +18,36 @@
 
 package neon.ui;
 
+import java.io.File;
 import java.util.EventObject;
+import javax.swing.UIManager;
+import de.muntjak.tinylookandfeel.Theme;
 import neon.core.Engine;
-import neon.core.event.TaskQueue;
+import neon.core.event.LoadEvent;
+import neon.core.event.MessageEvent;
+import neon.core.event.UpdateEvent;
 import neon.resources.CClient;
 import neon.systems.io.Port;
-import neon.ui.states.AimState;
-import neon.ui.states.BumpState;
-import neon.ui.states.ContainerState;
-import neon.ui.states.DialogState;
-import neon.ui.states.DoorState;
-import neon.ui.states.GameState;
-import neon.ui.states.InventoryState;
-import neon.ui.states.JournalState;
-import neon.ui.states.LockState;
-import neon.ui.states.MainMenuState;
-import neon.ui.states.MoveState;
+import neon.ui.states.*;
 import neon.util.fsm.FiniteStateMachine;
 import neon.util.fsm.Transition;
 import neon.util.fsm.TransitionEvent;
 import net.engio.mbassy.bus.MBassador;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 
 public class Client implements Runnable {
-	private static UserInterface ui;
-	private static FiniteStateMachine fsm;
-	
-	private final TaskQueue queue;
+	private UserInterface ui;
+	private final FiniteStateMachine fsm;
 	private final MBassador<EventObject> bus;
-	private final Port port;
+	private final String version;
 	
-	public Client(Port port, TaskQueue queue, MBassador<EventObject> bus) {
-		// TODO: bus en queue uit client halen
-		this.port = port;
-		this.queue = queue;
-		this.bus = bus;
+	public Client(Port port, String version) {
+		bus = port.getBus();
+		this.version = version;
 		fsm = new FiniteStateMachine();
+		bus.subscribe(new BusAdapter());
 	}
 	
 	@Override
@@ -62,6 +57,14 @@ public class Client implements Runnable {
 	}
 	
 	private void initUI() {
+		// look and feel setten
+		try {
+			Theme.loadTheme(new File("data/neon.theme"));
+			UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// UI dingen
 		CClient client = (CClient)Engine.getResources().getResource("client", "config");
 		ui = new UserInterface(client.getTitle());
@@ -70,30 +73,30 @@ public class Client implements Runnable {
 	
 	private void initFSM() {
 		// main menu 
-		MainMenuState main = new MainMenuState(fsm);
+		MainMenuState main = new MainMenuState(fsm, bus, ui, version);
 
 		// alle game substates. 
-		GameState game = new GameState(fsm, queue, bus);
+		GameState game = new GameState(fsm, bus, ui);
 		bus.subscribe(game);
 		// deuren
-		DoorState doors = new DoorState(game);
+		DoorState doors = new DoorState(game, bus, ui);
 		// locks
-		LockState locks = new LockState(game);
+		LockState locks = new LockState(game, bus, ui);
 		// bumpen
-		BumpState bump = new BumpState(game);
+		BumpState bump = new BumpState(game, bus, ui);
 		// move
-		MoveState move = new MoveState(game);
+		MoveState move = new MoveState(game, bus, ui);
 		// aim
-		AimState aim = new AimState(game);
+		AimState aim = new AimState(game, bus, ui);
 
 		// dialog state
-		DialogState dialog = new DialogState(fsm);
+		DialogState dialog = new DialogState(fsm, bus, ui);
 		// inventory state
-		InventoryState inventory = new InventoryState(fsm);
+		InventoryState inventory = new InventoryState(fsm, bus, ui);
 		// containers
-		ContainerState container = new ContainerState(fsm);
+		ContainerState container = new ContainerState(fsm, bus, ui);
 		// journal state
-		JournalState journal = new JournalState(fsm);
+		JournalState journal = new JournalState(fsm, bus, ui);
 		
 		// start states setten
 		fsm.addStartStates(main, move);
@@ -124,10 +127,25 @@ public class Client implements Runnable {
 		fsm.start(new TransitionEvent("start"));
 	}
 	
-	/**
-	 * @return	the main window of the user interface
-	 */
-	public static UserInterface getUI() {
-		return ui;
+	@Listener(references = References.Strong)
+	private class BusAdapter {
+		@Handler public void transition(TransitionEvent te) {
+			fsm.transition(te);
+		}
+
+	
+		@Handler public void update(UpdateEvent ue) {
+			ui.update();
+		}
+		
+		@Handler public void message(MessageEvent me) {
+			ui.showMessage(me.toString(), me.getDuration());
+		}
+		
+		@Handler public void load(LoadEvent le) {
+			if(le.getMode() == LoadEvent.Mode.DONE) {
+				fsm.transition(new TransitionEvent("start"));
+			}
+		}
 	}
 }

@@ -20,6 +20,7 @@ package neon.ui.states;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.EventObject;
 import javax.swing.Popup;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
@@ -28,18 +29,23 @@ import neon.entities.Animal;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.resources.RCreature.Size;
-import neon.ui.Client;
 import neon.ui.GamePanel;
+import neon.ui.UserInterface;
 import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
+import net.engio.mbassy.bus.MBassador;
 
 public class BumpState extends State implements KeyListener {
 	private Creature creature;
 	private Popup popup;
 	private GamePanel panel;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public BumpState(State parent) {
+	public BumpState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent);
+		this.bus = bus;
+		this.ui = ui;
 	}
 	
 	@Override
@@ -48,11 +54,11 @@ public class BumpState extends State implements KeyListener {
 		panel = (GamePanel)getVariable("panel");
 		panel.addKeyListener(this);
 		if(creature.hasDialog()) {
-			popup = Client.getUI().showPopup("1) attack 2) talk 3) pick pocket 4) switch place 0) cancel");
+			popup = ui.showPopup("1) attack 2) talk 3) pick pocket 4) switch place 0) cancel");
 		} else if(isMount(creature)) {
-			popup = Client.getUI().showPopup("1) attack 3) pick pocket 4) switch place 5) mount 0) cancel");
+			popup = ui.showPopup("1) attack 3) pick pocket 4) switch place 5) mount 0) cancel");
 		} else {
-			popup = Client.getUI().showPopup("1) attack 3) pick pocket 4) switch place 0) cancel");
+			popup = ui.showPopup("1) attack 3) pick pocket 4) switch place 0) cancel");
 		}
 	}
 
@@ -69,27 +75,25 @@ public class BumpState extends State implements KeyListener {
 		switch(ke.getKeyCode()) {
 		case KeyEvent.VK_1: 
 		case KeyEvent.VK_NUMPAD1: 
-			Engine.post(new CombatEvent(Engine.getPlayer(), creature));
+			bus.publishAsync(new CombatEvent(Engine.getPlayer(), creature));
 			creature.brain.makeHostile(Engine.getPlayer());
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_2:
 		case KeyEvent.VK_NUMPAD2: 
 			if(creature.hasDialog()) {
-				TransitionEvent te = new TransitionEvent("dialog", "speaker", creature);
-				Engine.post(te);
-				transition(te);
+				bus.publishAsync(new TransitionEvent("dialog", "speaker", creature));
 			}
 			break;
 		case KeyEvent.VK_3: 
 		case KeyEvent.VK_NUMPAD3: 
 			System.out.println("not implemented"); 
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_4:
 		case KeyEvent.VK_NUMPAD4: 
 			swap();
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_5: 
 		case KeyEvent.VK_NUMPAD5: 
@@ -99,12 +103,12 @@ public class BumpState extends State implements KeyListener {
 				player.getBounds().setLocation(creature.getBounds().x, creature.getBounds().y);
 				Engine.getAtlas().getCurrentZone().removeCreature(creature.getUID());
 				panel.repaint();
-				transition(new TransitionEvent("return"));
+				bus.publishAsync(new TransitionEvent("return"));
 			}
 			break;
 		case KeyEvent.VK_0: 
 		case KeyEvent.VK_NUMPAD0: 
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		}
 	}

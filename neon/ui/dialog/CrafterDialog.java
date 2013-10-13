@@ -24,8 +24,10 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Collection;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.border.*;
+import neon.core.event.StoreEvent;
 import neon.core.Engine;
 import neon.core.handlers.InventoryHandler;
 import neon.entities.Creature;
@@ -33,19 +35,24 @@ import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.resources.RCraft;
-import neon.ui.Client;
+import neon.ui.UserInterface;
+import net.engio.mbassy.bus.MBassador;
 
 public class CrafterDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<RCraft> items;
 	private JPanel panel;
 	private String coin;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public CrafterDialog(JFrame parent, String coin) {
-		this.parent = parent;
+	public CrafterDialog(UserInterface ui, String coin, MBassador<EventObject> bus) {
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		this.coin = coin;
+		this.bus = bus;
+		
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -81,7 +88,7 @@ public class CrafterDialog implements KeyListener {
 		initItems();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -106,19 +113,19 @@ public class CrafterDialog implements KeyListener {
 				if(player.getMoney() >= craft.cost) {
 					Collection<Long> removed = InventoryHandler.removeItems(player, craft.raw, craft.amount);
 					for(long uid : removed) {	// gebruikte items verwijderen
-						Engine.getStore().removeEntity(uid);
+						bus.publishAsync(new StoreEvent(this, uid));
 					}
 					Item item = EntityFactory.getItem(craft.name, Engine.getStore().createNewEntityUID());
-					Engine.getStore().addEntity(item);
+					bus.publishAsync(new StoreEvent(this, item));
 					player.inventory.addItem(item.getUID());
 					player.addMoney(-craft.cost);
-					Client.getUI().showMessage("Item crafted.", 2);
+					ui.showMessage("Item crafted.", 2);
 					initItems();
 				} else {
-					Client.getUI().showMessage("You don't have enough money.", 2);
+					ui.showMessage("You don't have enough money.", 2);
 				}
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No item selected.", 2);
+				ui.showMessage("No item selected.", 2);
 			}
 			break;
 		}

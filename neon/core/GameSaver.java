@@ -35,11 +35,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 
 public class GameSaver {
-	private TaskQueue queue;
-	
-	public GameSaver(TaskQueue queue) {
-		this.queue = queue;
-	}
+	private TaskQueue queue = Engine.getQueue();
 	
 	/**
 	 * Saves the current game.

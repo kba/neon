@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import neon.resources.RQuest;
+import neon.resources.quest.Topic;
 
 public class Quest {
 	public RQuest template;

@@ -27,20 +27,26 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.EventObject;
 import neon.core.*;
 import neon.resources.CClient;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 import neon.ui.dialog.LoadGameDialog;
 import neon.ui.dialog.NewGameDialog;
 import neon.ui.dialog.OptionDialog;
 import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
+import net.engio.mbassy.bus.MBassador;
 
 public class MainMenuState extends State {
 	private JPanel main;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public MainMenuState(State parent) {
+	public MainMenuState(State parent, MBassador<EventObject> bus, UserInterface ui, String version) {
 		super(parent, "main menu");
+		this.bus = bus;
+		this.ui = ui;
 		
 		// het main menu JPanel zelf
 		main = new JPanel(new BorderLayout());
@@ -97,12 +103,12 @@ public class MainMenuState extends State {
 		
 		// versienummer
 		main.add(buttons, BorderLayout.CENTER);
-		main.add(new JLabel("release " + Configuration.version), BorderLayout.PAGE_END);
+		main.add(new JLabel("release " + version), BorderLayout.PAGE_END);
 	}
 	
 	@Override
 	public void enter(TransitionEvent t) {
-		Client.getUI().showPanel(main);
+		ui.showPanel(main);
 	}
 	
 	// knop action
@@ -115,11 +121,11 @@ public class MainMenuState extends State {
 		
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("n")) {
-				new NewGameDialog(Client.getUI().getWindow(), MainMenuState.this).show();
+				new NewGameDialog(ui, bus).show();
 			} else if(e.getActionCommand().equals("l")) {
-				new LoadGameDialog(Client.getUI().getWindow(), MainMenuState.this).show();
+				new LoadGameDialog(ui.getWindow(), bus).show();
 			} else if(e.getActionCommand().equals("o")) {
-				new OptionDialog(Client.getUI().getWindow()).show();
+				new OptionDialog(ui.getWindow()).show();
 			} else if(e.getActionCommand().equals("q")) {
 				System.exit(0);
 			}

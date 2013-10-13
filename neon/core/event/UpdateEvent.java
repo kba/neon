@@ -16,10 +16,14 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.systems.io;
+package neon.core.event;
 
 import java.util.EventObject;
 
-public interface PortListener {
-	public void receive(EventObject event);
+@SuppressWarnings("serial")
+public class UpdateEvent extends EventObject {
+
+	public UpdateEvent(Object source) {
+		super(source);
+	}
 }

@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import neon.core.event.LoadEvent;
 import neon.core.event.MagicTask;
 import neon.core.event.ScriptAction;
 import neon.core.handlers.InventoryHandler;
@@ -47,9 +49,13 @@ import neon.resources.RSign;
 import neon.resources.RSpell.SpellType;
 import neon.systems.files.FileUtils;
 import neon.systems.files.XMLTranslator;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
+@Listener(references = References.Strong)
 public class GameLoader {
 	private Configuration config;
 	
@@ -57,6 +63,24 @@ public class GameLoader {
 		this.config = config;
 	}
 	
+	@Handler public void loadGame(LoadEvent le) {
+		// spel laden
+		switch(le.getMode()) {
+		case LOAD: 
+			loadGame(le.getSaveName()); 
+			break;
+		case NEW: 
+			initGame(le.race, le.name, le.gender, le.specialisation, 
+					le.profession, le.sign); 
+			break;
+		default: 
+			break;
+		}
+		
+		// aangeven dat laden gedaan is
+		Engine.post(new LoadEvent(this));
+	}
+
 	/**
 	 * Creates a new game using the supplied data.
 	 * 
@@ -114,12 +138,12 @@ public class GameLoader {
 		}		
 	}
 	
-	/**
+	/*
 	 * Loads a saved game.
 	 * 
 	 * @param save	the name of the saved game
 	 */
-	public void loadGame(String save) {
+	private void loadGame(String save) {
 		config.setProperty("save", save);
 
 		Document doc = new Document();

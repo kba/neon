@@ -21,6 +21,7 @@ package neon.core.handlers;
 import java.util.ArrayList;
 import java.util.Collection;
 import neon.core.Engine;
+import neon.core.event.StoreEvent;
 import neon.entities.Clothing;
 import neon.entities.Creature;
 import neon.entities.Item;
@@ -29,8 +30,28 @@ import neon.entities.components.Inventory;
 import neon.entities.property.Slot;
 import neon.magic.MagicUtils;
 import neon.resources.RWeapon.WeaponType;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 
+@Listener(references = References.Strong)
 public class InventoryHandler {
+	/**
+	 * Adds or removes an {@code Entity} from the {@code UIDStore}.
+	 * 
+	 * @param event
+	 */
+	@Handler public void handle(StoreEvent event) {
+		switch(event.getMode()) {
+		case ADD:
+			Engine.getStore().addEntity(event.getEntity());
+			break;
+		case REMOVE:
+			Engine.getStore().removeEntity(event.getUID());
+			break;
+		}
+	}
+	
 	/**
 	 * Adds an item to a creature's inventory.
 	 * 

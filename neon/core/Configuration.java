@@ -21,13 +21,10 @@ package neon.core;
 import java.io.*;
 import java.util.*;
 import java.util.logging.*;
-import de.muntjak.tinylookandfeel.Theme;
 import neon.resources.CServer;
 import neon.resources.ResourceManager;
-import javax.swing.UIManager;
 
 public class Configuration {
-	public static final String version = "0.4.2";	// huidige versie
 	public static boolean audio = false;	// audio aan of uit?
 	public static boolean gThread = true;	// terrain generation threaded of niet?
 
@@ -40,14 +37,6 @@ public class Configuration {
 		// ini file inladen
 		CServer config = (CServer)resources.getResource("ini", "config");
 
-		// look and feel setten
-		try {
-			Theme.loadTheme(new File("data/neon.theme"));
-			UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}					
-		
 		// logging
 		Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		logger.setLevel(Level.parse(config.getLogLevel()));

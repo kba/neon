@@ -23,6 +23,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.EventObject;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -30,25 +31,26 @@ import org.jdom2.Element;
 import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
-import neon.ui.Client;
-import neon.util.fsm.State;
+import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
 import neon.resources.RPerson;
+import net.engio.mbassy.bus.MBassador;
 
 public class TravelDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<String> destinations;
 	private Creature agent;	// uw reisagent
 	private HashMap<String, Point> listData;
 	private HashMap<String, Integer> costData;
 	private JScrollPane scroller;
-	private State dialog;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public TravelDialog(JFrame parent, State dialog) {
-		this.dialog = dialog;
-		this.parent = parent;
+	public TravelDialog(UserInterface ui, MBassador<EventObject> bus) {
+		this.bus = bus;
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -83,7 +85,7 @@ public class TravelDialog implements KeyListener {
 		initDestinations();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -108,12 +110,12 @@ public class TravelDialog implements KeyListener {
 					travel(destinations.getSelectedValue());
 					player.addMoney(-costData.get(destinations.getSelectedValue()));
 					frame.dispose();
-					dialog.transition(new TransitionEvent("return"));
+					bus.publishAsync(new TransitionEvent("return"));
 				} else {
-					Client.getUI().showMessage("You don't have enough money to go there.", 2);
+					ui.showMessage("You don't have enough money to go there.", 2);
 				}
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No destination selected.", 2);
+				ui.showMessage("No destination selected.", 2);
 			}
 			break;
 		}

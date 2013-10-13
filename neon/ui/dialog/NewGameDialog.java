@@ -21,23 +21,22 @@ package neon.ui.dialog;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.EventObject;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.*;
 import neon.core.Engine;
-import neon.core.GameLoader;
+import neon.core.event.LoadEvent;
 import neon.entities.Player;
 import neon.entities.property.Gender;
 import neon.resources.CGame;
 import neon.resources.RCreature;
 import neon.resources.RSign;
-import neon.ui.Client;
-import neon.util.fsm.State;
-import neon.util.fsm.TransitionEvent;
+import neon.ui.UserInterface;
+import net.engio.mbassy.bus.MBassador;
 
 public class NewGameDialog {
 	private JDialog frame;
-	private JFrame parent;
 	private JComboBox<String> race;
 	private JComboBox<RSign> signBox;
 	private JComboBox<Gender> gender;
@@ -45,11 +44,13 @@ public class NewGameDialog {
 	private JPanel main;
 	private JTextField name, prof;
 	private HashMap<String, String> raceList;
-	private State menu;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 		
-	public NewGameDialog(JFrame parent, State menu) {
-		this.menu = menu;
-		this.parent = parent;
+	public NewGameDialog(UserInterface ui, MBassador<EventObject> bus) {
+		this.bus = bus;
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -137,7 +138,7 @@ public class NewGameDialog {
 	public void show() {
 		name.requestFocus();
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 
@@ -149,17 +150,17 @@ public class NewGameDialog {
 		
 		public void actionPerformed(ActionEvent e) {
 			if(name.getText().equals("")) {
-				Client.getUI().showMessage("Please give a name.", 2);
+				ui.showMessage("Please give a name.", 2);
 				name.requestFocus();
 			} else if(checkSaves(name.getText())) {
-				Client.getUI().showMessage("There is already a character with the given name. <br>" +
+				ui.showMessage("There is already a character with the given name. <br>" +
 						"Choose another name or remove the existing character.", 3);
 				name.requestFocus();
 			} else {
-				new GameLoader(Engine.getConfig()).initGame(raceList.get(race.getSelectedItem()), name.getText(), 
-						(Gender)gender.getSelectedItem(), (Player.Specialisation)spec.getSelectedItem(), 
-						prof.getText(), (RSign)signBox.getSelectedItem());
-				menu.transition(new TransitionEvent("start"));
+				bus.publishAsync(new LoadEvent(this, raceList.get(race.getSelectedItem()), 
+						name.getText(), (Gender)gender.getSelectedItem(), 
+						(Player.Specialisation)spec.getSelectedItem(), prof.getText(), 
+						(RSign)signBox.getSelectedItem()));
 				frame.dispose();
 			}
 		}

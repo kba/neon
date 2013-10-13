@@ -284,7 +284,7 @@ public class Zone implements Externalizable {
 	/**
 	 * Removes a creature from this map.
 	 * 
-	 * @param c	the creature to remove
+	 * @param uid	the uid of the creature to remove
 	 */
 	public void removeCreature(long uid) {
 		creatures.remove(uid);

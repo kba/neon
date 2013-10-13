@@ -44,7 +44,7 @@ public class Atlas {
 	 * cache path. The cache is lazy initialised. 
 	 * 
 	 * @param files	a {@code FileSystem}
-	 * @param file	the path to the file used for caching
+	 * @param path	the path to the file used for caching
 	 */
 	public Atlas(FileSystem files, String path) {
 		this.files = files;

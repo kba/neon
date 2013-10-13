@@ -32,18 +32,19 @@ import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.resources.RRecipe;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class PotionDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<RRecipe> potions;
 	private String coin;
+	private UserInterface ui;
 	
-	public PotionDialog(JFrame parent, String coin) {
+	public PotionDialog(UserInterface ui, String coin) {
+		this.ui = ui;
 		this.coin = coin;
-		this.parent = parent;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -79,7 +80,7 @@ public class PotionDialog implements KeyListener {
 		initPotions();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -111,12 +112,12 @@ public class PotionDialog implements KeyListener {
 					player.inventory.addItem(item.getUID());
 					player.addMoney(-potion.cost);
 					initPotions();
-					Client.getUI().showMessage("Potion created.", 2);
+					ui.showMessage("Potion created.", 2);
 				} else {
-					Client.getUI().showMessage("You don't have enough money.", 2);
+					ui.showMessage("You don't have enough money.", 2);
 				}
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No potion selected.", 2);
+				ui.showMessage("No potion selected.", 2);
 			}
 			break;
 		}

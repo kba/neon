@@ -41,11 +41,15 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	private GamePanel panel;
 	private GameSaver saver;
 	private CClient keys;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public GameState(State parent, TaskQueue queue, MBassador<EventObject> bus) {
+	public GameState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent, "game module");
+		this.bus = bus;
+		this.ui = ui;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
-		saver = new GameSaver(queue);
+		saver = new GameSaver();
 		panel = new GamePanel();
 		setVariable("panel", panel);
 		
@@ -56,12 +60,12 @@ public class GameState extends State implements KeyListener, CollisionListener {
 
 	@Override
 	public void enter(TransitionEvent e) {
-		Client.getUI().showPanel(panel);
+		ui.showPanel(panel);
 		if(e.toString().equals("start")) {
 			player = Engine.getPlayer();
 			Engine.getPhysicsEngine().addListener(this);
 			// in geval spel start, moeten de events van de huidige kloktick nu uitgevoerd worden
-			Engine.post(new TurnEvent(Engine.getTimer().getTime(), true));
+			bus.publishAsync(new TurnEvent(Engine.getTimer().getTime(), true));
 		}
 		panel.setVisible(true);
 		panel.addKeyListener(this);
@@ -89,7 +93,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		int code = key.getKeyCode();
 		switch(code) {
 		case KeyEvent.VK_CONTROL:
-			transition(new TransitionEvent("inventory"));
+			bus.publishAsync(new TransitionEvent("inventory"));
 			break;
 		case KeyEvent.VK_F5:
 			save(false); break;
@@ -98,30 +102,30 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		case KeyEvent.VK_F1:
 			InputStream input = Engine.class.getResourceAsStream("help.html");
 			String help = new Scanner(input, "UTF-8").useDelimiter("\\A").next();
-			Client.getUI().showHelp(help);
+			ui.showHelp(help);
 			break;
 		case KeyEvent.VK_F2:
 			panel.toggleHUD();
 			break;
 		case KeyEvent.VK_F3:
-			Client.getUI().showConsole(Engine.getScriptEngine());
+			ui.showConsole(Engine.getScriptEngine());
 			break;
 		default:
 			if(code == keys.map) {
-				new MapDialog(Client.getUI().getWindow(), Engine.getAtlas().getCurrentZone()).show();
+				new MapDialog(ui.getWindow(), Engine.getAtlas().getCurrentZone()).show();
 			} else if(code == keys.sneak) {
 				player.setSneaking(!player.isSneaking());
 				panel.repaint();
 			} else if(code == keys.journal) {
-				transition(new TransitionEvent("journal"));
+				bus.publishAsync(new TransitionEvent("journal"));
 			}
 		}
 	}
 	
 	private void save(boolean quit) {
 		if(quit) {
-			if(Client.getUI().showQuestion("Do you wish to quit?")) {
-				if(Client.getUI().showQuestion("Do you wish to save?")) {
+			if(ui.showQuestion("Do you wish to quit?")) {
+				if(ui.showQuestion("Do you wish to save?")) {
 					saver.saveGame();
 				} 
 				Engine.quit();
@@ -129,7 +133,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 				panel.repaint();
 			}
 		} else {
-			if(Client.getUI().showQuestion("Do you wish to save?")) {
+			if(ui.showQuestion("Do you wish to save?")) {
 				saver.saveGame();
 			}
 			panel.repaint();
@@ -172,7 +176,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 					break;
 				case CombatEvent.DIE:
 					panel.print("You killed the " + ce.getDefender() + ".");
-					Engine.post(new DeathEvent(ce.getDefender(), Engine.getTimer().getTime()));
+					bus.publishAsync(new DeathEvent(ce.getDefender(), Engine.getTimer().getTime()));
 					break;
 				}
 			}

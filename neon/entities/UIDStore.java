@@ -53,7 +53,7 @@ public class UIDStore {
 	/**
 	 * Tells this UIDStore to use the given jdbm3 cache.
 	 * 
-	 * @param cache
+	 * @param file
 	 */
 	public UIDStore(String file) {
 		db = DBMaker.openFile(file).disableLocking().make();

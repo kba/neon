@@ -24,6 +24,7 @@ import javax.script.*;
 import neon.core.event.*;
 import neon.core.handlers.CombatHandler;
 import neon.core.handlers.DeathHandler;
+import neon.core.handlers.InventoryHandler;
 import neon.entities.Player;
 import neon.entities.UIDStore;
 import neon.maps.Atlas;
@@ -35,8 +36,6 @@ import neon.systems.physics.PhysicsSystem;
 import neon.systems.timing.Timer;
 import neon.systems.files.FileSystem;
 import neon.systems.io.Port;
-import neon.systems.io.PortListener;
-import net.engio.mbassy.bus.BusConfiguration;
 import net.engio.mbassy.bus.MBassador;
 
 /**
@@ -55,8 +54,8 @@ public class Engine implements Runnable {
 	private static MBassador<EventObject> bus;	// event bus
 	private static TaskQueue queue;
 	private static ResourceManager resources;
-	private static Configuration config;
-	private Port port;
+	
+	private Configuration config;
 
 	// wordt extern geset
 	private static Game game;
@@ -66,8 +65,7 @@ public class Engine implements Runnable {
 	 */
 	public Engine(Port port) {
 		// engine componenten opzetten
-		this.port = port;
-		port.addListener(new BusAdapter());
+		bus = port.getBus();
 		engine = new ScriptEngineManager().getEngineByName("JavaScript");
 		files = new FileSystem();
 		physics = new PhysicsSystem();
@@ -81,18 +79,19 @@ public class Engine implements Runnable {
 		// nog engine componenten opzetten
 		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		quests = new QuestTracker();
-		initEvents();
 		config = new Configuration(resources);
+		initEvents();		
 	}
 	
 	private void initEvents() {
 		EventAdapter adapter = new EventAdapter(quests);
-		bus = new MBassador<EventObject>(BusConfiguration.Default());
 		bus.subscribe(queue);
 		bus.subscribe(new CombatHandler());	
 		bus.subscribe(new DeathHandler());
+		bus.subscribe(new InventoryHandler());
 		bus.subscribe(adapter);
 		bus.subscribe(quests);
+		bus.subscribe(new GameLoader(config));
 	}
 	
 	/**
@@ -137,10 +136,6 @@ public class Engine implements Runnable {
 		return game.getPlayer();
 	}
 	
-	public MBassador<EventObject> getBus() {
-		return bus;
-	}
-	
 	public static QuestTracker getQuestTracker() {
 		return quests;
 	}
@@ -180,10 +175,6 @@ public class Engine implements Runnable {
 		return logger;
 	}
 	
-	public static Configuration getConfig() {
-		return config;
-	}
-	
 	public static UIDStore getStore() {
 		return game.getStore();
 	}
@@ -199,7 +190,7 @@ public class Engine implements Runnable {
 	public static TaskQueue getQueue() {
 		return queue;
 	}
-
+	
 	/**
 	 * Starts a new game.
 	 */
@@ -219,12 +210,5 @@ public class Engine implements Runnable {
 	 */
 	public static void quit() {
 		System.exit(0);
-	}
-	
-	private class BusAdapter implements PortListener {
-		@Override
-		public void receive(EventObject event) {
-			bus.publishAsync(event);
-		}
 	}
 }

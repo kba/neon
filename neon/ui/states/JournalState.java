@@ -28,9 +28,10 @@ import javax.swing.border.*;
 import java.util.*;
 import java.awt.event.*;
 import neon.resources.RSpell;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
+import net.engio.mbassy.bus.MBassador;
 
 public class JournalState extends State implements FocusListener {
 	private final static UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -41,6 +42,8 @@ public class JournalState extends State implements FocusListener {
 	private JPanel cards;
 	private JPanel main;
 	private JLabel instructions;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
 	// character sheet panel
 	private JPanel stats, stuff, skills;
@@ -50,8 +53,10 @@ public class JournalState extends State implements FocusListener {
 	// spells panel
 	private JList<RSpell> sList;
 
-	public JournalState(State parent)  {
+	public JournalState(State parent, MBassador<EventObject> bus, UserInterface ui)  {
 		super(parent);
+		this.bus = bus;
+		this.ui = ui;
 		main = new JPanel(new BorderLayout());
 		
 		// cardlayout om verschillende panels weer te geven.
@@ -125,7 +130,7 @@ public class JournalState extends State implements FocusListener {
 		instructions.setText("<html>Press J or esc to quit, Q to see quests, " +
 				"S to view spells and C for your character sheet. Use arrow keys " +
 				"to scroll through lists, shift + arrow keys to change list.</html>");
-		Client.getUI().showPanel(main);		
+		ui.showPanel(main);		
 		skillScroller.requestFocus();
 	}
 	
@@ -245,7 +250,7 @@ public class JournalState extends State implements FocusListener {
 			System.out.println(command);
 			switch(command) {
 			case "esc":
-				transition(new TransitionEvent("cancel"));
+				bus.publishAsync(new TransitionEvent("cancel"));
 				break;
 			case "right":
 				if(skillScroller.hasFocus()) {

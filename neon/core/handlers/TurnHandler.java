@@ -23,6 +23,7 @@ import java.util.Collection;
 import neon.core.Configuration;
 import neon.core.Engine;
 import neon.core.event.TurnEvent;
+import neon.core.event.UpdateEvent;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.entities.property.Condition;
@@ -31,7 +32,6 @@ import neon.maps.*;
 import neon.maps.Region.Modifier;
 import neon.resources.CServer;
 import neon.resources.RRegionTheme;
-import neon.ui.Client;
 import neon.ui.GamePanel;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
@@ -97,7 +97,7 @@ public class TurnHandler {
 		
 		// en systems updaten
 		Engine.getPhysicsEngine().update();
-		Client.getUI().update();
+		Engine.post(new UpdateEvent(this));
 	}
 	
 	private class Generator extends Thread {
@@ -105,7 +105,7 @@ public class TurnHandler {
 		public void run() {
 			// enkel repainten nadat er iets gegenereerd is
 			if(checkRegions()) {
-				Client.getUI().update();
+				Engine.post(new UpdateEvent(this));
 			}
 		}
 	}

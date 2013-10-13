@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -19,21 +19,46 @@
 package neon.core.event;
 
 import java.util.EventObject;
+import javax.swing.SwingConstants;
 
+/**
+ * An event used to signal the client that a message should be shown.
+ * 
+ * @author mdriesen
+ */
 @SuppressWarnings("serial")
-public class MagicEvent extends EventObject {
+public class MessageEvent extends EventObject {
 	private String message;
-	
-	public MagicEvent() {
-		super("magic");
+	private int time;
+	private int position;
+
+	public MessageEvent(Object source, String message, int duration, int position) {
+		super(source);
+		this.message = message;
+		time = duration;
+		this.position = position;
 	}
+	
+	public MessageEvent(Object source, String message, int duration) {
+		this(source, message, duration, SwingConstants.CENTER);
+	}	
 	
 	@Override
 	public String toString() {
-		return "magic";
+		return message;
 	}
 	
-	public String getMessage() {
-		return message;
+	/**
+	 * @return	how long the message should be shown
+	 */
+	public int getDuration() {
+		return time;
+	}
+	
+	/**
+	 * @return	the screen position where the message should be shown
+	 */
+	public int getPosition() {
+		return position;
 	}
 }

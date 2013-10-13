@@ -18,19 +18,26 @@
 
 package neon.systems.io;
 
+import java.util.ArrayDeque;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EventObject;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
 
+/**
+ * A {@code Port} to connect client and server running locally.
+ * 
+ * @author mdriesen
+ */
+@Listener(references = References.Strong)	// strong, om gc te vermijden
 public class LocalPort extends Port {
+	private Collection<EventObject> buffer = Collections.synchronizedCollection(new ArrayDeque<EventObject>());
 	private LocalPort peer;
 	
-	@Override
-	public void write(EventObject event) {
-		peer.receive(event);
-	}
-
-	@Override
-	public EventObject read() {
-		return null;
+	public LocalPort() {
+		bus.subscribe(this);
 	}
 	
 	/**
@@ -41,15 +48,17 @@ public class LocalPort extends Port {
 	public void connect(LocalPort peer) {
 		this.peer = peer;
 	}
-	
-	private void receive(EventObject event) {
-		for(PortListener listener : listeners) {
-			listener.receive(event);
+
+	@Override
+	@Handler public void receive(EventObject event) {
+		// zorgen dat al behandelde events niet nog eens worden teruggestuurd
+		if(!buffer.remove(event)) {
+			peer.write(event);
 		}
 	}
 
-	@Override
-	public Mode getMode() {
-		return Mode.EVENT;
+	private void write(EventObject event) {
+		buffer.add(event);
+		bus.publishAsync(event);
 	}
 }

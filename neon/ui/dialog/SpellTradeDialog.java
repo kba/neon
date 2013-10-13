@@ -29,30 +29,30 @@ import javax.swing.border.*;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.resources.RSpell;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class SpellTradeDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<RSpell> buy;
 	private Creature trader;
 	private JLabel info;
 	private JPanel panel;
 	private String big, small;
+	private UserInterface ui;
 	
 	/**
 	 * Initializes a new spell trading dialog box.
 	 * 
-	 * @param parent
 	 * @param big	name of major denominations (euro, dollar)
 	 * @param small	name of minor denominations (cents)
 	 */
-	public SpellTradeDialog(JFrame parent, String big, String small) {
+	public SpellTradeDialog(UserInterface ui, String big, String small) {
 		this.big = big;
 		this.small = small;
+		this.ui = ui;
 		
-		this.parent = parent;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -94,7 +94,7 @@ public class SpellTradeDialog implements KeyListener {
 		initSpells();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -119,16 +119,16 @@ public class SpellTradeDialog implements KeyListener {
 				if(player.getMoney() >= spell.cost) {
 					if(!player.animus.getSpells().contains(spell)) {
 						player.animus.addSpell(spell);
-						Client.getUI().showMessage("You bought the spell " + spell + ".", 2);
+						ui.showMessage("You bought the spell " + spell + ".", 2);
 						initSpells();
 					} else {
-						Client.getUI().showMessage("You already have that spell.", 2);
+						ui.showMessage("You already have that spell.", 2);
 					}
 				} else {
-					Client.getUI().showMessage("You don't have enough money.", 2);						
+					ui.showMessage("You don't have enough money.", 2);						
 				}
 			} catch (Exception f) {
-				Client.getUI().showMessage("There is nothing left to buy.", 2);
+				ui.showMessage("There is nothing left to buy.", 2);
 			} 
 			break;
 		}

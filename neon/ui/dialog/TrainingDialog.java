@@ -22,6 +22,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.border.*;
 import org.jdom2.Element;
@@ -29,23 +30,24 @@ import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.entities.property.Skill;
-import neon.ui.Client;
-import neon.util.fsm.State;
+import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
 import neon.resources.RPerson;
+import net.engio.mbassy.bus.MBassador;
 
 public class TrainingDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<Skill> skills;
 	private Creature trainer;	// uw trainer
 	private JScrollPane scroller;
-	private State dialog;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public TrainingDialog(JFrame parent, State dialog) {
-		this.dialog = dialog;
-		this.parent = parent;
+	public TrainingDialog(UserInterface ui, MBassador<EventObject> bus) {
+		this.bus = bus;
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -80,7 +82,7 @@ public class TrainingDialog implements KeyListener {
 		initTraining();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -102,12 +104,12 @@ public class TrainingDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				train(skills.getSelectedValue());
-				Client.getUI().showMessage("Training finished.", 2);
+				ui.showMessage("Training finished.", 2);
 				// terug naar gameModule
 				frame.dispose();
-				dialog.transition(new TransitionEvent("return"));
+				bus.publishAsync(new TransitionEvent("return"));
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No skill selected.", 2);
+				ui.showMessage("No skill selected.", 2);
 			}
 			break;
 		}

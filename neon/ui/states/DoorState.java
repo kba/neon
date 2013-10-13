@@ -23,19 +23,25 @@ import neon.entities.Creature;
 import neon.entities.Door;
 import neon.entities.Player;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.Popup;
 import neon.resources.RItem;
-import neon.ui.Client;
 import neon.ui.GamePanel;
+import neon.ui.UserInterface;
 import neon.util.fsm.*;
+import net.engio.mbassy.bus.MBassador;
 
 public class DoorState extends State implements KeyListener {
 	private Door door;
 	private GamePanel panel;
 	private Popup popup;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public DoorState(State state) {
+	public DoorState(State state, MBassador<EventObject> bus, UserInterface ui) {
 		super(state);
+		this.bus = bus;
+		this.ui = ui;
 	}
 	
 	@Override
@@ -46,14 +52,14 @@ public class DoorState extends State implements KeyListener {
 			
 		if(Engine.getPlayer().bounds.getLocation().distance(door.bounds.getLocation()) < 2) {
 			if(door.lock.isClosed()) {
-				popup = Client.getUI().showPopup("1) open door 2) lock door 0) cancel");
+				popup = ui.showPopup("1) open door 2) lock door 0) cancel");
 			} else if(door.lock.isLocked()) {
-				popup = Client.getUI().showPopup("1) pick lock 2) unlock door 3) bash door 0) cancel");
+				popup = ui.showPopup("1) pick lock 2) unlock door 3) bash door 0) cancel");
 			} else {
-				popup = Client.getUI().showPopup("1) close door 2) lock door 0) cancel");
+				popup = ui.showPopup("1) close door 2) lock door 0) cancel");
 			} 
 		} else {
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 		}
 	}
 
@@ -73,51 +79,51 @@ public class DoorState extends State implements KeyListener {
 		case KeyEvent.VK_NUMPAD1:
 			if(door.lock.isClosed()) {
 				door.lock.open();
-				Client.getUI().showMessage("Door opened.", 1);
+				ui.showMessage("Door opened.", 1);
 				panel.repaint();
 			} else if(door.lock.isLocked()) {
 				if(player.pickLock(door.lock)) {
 					door.lock.unlock();
-					Client.getUI().showMessage("Lock picked.", 1);
+					ui.showMessage("Lock picked.", 1);
 				} else {
-					Client.getUI().showMessage("The lock doesn't budge.", 1);
+					ui.showMessage("The lock doesn't budge.", 1);
 				}
 			} else if(door.lock.isOpen()) {
 				door.lock.close();
-				Client.getUI().showMessage("Door closed.", 1);
+				ui.showMessage("Door closed.", 1);
 			}
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_2:
 		case KeyEvent.VK_NUMPAD2:
 			if(door.lock.getLockDC() == 0) {
-				Client.getUI().showMessage("This door has no lock.", 1);
+				ui.showMessage("This door has no lock.", 1);
 			} else if(door.lock.getKey() != null && hasItem(player, door.lock.getKey())) {
 				if(door.lock.isClosed() || door.lock.isOpen()) {
 					door.lock.lock();
-					Client.getUI().showMessage("Door locked.", 1);
+					ui.showMessage("Door locked.", 1);
 				} else if(door.lock.isLocked()) {
 					door.lock.unlock();	
-					Client.getUI().showMessage("Door unlocked.", 1);
+					ui.showMessage("Door unlocked.", 1);
 				}
 			} else {
-				Client.getUI().showMessage("No key for this door.", 1);
+				ui.showMessage("No key for this door.", 1);
 			}
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_3: 
 		case KeyEvent.VK_NUMPAD3: 
 			if(door.lock.isLocked()) {
 				door.lock.open();
 				door.lock.setLockDC(0);
-				Client.getUI().showMessage("Lock broken", 1);
+				ui.showMessage("Lock broken", 1);
 				panel.repaint();
 			}
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_NUMPAD0: 
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		}
 	}

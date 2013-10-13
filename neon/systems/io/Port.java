@@ -18,8 +18,11 @@
 
 package neon.systems.io;
 
-import java.util.ArrayList;
 import java.util.EventObject;
+
+import net.engio.mbassy.bus.BusConfiguration;
+import net.engio.mbassy.bus.MBassador;
+import net.engio.mbassy.listener.Handler;
 
 /**
  * A communication port used to send messages ({@code EventObject}s) between 
@@ -28,36 +31,11 @@ import java.util.EventObject;
  * @author mdriesen
  */
 public abstract class Port {
-	public enum Mode {
-		POLL, EVENT;
-	}
+	protected MBassador<EventObject> bus = new MBassador<EventObject>(BusConfiguration.Default());
 	
-	protected ArrayList<PortListener> listeners = new ArrayList<>();
+	@Handler public abstract void receive(EventObject event);
 	
-	/**
-	 * Writes a new event to this port.
-	 * 
-	 * @param event	an {@code EventObject}
-	 */
-	public abstract void write(EventObject event);
-	
-	public abstract EventObject read();
-	
-	/**
-	 * Returns the {@code Mode} this port supports: {@code POLL}ed or 
-	 * {@code EVENT}-based.
-	 * 
-	 * @return	
-	 */
-	public abstract Mode getMode();
-	
-	/**
-	 * Adds a listener to this port. {@code EVENT}-based implementations
-	 * should use these listeners.
-	 * 
-	 * @param listener
-	 */
-	public void addListener(PortListener listener) {
-		listeners.add(listener);
+	public MBassador<EventObject> getBus() {
+		return bus;
 	}
 }

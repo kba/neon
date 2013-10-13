@@ -21,18 +21,24 @@ package neon.ui.states;
 import neon.core.*;
 import neon.entities.components.Lock;
 import java.awt.event.*;
+import java.util.EventObject;
 import javax.swing.Popup;
-import neon.ui.Client;
 import neon.ui.GamePanel;
+import neon.ui.UserInterface;
 import neon.util.fsm.*;
+import net.engio.mbassy.bus.MBassador;
 
 public class LockState extends State implements KeyListener {
 	private Lock lock;
 	private GamePanel panel;
 	private Popup popup;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public LockState(State state) {
+	public LockState(State state, MBassador<EventObject> bus, UserInterface ui) {
 		super(state);
+		this.bus = bus;
+		this.ui = ui;
 	}
 	
 	@Override
@@ -41,9 +47,9 @@ public class LockState extends State implements KeyListener {
 		panel.addKeyListener(this);
 		lock = (Lock)e.getParameter("lock");
 		if(lock.isLocked()) {
-			popup = Client.getUI().showPopup("1) pick lock 2) bash lock 0) cancel");
+			popup = ui.showPopup("1) pick lock 2) bash lock 0) cancel");
 		} else {
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 		} 
 	}
 
@@ -62,25 +68,25 @@ public class LockState extends State implements KeyListener {
 		case KeyEvent.VK_NUMPAD1:
 			if(Engine.getPlayer().pickLock(lock)) {
 				lock.unlock();
-				Client.getUI().showMessage("Lock picked.", 1);
+				ui.showMessage("Lock picked.", 1);
 			} else {
-				Client.getUI().showMessage("The lock doesn't budge.", 1);
+				ui.showMessage("The lock doesn't budge.", 1);
 			}
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_2:
 		case KeyEvent.VK_NUMPAD2:
 			if(lock.isLocked()) {
 				lock.open();
 				lock.setLockDC(0);
-				Client.getUI().showMessage("Lock broken", 1);
+				ui.showMessage("Lock broken", 1);
 				panel.repaint();
 			}
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		case KeyEvent.VK_0:
 		case KeyEvent.VK_NUMPAD0: 
-			transition(new TransitionEvent("return"));
+			bus.publishAsync(new TransitionEvent("return"));
 			break;
 		}
 	}

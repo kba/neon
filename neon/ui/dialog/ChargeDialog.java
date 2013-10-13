@@ -25,20 +25,21 @@ import java.awt.event.KeyListener;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.border.*;
-import neon.core.Engine;
 import neon.entities.Item;
 import neon.entities.Player;
-import neon.ui.Client;
+import neon.ui.UserInterface;
+import neon.core.Engine;
 
 public class ChargeDialog implements KeyListener {
 	private Player player;
 	private JList<Item> items;
 	private JDialog frame;
-	private JFrame parent;
 	private JScrollPane scroller;
+	private UserInterface ui;
 	
-	public ChargeDialog(JFrame parent) {
-		this.parent = parent;
+	public ChargeDialog(UserInterface ui) {
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -72,7 +73,7 @@ public class ChargeDialog implements KeyListener {
 		initItems();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -95,9 +96,9 @@ public class ChargeDialog implements KeyListener {
 			try {
 				Item item = (Item)items.getSelectedValue();
 				item.enchantment.setModifier(0);
-				Client.getUI().showMessage("Item charged.", 2);
+				ui.showMessage("Item charged.", 2);
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No item selected.", 2);
+				ui.showMessage("No item selected.", 2);
 			}
 			break;
 		}

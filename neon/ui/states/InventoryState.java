@@ -34,11 +34,12 @@ import neon.entities.property.Skill;
 import neon.resources.CClient;
 import neon.resources.RItem;
 import neon.resources.RText;
-import neon.ui.Client;
 import neon.ui.DescriptionPanel;
+import neon.ui.UserInterface;
 import neon.ui.dialog.BookDialog;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
+import net.engio.mbassy.bus.MBassador;
 
 public class InventoryState extends State implements KeyListener, MouseListener {
 	private Player player;
@@ -47,9 +48,13 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 	private HashMap<String, Integer> listData;
 	private JPanel panel;
 	private DescriptionPanel description;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
-	public InventoryState(State parent) {
+	public InventoryState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent, "inventory module");
+		this.bus = bus;
+		this.ui = ui;
 		panel = new JPanel(new BorderLayout());
 		
 		// info
@@ -91,7 +96,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
     	inventory.setSelectedIndex(0);
     	inventory.repaint();
 		description.update(inventory.getSelectedValue());
-		Client.getUI().showPanel(panel);
+		ui.showPanel(panel);
 	}
 	
 	private void use(Item item) {
@@ -101,7 +106,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			initList();
 		} else if(item instanceof Item.Book && !(item instanceof Item.Scroll)) {
 			RText text = (RText)Engine.getResources().getResource(((RItem.Text)item.resource).content + ".html", "text");
-			new BookDialog(Client.getUI().getWindow()).show(item.toString(), text.getText());
+			new BookDialog(ui.getWindow()).show(item.toString(), text.getText());
 		} else if(item instanceof Item.Food) {
 			InventoryHandler.removeItem(player, item.getUID());
 			initList();
@@ -153,7 +158,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_CONTROL: 
 		case KeyEvent.VK_ESCAPE: 
-			transition(new TransitionEvent("cancel"));
+			bus.publishAsync(new TransitionEvent("cancel"));
 			break;
 		case KeyEvent.VK_UP:
 			if(inventory.getSelectedIndex() > 0) {
@@ -167,7 +172,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			if(inventory.getSelectedValue() != null) {
 				use(inventory.getSelectedValue()); 					
 			} else {
-				Client.getUI().showMessage("There is nothing left to use/eat/(un)equip.", 2);
+				ui.showMessage("There is nothing left to use/eat/(un)equip.", 2);
 			}
 			break;
 		case KeyEvent.VK_SPACE:
@@ -180,7 +185,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 				inventory.setSelectedIndex(0);
 				inventory.repaint();
 			} else {
-				Client.getUI().showMessage("There is nothing left to drop.", 2);
+				ui.showMessage("There is nothing left to drop.", 2);
 			}
 			break;
 		}

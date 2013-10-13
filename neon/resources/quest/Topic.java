@@ -16,12 +16,12 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.narrative;
+package neon.resources.quest;
 
 import org.jdom2.Element;
 
 public class Topic {
-	protected String quest;
+	private String questID;
 	private String id;
 	private String condition;
 	private String answer;

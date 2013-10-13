@@ -22,23 +22,20 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.border.*;
-import neon.core.Engine;
-import neon.core.GameLoader;
-import neon.util.fsm.State;
-import neon.util.fsm.TransitionEvent;
+import neon.core.event.LoadEvent;
+import net.engio.mbassy.bus.MBassador;
 
 public class LoadGameDialog {
 	private JDialog frame;
-	private JFrame parent;
 	private JList<String> games;
 	private JPanel menu;
-	private State state;
+	private MBassador<EventObject> bus;
 	
-	public LoadGameDialog(JFrame parent, State state) {
-		this.state = state;
-		this.parent = parent;
+	public LoadGameDialog(JFrame parent, MBassador<EventObject> bus) {
+		this.bus = bus;
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -92,7 +89,7 @@ public class LoadGameDialog {
 	public void show() {
 		initSaves();
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 
@@ -135,12 +132,9 @@ public class LoadGameDialog {
 		
 		public void actionPerformed(ActionEvent a) {
 			if(a.getActionCommand().equals("ok")) {
-				new GameLoader(Engine.getConfig()).loadGame((String)games.getSelectedValue());
-				state.transition(new TransitionEvent("start"));
-				frame.dispose();
-			} else if(a.getActionCommand().equals("esc")) {
-				frame.dispose();
+				bus.publishAsync(new LoadEvent(this, (String)games.getSelectedValue()));
 			}
+			frame.dispose();
 		}
 	}
 }

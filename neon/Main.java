@@ -28,13 +28,14 @@ import neon.ui.Client;
  * @author	mdriesen
  */
 public class Main {
-    /**
+	private static final String version = "0.4.2";	// huidige versie
+
+	/**
      * The application's main method. This method creates an {@code Engine} and 
      * a {@code UserInterface} instance and connects them.
      * 
      * @param args	the command line arguments
      */
-	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		// poorten aanmaken en verbinden
 		LocalPort cPort = new LocalPort();
@@ -44,7 +45,7 @@ public class Main {
 		
 		// engine en ui aanmaken
 		Engine engine = new Engine(sPort);
-		Client client = new Client(cPort, engine.getQueue(), engine.getBus());
+		Client client = new Client(cPort, version);
 		
 		// custom look and feels zijn soms wat strenger als gewone, blijkbaar
 		// is het grootste probleem dat in modules als main menu delen van de ui buiten 

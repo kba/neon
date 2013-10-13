@@ -20,12 +20,24 @@ package neon.resources;
 
 import org.jdom2.Element;
 
+/**
+ * A resource that is loaded from/saved to an XML data file.
+ * 
+ * @author mdriesen
+ *
+ */
 public abstract class RData extends Resource {
 	// dit dient eigenlijk alleen voor items en creatures
 	public String text = "x";
 	public String color = "white";
 	public String name;
 
+	/**
+	 * Initializes this resource from a JDOM {@code Element}.
+	 * 
+	 * @param data
+	 * @param path
+	 */
 	public RData(Element data, String... path) {
 		super(data.getAttributeValue("id"), path);
 		color = data.getAttributeValue("color");
@@ -33,12 +45,26 @@ public abstract class RData extends Resource {
 		name = data.getAttributeValue("name");
 	}
 	
+	/**
+	 * Initializes an empty resource with the given id.
+	 * 
+	 * @param id
+	 * @param path
+	 */
 	public RData(String id, String... path) {
 		super(id, path);
 	}
 	
+	/**
+	 * Creates a JDOM {@code Element} from this resource.
+	 * 
+	 * @return
+	 */
 	public abstract Element toElement();
 	
+	@Override
 	public void load() {}	// RData heeft niets om te laden buiten wat er in de constructor staat
+	
+	@Override
 	public void unload() {}	// RData heeft niets om te ontladen
 }

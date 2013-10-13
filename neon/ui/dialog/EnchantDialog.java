@@ -36,19 +36,20 @@ import neon.entities.Weapon;
 import neon.entities.components.Enchantment;
 import neon.magic.Effect;
 import neon.resources.RSpell;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class EnchantDialog implements KeyListener, ListSelectionListener {
 	private JDialog frame;
-	private JFrame parent;
 	private JPanel panel;
 	private JList<Item> itemList;
 	private DefaultListModel<Item> itemModel;
 	private JList<Effect> spellList;
 	private DefaultListModel<Effect> spellModel;
+	private UserInterface ui;
 	
-	public EnchantDialog(JFrame parent) {
-		this.parent = parent;
+	public EnchantDialog(UserInterface ui) {
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -94,7 +95,7 @@ public class EnchantDialog implements KeyListener, ListSelectionListener {
 		initLists();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -134,10 +135,10 @@ public class EnchantDialog implements KeyListener, ListSelectionListener {
 				Item item = itemList.getSelectedValue();
 				RSpell spell = new RSpell(effect.toString(), 0, 0, effect.name(), 0, 0, "enchant");
 				item.enchantment = new Enchantment(spell, 100, item.getUID());
-				Client.getUI().showMessage("Item enchanted.", 2);
+				ui.showMessage("Item enchanted.", 2);
 				initLists();
 			} else {
-				Client.getUI().showMessage("No enchantment selected!", 2);				
+				ui.showMessage("No enchantment selected!", 2);				
 			}
 		}
 	}

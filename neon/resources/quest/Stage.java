@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012-2013 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -16,38 +16,24 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.core.event;
+package neon.resources.quest;
 
-import java.util.EventObject;
-
-@SuppressWarnings("serial")
-public class TurnEvent extends EventObject {
-	private int time;
-	private boolean start;
-	
-	public TurnEvent(int turn) {
-		this(turn, false);
-	}
-	
-	public TurnEvent(int turn, boolean start) {
-		super(turn);
-		this.time = turn;
-		this.start = true;
-	}
-	
-	public int getTime() {
-		return time;
-	}
+/**
+ * A quest stage.
+ * 
+ * @author mdriesen
+ *
+ */
+public class Stage {
+	/** The resource ID of the quest this stage belongs to. */
+	public final String questID;
 	
 	/**
-	 * @return	whether this {@code TurnEvent} indicates the start of a game
+	 * Initializes a quest stage.
+	 * 
+	 * @param questID	the resouce ID of the quest this stage belongs to
 	 */
-	public boolean isStart() {
-		return start;
-	}
-	
-	@Override
-	public String toString() {
-		return "turn " + time;
+	public Stage(String questID) {
+		this.questID = questID;
 	}
 }

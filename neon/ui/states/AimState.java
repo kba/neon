@@ -35,10 +35,11 @@ import javax.swing.Popup;
 import neon.resources.CClient;
 import neon.resources.RWeapon.WeaponType;
 import neon.systems.animation.Translation;
-import neon.ui.Client;
 import neon.ui.GamePanel;
+import neon.ui.UserInterface;
 import neon.ui.graphics.DefaultRenderable;
 import neon.util.fsm.*;
+import net.engio.mbassy.bus.MBassador;
 
 /**
  * Implements all methods to aim at something. This is done by showing a cursor 
@@ -53,12 +54,16 @@ public class AimState extends State implements KeyListener {
 	private Popup popup;
 	private GamePanel panel;
 	private CClient keys;
+	private MBassador<EventObject> bus;
+	private UserInterface ui;
 	
 	/**
 	 * Constructs a new AimModule.
 	 */
-	public AimState(State state) {
+	public AimState(State state, MBassador<EventObject> bus, UserInterface ui) {
 		super(state);
+		this.bus = bus;
+		this.ui = ui;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
 		target = new Point();
 	}
@@ -115,7 +120,7 @@ public class AimState extends State implements KeyListener {
 		} else if(code == keys.act) {
 			act();
 		} else if(code == keys.look) {
-			transition(new TransitionEvent("return", "message", "Aiming cancelled."));
+			bus.publishAsync(new TransitionEvent("return", "message", "Aiming cancelled."));
 		} else if(code == keys.shoot) {
 			shoot();
 		} else if(code == keys.magic) {
@@ -132,30 +137,30 @@ public class AimState extends State implements KeyListener {
 				Weapon ammo = (Weapon)Engine.getStore().getEntity(player.inventory.get(Slot.AMMO));
 				if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.THROWN) {
 					shoot(ammo, victim);
-					Engine.post(new CombatEvent(CombatEvent.FLING, player, victim));
+					bus.publishAsync(new CombatEvent(CombatEvent.FLING, player, victim));
 				} else if(CombatUtils.getWeaponType(player) == WeaponType.BOW) {
 					if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.ARROW) {
 						shoot(ammo, victim);
-						Engine.post(new CombatEvent(CombatEvent.SHOOT, player, victim));
+						bus.publishAsync(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
-						Client.getUI().showMessage("No arrows equiped!", 1);
+						ui.showMessage("No arrows equiped!", 1);
 					}
 				} else if(CombatUtils.getWeaponType(player) == WeaponType.CROSSBOW) {
 					if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.BOLT) {
-						Engine.post(new CombatEvent(CombatEvent.SHOOT, player, victim));
+						bus.publishAsync(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
-						Client.getUI().showMessage("No bolts equiped!", 1);
+						ui.showMessage("No bolts equiped!", 1);
 					}
 				} else {
-					Client.getUI().showMessage("No ranged weapon equiped!", 1);
+					ui.showMessage("No ranged weapon equiped!", 1);
 				}
 			} else {
-				Client.getUI().showMessage("No target!", 1);
+				ui.showMessage("No target!", 1);
 			}
 		} else {
-			Client.getUI().showMessage("Out of range!", 1);
+			ui.showMessage("Out of range!", 1);
 		}		
-		transition(new TransitionEvent("return"));			
+		bus.publishAsync(new TransitionEvent("return"));			
 	}
 	
 	private void shoot(Item projectile, Creature victim) {
@@ -171,17 +176,15 @@ public class AimState extends State implements KeyListener {
 			if(creature != null) {
 				if(creature.hasDialog()) {
 					// dialog module
-					TransitionEvent te = new TransitionEvent("dialog", "speaker", creature);
-					Engine.post(te);
-					transition(te);
+					bus.publishAsync(new TransitionEvent("dialog", "speaker", creature));
 				} else {
-					transition(new TransitionEvent("return", "message", "Creature can't talk."));
+					bus.publishAsync(new TransitionEvent("return", "message", "Creature can't talk."));
 				}
 			} else {
-				transition(new TransitionEvent("return", "message", "No person to talk to selected."));
+				bus.publishAsync(new TransitionEvent("return", "message", "No person to talk to selected."));
 			}
 		} else {
-			Client.getUI().showMessage("Too far away.", 1);
+			ui.showMessage("Too far away.", 1);
 		}		
 	}
 	
@@ -196,14 +199,14 @@ public class AimState extends State implements KeyListener {
 		}
 
 		switch(out) {
-		case MagicHandler.MANA: Client.getUI().showMessage("Not enough mana to cast this spell.", 1); break;
-		case MagicHandler.RANGE: Client.getUI().showMessage("Target out of range.", 1); break;
-		case MagicHandler.NONE: Client.getUI().showMessage("No spell equiped.", 1); break;
-		case MagicHandler.SKILL: Client.getUI().showMessage("Casting failed.", 1); break;
-		case MagicHandler.OK: Client.getUI().showMessage("Spell cast.", 1); break;
-		case MagicHandler.NULL: Client.getUI().showMessage("No target selected.", 1); break;
+		case MagicHandler.MANA: ui.showMessage("Not enough mana to cast this spell.", 1); break;
+		case MagicHandler.RANGE: ui.showMessage("Target out of range.", 1); break;
+		case MagicHandler.NONE: ui.showMessage("No spell equiped.", 1); break;
+		case MagicHandler.SKILL: ui.showMessage("Casting failed.", 1); break;
+		case MagicHandler.OK: ui.showMessage("Spell cast.", 1); break;
+		case MagicHandler.NULL: ui.showMessage("No target selected.", 1); break;
 		}
-		transition(new TransitionEvent("return"));
+		bus.publishAsync(new TransitionEvent("return"));
 	}
 	
 	private void look() {
@@ -225,16 +228,16 @@ public class AimState extends State implements KeyListener {
 			if(creature != null) {
 				actors = ", " + creature.toString();
 			}
-			popup = Client.getUI().showPopup(zone.getRegion(target) + items + actors);
+			popup = ui.showPopup(zone.getRegion(target) + items + actors);
 		} else {
-			popup = Client.getUI().showPopup("Too far away.");			
+			popup = ui.showPopup("Too far away.");			
 		}
 	}
 	
 	private void act() {
 		for(long uid : Engine.getAtlas().getCurrentZone().getItems(target)) {
 			if(Engine.getStore().getEntity(uid) instanceof Door) {
-				transition(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
+				bus.publishAsync(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 				break;
 			}
 		}

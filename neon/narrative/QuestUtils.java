@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import neon.core.Engine;
 import neon.resources.RQuest;
+import neon.resources.quest.Topic;
 
 public class QuestUtils {
 	/**
@@ -64,7 +65,6 @@ public class QuestUtils {
 				QuestUtils.replaceString(topic, vars[2*i], vars[2*i + 1]);
 			}
 			
-			topic.quest = quest.id;
 			list.add(topic);
 		}
 		return list;

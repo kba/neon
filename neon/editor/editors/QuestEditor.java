@@ -29,8 +29,8 @@ import javax.swing.border.*;
 import neon.editor.DialogEditor;
 import neon.editor.NeonFormat;
 import neon.editor.help.HelpLabels;
-import neon.narrative.Topic;
 import neon.resources.RQuest;
+import neon.resources.quest.Topic;
 
 import org.jdom2.Element;
 

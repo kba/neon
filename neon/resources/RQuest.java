@@ -20,9 +20,16 @@ package neon.resources;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import neon.narrative.Topic;
+
+import neon.resources.quest.Topic;
+
 import org.jdom2.Element;
 
+/**
+ * A resource representing a quest.
+ * 
+ * @author mdriesen
+ */
 public class RQuest extends RData {
 	public Element variables;
 	public int frequency;
@@ -57,15 +64,17 @@ public class RQuest extends RData {
 		}
 	}
 
-	public Collection<Topic> getTopics() {
-		return topics;
-	}
-	
 	public RQuest(String id, String... path) {
 		super(id, path);
 		repeat = true;
 	}
 
+	/**
+	 * Initializes a quest by copying all data from an existing quest.
+	 * 
+	 * @param quest
+	 * @param path
+	 */
 	public RQuest(RQuest quest, String... path) {
 		super(quest.id, path);
 		name = quest.name;
@@ -83,6 +92,13 @@ public class RQuest extends RData {
 		}
 	}
 
+	/**
+	 * @return	all dialog topics in this quest
+	 */
+	public Collection<Topic> getTopics() {
+		return topics;
+	}
+	
 	public Element toElement() {
 		Element quest = new Element(repeat ? "repeat" : "quest");
 		quest.setAttribute("name", name != null ? name : id);

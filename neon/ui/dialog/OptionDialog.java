@@ -40,10 +40,8 @@ public class OptionDialog {
 	private JRadioButton numpad, qwerty, azerty, qwertz;
 	private ButtonGroup group;	
 	private JDialog frame;
-	private JFrame parent;
 	
 	public OptionDialog(JFrame parent) {
-		this.parent = parent;
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -137,7 +135,7 @@ public class OptionDialog {
 		case CClient.NUMPAD: numpad.setSelected(true); break;
 		}
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 

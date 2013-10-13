@@ -29,11 +29,9 @@ import neon.ui.MapPanel;
 
 public class MapDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private MapPanel map;
 	
 	public MapDialog(JFrame parent, Zone zone) {
-		this.parent = parent;
 		frame = new JDialog(parent, false);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 50));
 		frame.setUndecorated(true);
@@ -61,7 +59,7 @@ public class MapDialog implements KeyListener {
 	
 	public void show() {
 		frame.pack();
-		frame.setLocationRelativeTo(parent.getContentPane());
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	

@@ -34,15 +34,14 @@ import neon.entities.Creature;
 import neon.entities.Entity;
 import neon.entities.Item;
 import neon.entities.Player;
-import neon.ui.Client;
 import neon.ui.DescriptionPanel;
+import neon.ui.UserInterface;
 
 public class TradeDialog implements KeyListener, ListSelectionListener {
 	private final static UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 	private final static Color line = defaults.getColor("List.foreground");
 
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private Creature trader;
 	private JList<Item> sellList, buyList;
@@ -51,18 +50,19 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 	private JPanel panel;
 	private DescriptionPanel description;
 	private String big, small;
+	private UserInterface ui;
 	
 	/**
 	 * 
-	 * @param parent
 	 * @param big	name of major denominations (euro, dollar)
 	 * @param small	name of minor denominations (cents)
 	 */
-	public TradeDialog(JFrame parent, String big, String small) {
+	public TradeDialog(UserInterface ui, String big, String small) {
 		this.big = big;
 		this.small = small;
+		this.ui = ui;
 		
-		this.parent = parent;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -122,7 +122,7 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 		sellList.setSelectedIndex(0);
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -160,9 +160,9 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 				}
 			} catch (Exception e) {
 				if(sellList.hasFocus()) {
-					Client.getUI().showMessage("There is nothing left to sell.", 2);
+					ui.showMessage("There is nothing left to sell.", 2);
 				} else {
-					Client.getUI().showMessage("There is nothing left to buy.", 2);
+					ui.showMessage("There is nothing left to buy.", 2);
 				}
 			} 
 			break;
@@ -199,7 +199,7 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 	private void buy(Item item) {
 		int price = item.resource.cost;
 		if(price > player.getMoney()) {
-			Client.getUI().showMessage("Not enough money to buy this item.", 2);
+			ui.showMessage("Not enough money to buy this item.", 2);
 		} else {
 			InventoryHandler.removeItem(trader, item.getUID());
 			player.inventory.addItem(item.getUID());				

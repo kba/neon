@@ -27,19 +27,20 @@ import neon.entities.Creature;
 import neon.entities.Player;
 import neon.magic.Effect;
 import neon.resources.RSpell;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class SpellMakerDialog {
 	private JDialog frame;
-	private JFrame parent;
 	private JPanel panel, options;
 	private Player player;
 	private JComboBox<Effect> effectBox;
 	private JSpinner sizeSpinner, rangeSpinner, durationSpinner;
 	private JTextField nameField;
+	private UserInterface ui;
 	
-	public SpellMakerDialog(JFrame parent) {
-		this.parent = parent;
+	public SpellMakerDialog(UserInterface ui) {
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -113,7 +114,7 @@ public class SpellMakerDialog {
 	public void show(Player player, Creature enchanter) {
 		this.player = player;
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		nameField.requestFocus();
 	}
@@ -134,7 +135,7 @@ public class SpellMakerDialog {
 				player.animus.addSpell(createSpell());
 				frame.dispose();
 			} else {
-				Client.getUI().showMessage("Please fill in all required fields.", 2);
+				ui.showMessage("Please fill in all required fields.", 2);
 			}
 		}
 	}

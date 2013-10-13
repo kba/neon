@@ -31,17 +31,18 @@ import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.Weapon;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class RepairDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<Item> items;
-	private ArrayList<Item> listData;	
+	private ArrayList<Item> listData;
+	private UserInterface ui;
 	
-	public RepairDialog(JFrame parent) {
-		this.parent = parent;
+	public RepairDialog(UserInterface ui) {
+		this.ui = ui;
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -74,7 +75,7 @@ public class RepairDialog implements KeyListener {
 		initItems();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -102,9 +103,9 @@ public class RepairDialog implements KeyListener {
 					((Weapon)item).setState(100);					
 				}
 				initItems();
-				Client.getUI().showMessage("Item repaired.", 2);
+				ui.showMessage("Item repaired.", 2);
 			} catch (ArrayIndexOutOfBoundsException f) {
-				Client.getUI().showMessage("No item selected.", 2);
+				ui.showMessage("No item selected.", 2);
 			}
 			break;
 		}

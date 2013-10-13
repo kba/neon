@@ -29,19 +29,21 @@ import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Player;
 import neon.resources.RTattoo;
-import neon.ui.Client;
+import neon.ui.UserInterface;
 
 public class TattooDialog implements KeyListener {
 	private JDialog frame;
-	private JFrame parent;
 	private Player player;
 	private JList<RTattoo> tattoos;
 	private JPanel panel;
 	private String coin;
+	private UserInterface ui;
 	
-	public TattooDialog(JFrame parent, String coin) {
+	public TattooDialog(UserInterface ui, String coin) {
 		this.coin = coin;
-		this.parent = parent;
+		this.ui = ui;
+		
+		JFrame parent = ui.getWindow();
 		frame = new JDialog(parent, true);
 		frame.setPreferredSize(new Dimension(parent.getWidth() - 100, parent.getHeight() - 100));
 		frame.setUndecorated(true);
@@ -77,7 +79,7 @@ public class TattooDialog implements KeyListener {
 		initTattoos();
 		
 		frame.pack();
-		frame.setLocationRelativeTo(parent);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);	
 	}
 	
@@ -102,17 +104,17 @@ public class TattooDialog implements KeyListener {
 				if(!player.getTattoos().contains(tattoo)) {
 					if(player.getMoney() >= tattoo.cost) {
 						player.addTattoo(tattoo);
-						Client.getUI().showMessage("You got the tattoo '" + tattoo.name + "'.", 2);
+						ui.showMessage("You got the tattoo '" + tattoo.name + "'.", 2);
 						player.addMoney(-tattoo.cost);
 						initTattoos();
 					} else {
-						Client.getUI().showMessage("You don't have enough money.", 2);						
+						ui.showMessage("You don't have enough money.", 2);						
 					}
 				} else {
-					Client.getUI().showMessage("You already have that tattoo.", 2);
+					ui.showMessage("You already have that tattoo.", 2);
 				}
 			} catch (Exception f) {
-				Client.getUI().showMessage("There is nothing left to buy.", 2);
+				ui.showMessage("There is nothing left to buy.", 2);
 			} 
 			break;
 		}

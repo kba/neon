@@ -51,7 +51,6 @@ public class MagicHandler {
 	 * Casts a spell on a target creature. Used by traps.
 	 * 
 	 * @param target
-	 * @return	the result of the casting
 	 */
 	public static void cast(RSpell spell, Creature target) {
 		castSpell(target, null, spell);
@@ -61,7 +60,6 @@ public class MagicHandler {
 	 * Casts a spell on a target point. Used by traps.
 	 * 
 	 * @param target
-	 * @return	the result of the casting
 	 */
 	public static void cast(RSpell spell, Point target) {
 		int radius = spell.radius;

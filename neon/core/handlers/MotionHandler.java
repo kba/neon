@@ -19,11 +19,11 @@
 package neon.core.handlers;
 
 import neon.maps.*;
-import neon.ui.Client;
 import java.awt.Point;
 import java.util.Collection;
 import javax.swing.SwingConstants;
 import neon.core.Engine;
+import neon.core.event.MessageEvent;
 import neon.entities.Creature;
 import neon.entities.Door;
 import neon.entities.Entity;
@@ -92,8 +92,8 @@ public class MotionHandler {
 			}
 
 			// als er een sign op de deur staat, nu laten zien
-			if(door.hasSign()) {
-				Client.getUI().showMessage(door.toString(), 3, SwingConstants.BOTTOM);
+			if(door.hasSign()) {	// TODO: vervangen door een event
+				Engine.post(new MessageEvent(null, door.toString(), 3, SwingConstants.BOTTOM));
 			}
 			return OK;
 		}

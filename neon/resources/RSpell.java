@@ -43,7 +43,6 @@ public class RSpell extends RData {
 	 * @param range		the range of this spell
 	 * @param duration	the duration of this spell
 	 * @param effect	the <code>Effect</code> of this spell
-	 * @param area		the area affected by this spell
 	 * @param size		the size of this spell
 	 * @param type		the type of this spell
 	 */
