@@ -63,7 +63,7 @@ import java.io.IOException;
 public class DialogState extends State implements KeyListener {
 	private static UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 
-	private JPanel panel;
+	private JPanel panel, conversation;
 	private Creature target;
 	private JTextPane text = new JTextPane();
 	private JList<Topic> subjects;
@@ -75,6 +75,7 @@ public class DialogState extends State implements KeyListener {
     private String big, small;
     private MBassador<EventObject> bus;
     private UserInterface ui;
+    private Topic topic;
 	
 	public DialogState(State parent, MBassador<EventObject> bus, UserInterface ui) {
 		super(parent);
@@ -99,31 +100,33 @@ public class DialogState extends State implements KeyListener {
         doc = (HTMLDocument)kit.createDefaultDocument();
         text.setDocument(doc);
 		text.setFocusable(false);
+		text.setBorder(new TitledBorder("Text"));
 		StyleSheet styleSheet = kit.getStyleSheet();
 		styleSheet.addRule("body {color: rgb(" + foreground.getRed() + "," + 
 				foreground.getGreen() + "," + foreground.getBlue() + ")}");
-		left = new JScrollPane(text);
-    	left.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		left.setViewportView(text);
     	
-    	// services en subjects
+		// topics
 		subjects = new JList<Topic>();
 		subjects.setFocusable(false);
 		subjects.setCellRenderer(new DialogCellRenderer());
-		subjects.setPreferredSize(new Dimension(200, 0));
-        JScrollPane up = new JScrollPane(subjects);
         subjects.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	up.setBorder(new TitledBorder("Subjects"));
+    	subjects.setBorder(new TitledBorder("Subjects"));
+		
+    	// panel en scrollpane voor text en topics
+    	conversation = new JPanel(new BorderLayout());
+    	conversation.add(text, BorderLayout.PAGE_START);
+    	conversation.add(subjects, BorderLayout.CENTER);
+		left = new JScrollPane(conversation);
+    	
+    	// services en subjects
 		services = new JList<String>();
 		services.setFocusable(false);
+		services.setPreferredSize(new Dimension(120, 0));
         JScrollPane down = new JScrollPane(services);
         services.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	down.setBorder(new TitledBorder("Services"));
 
-		JPanel right = new JPanel(new GridLayout(0, 1));
-		right.add(up);
-		right.add(down);
-		panel.add(right, BorderLayout.LINE_END);
+		panel.add(down, BorderLayout.LINE_END);
 	}
 	
 	@Override
@@ -175,8 +178,8 @@ public class DialogState extends State implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			int index = list.getSelectedIndex();
 			if(list.equals(subjects)) {
-				Topic topic = (Topic)list.getSelectedValue();
-				String answer = "<p><b>" + topic.getID() + "</b><br>" + topic.getAnswer() + "</p>";
+				topic = (Topic)list.getSelectedValue();
+				String answer = "<p><b>" + topic.phrase + "</b><br>" + topic.answer + "</p>";
 		        try {
 					kit.insertHTML(doc, doc.getLength(), answer, 0, 0, null);
 				} catch (BadLocationException | IOException e) {
@@ -216,6 +219,7 @@ public class DialogState extends State implements KeyListener {
 				}
 			}
 			list.setSelectedIndex(index);
+			SwingUtilities.invokeLater(new AutoScroller(left.getVerticalScrollBar()));
 			break;
 		}
 	}
@@ -231,8 +235,14 @@ public class DialogState extends State implements KeyListener {
 	
 	private void initDialog() {
 		subjects.removeAll();
-		services.removeAll();		
-		subjects.setListData(Engine.getQuestTracker().getDialog(target));
+		services.removeAll();
+		
+		if(topic != null && !Engine.getQuestTracker().getSubtopics(topic).isEmpty()) {
+			subjects.setListData(Engine.getQuestTracker().getSubtopics(topic));
+			subjects.setSelectedIndex(0);
+		} else {
+			subjects.setListData(Engine.getQuestTracker().getDialog(target));
+		}
 	}
 	
 	private void initServices() {
@@ -289,6 +299,19 @@ public class DialogState extends State implements KeyListener {
 		return false;
 	}
 	
+	private static class AutoScroller implements Runnable {
+		private JScrollBar bar;
+		
+		public AutoScroller(JScrollBar bar) {
+			this.bar = bar;
+		}
+		
+		@Override
+		public void run() {
+			bar.setValue(bar.getMaximum());
+		}
+	}
+	
 	@SuppressWarnings("serial")
 	private static class DialogCellRenderer extends JLabel implements ListCellRenderer<Topic> {
 		public Component getListCellRendererComponent(JList<? extends Topic> list, Topic topic, int index, boolean isSelected, boolean cellHasFocus) {
@@ -299,8 +322,8 @@ public class DialogState extends State implements KeyListener {
 				setForeground(defaults.getColor("List.foreground"));
 			}
 			setOpaque(isSelected);
-			setText(topic.getID());
+			setText(topic.phrase);
 			return this;
 		}
-	}		
+	}
 }

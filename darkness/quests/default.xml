@@ -1,22 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <quest name="default" init="1">
   <dialog>
-	<topic id="the Empire">
-      <pre>NPC.isMember("empire")</pre>
-      <answer>Some Tengri see us as invaders, but we're just merchants.</answer>
- 	</topic>
-	<topic id="profession">
-      <pre>NPC.isMember("traders")</pre>
-      <answer>I'm a trader.</answer>
- 	</topic>
- 	<topic id="Aneirin">
-      <answer>You're on the island kingdom of Aneirin.</answer>
-	</topic>
-	<topic id="Ironwood">
-      <answer>That's a Nordic colony on the west of the island.</answer>
-	</topic>
-	<topic id="dwarves">
-      <answer>They live in the central mountains, in the great dwarven mine of Erchanband.</answer>
-	</topic>
+    <conversation id="empire">
+	  <root id="empire">
+        <pre>NPC.isMember("empire")</pre>
+        <phrase>Is the Empire popular around here?</phrase>
+        <answer>Some Tengri see us as invaders, but we're just merchants.</answer>
+ 	  </root>    
+    </conversation>
+    <conversation id="profession">
+	  <root id="profession">
+        <pre>NPC.isMember("traders")</pre>
+        <phrase>What do you do for a living?</phrase>
+        <answer>I'm a trader.</answer>
+        <topic id="what">
+          <phrase>What do you trade?</phrase>
+          <answer>Anything.</answer>
+        </topic>
+ 	  </root>
+    </conversation>
+    <conversation id="aneirin">
+ 	  <root id="aneirin">
+ 	    <phrase>Where am I?</phrase>
+        <answer>You're on the island kingdom of Aneirin.</answer>
+	  </root>
+    </conversation>
+    <conversation id="ironwood">
+	  <root id="ironwood">
+	    <phrase>What's Ironwood?</phrase>
+        <answer>That's a Nordic colony on the west of the island.</answer>
+	  </root>
+    </conversation>
+    <conversation id="dwarves">
+	  <root id="dwarves">
+	    <phrase>Where are the dwarves?</phrase>
+        <answer>They live in the central mountains, in the great dwarven mine of Erchanband.</answer>
+	  </root>
+    </conversation>
   </dialog>
 </quest>

@@ -33,6 +33,7 @@ import javax.swing.text.*;
  * http://www.javaprogrammingforums.com/java-swing-tutorials/4907-java-tip-jul-29-2010-swing-console-component.html
  * 
  * @author Andrew
+ * @author mdriesen
  */
 @SuppressWarnings("serial")
 public class JConsole extends JTextArea implements KeyListener {

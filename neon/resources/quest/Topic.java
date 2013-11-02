@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -20,15 +20,35 @@ package neon.resources.quest;
 
 import org.jdom2.Element;
 
+/**
+ * A single topic in a conversation branch.
+ * 
+ * @author mdriesen
+ */
 public class Topic {
-	private String questID;
-	private String id;
-	private String condition;
-	private String answer;
-	private String action;
+	/** The resource ID of the quest this topic belongs to. */
+	public final String questID;
+	public final String conversationID;
+	public final String id;		// unieke id string
+
+	public String phrase;		// hetgeen de player zegt
+	public String condition;	// script voorwaarden
+	public String answer;		// antwoord van NPC
+	public String action;		// script om achteraf uit te voeren
 	
-	public Topic(Element topic) {
+	/**
+	 * Initializes a topic from a JDOM {@code Element}.
+	 * 
+	 * @param topic
+	 */
+	public Topic(String questID, String conversationID, Element topic) {
+		this.questID = questID;
+		this.conversationID = conversationID;
+		
+		// id en phrase moeten altijd bestaan
 		id = topic.getAttributeValue("id");
+		phrase = topic.getChildText("phrase");
+		
 		if(topic.getChild("pre") != null) {
 			condition = topic.getChildText("pre");
 		}
@@ -40,50 +60,24 @@ public class Topic {
 		}
 	}
 	
-	public Topic(String id, String pre, String answer, String action) {
+	/**
+	 * Initializes a new topic.
+	 * 
+	 * @param questID	the resource ID of the quest this topic belongs to
+	 * @param id		a unique ID for this topic
+	 * @param pre		script preconditions
+	 * @param phrase	the phrase the player says
+	 * @param answer	the NPC's response
+	 * @param action	script that is executed after the answer
+	 */
+	public Topic(String questID, String conversationID, String id, String pre, 
+			String phrase, String answer, String action) {
+		this.questID = questID;
+		this.conversationID = conversationID;
 		this.id = id;
+		this.phrase = phrase;
 		this.condition = pre;
 		this.answer = answer;
-		this.action = action;
-	}
-	
-	/**
-	 * Copy constructor. 
-	 * 
-	 * @param topic
-	 */
-	public Topic(Topic topic) {
-		id = topic.getID();
-		condition = topic.getCondition();
-		answer = topic.getAnswer();
-		action = topic.getAction();
-	}
-
-	public String getID() {
-		return id;
-	}
-	
-	public String getCondition() {
-		return condition;
-	}
-	
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
-	
-	public String getAnswer() {
-		return answer;
-	}
-	
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-	
-	public String getAction() {
-		return action;
-	}
-	
-	public void setAction(String action) {
 		this.action = action;
 	}
 	

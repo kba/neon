@@ -21,7 +21,7 @@ package neon.ui.graphics.shapes;
 import java.awt.*;
 
 public class JVEllipse extends JVShape {
-	int x, y, radius;
+	private int x, y, radius;
 	
 	public JVEllipse(int radius, Paint paint) {
 		this.paint = paint;

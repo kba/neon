@@ -68,17 +68,18 @@ public class GameLoader {
 		switch(le.getMode()) {
 		case LOAD: 
 			loadGame(le.getSaveName()); 
+			// aangeven dat laden gedaan is
+			Engine.post(new LoadEvent(this));
 			break;
 		case NEW: 
 			initGame(le.race, le.name, le.gender, le.specialisation, 
-					le.profession, le.sign); 
+					le.profession, le.sign); 			
+			// aangeven dat laden gedaan is
+			Engine.post(new LoadEvent(this));
 			break;
 		default: 
 			break;
 		}
-		
-		// aangeven dat laden gedaan is
-		Engine.post(new LoadEvent(this));
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class GameLoader {
 		}
 		Element root = doc.getRootElement();
 		
-		// save map naar temp kopiëren
+		// save map naar temp kopiï¿½ren
 		Path savePath = Paths.get("saves", save);
 		Path tempPath = Paths.get("temp");
 		FileUtils.copy(savePath, tempPath);

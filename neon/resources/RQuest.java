@@ -20,9 +20,8 @@ package neon.resources;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import neon.resources.quest.Conversation;
 import neon.resources.quest.Topic;
-
 import org.jdom2.Element;
 
 /**
@@ -33,12 +32,13 @@ import org.jdom2.Element;
 public class RQuest extends RData {
 	public Element variables;
 	public int frequency;
-	// random quests kunnen meer als eens draaien
+	// repeat quests kunnen meer als eens draaien
 	public boolean repeat = false;
-	// enabled quest wordt toegevoegd van zodra spel start
+	// initial quest wordt toegevoegd van zodra spel start
 	public boolean initial = false;
-	public ArrayList<String> conditions = new ArrayList<String>();
-	private ArrayList<Topic> topics = new ArrayList<Topic>();
+	
+	private ArrayList<String> conditions = new ArrayList<String>();
+	private ArrayList<Conversation> conversations = new ArrayList<Conversation>();
 
 	public RQuest(String id, Element properties, String... path) {
 		super(id, path);
@@ -56,47 +56,49 @@ public class RQuest extends RData {
 			frequency = Integer.parseInt(properties.getAttributeValue("f"));
 		}
 		initial = (properties.getAttribute("init") != null);
-		Element dialog = properties.getChild("dialog");
-		if(dialog != null) {
-			for(Element topic : dialog.getChildren("topic")) {
-				topics.add(new Topic(topic));
-			}
+		
+		if(properties.getChild("dialog") != null) {
+			initDialog(properties.getChild("dialog"));
 		}
 	}
 
 	public RQuest(String id, String... path) {
 		super(id, path);
-		repeat = true;
 	}
 
-	/**
-	 * Initializes a quest by copying all data from an existing quest.
-	 * 
-	 * @param quest
-	 * @param path
-	 */
-	public RQuest(RQuest quest, String... path) {
-		super(quest.id, path);
-		name = quest.name;
-		repeat = quest.repeat;
-		initial = quest.initial;
-		frequency = quest.frequency;
-		topics.addAll(quest.getTopics());
-		
-		if(!quest.conditions.isEmpty()) {
-			conditions.addAll(quest.conditions);
-		}
-		
-		if(quest.variables != null) {
-			variables = quest.variables.clone();
+	private void initDialog(Element dialog) {
+		for(Element ce : dialog.getChildren("conversation")) {
+			Conversation conversation = new Conversation(id, ce.getAttributeValue("id"));
+			Topic root = new Topic(id, conversation.id, ce.getChild("root"));
+			conversation.setRootTopic(root);
+			for(Element te : ce.getChild("root").getChildren("topic")) {
+				initTopic(conversation, root, te);
+			}
+			conversations.add(conversation);
 		}
 	}
-
+	
+	private void initTopic(Conversation conversation, Topic parent, Element te) {
+		Topic topic = new Topic(id, conversation.id, te);
+		conversation.addSubTopic(parent, topic);
+		// recursief alle child topics toevoegen
+		for(Element ce : te.getChildren("topic")) {
+			initTopic(conversation, topic, ce);
+		}
+	}
+	
 	/**
 	 * @return	all dialog topics in this quest
 	 */
-	public Collection<Topic> getTopics() {
-		return topics;
+	public Collection<Conversation> getConversations() {
+		return conversations;
+	}
+	
+	/**
+	 * @return	all preconditions for this quest
+	 */
+	public Collection<String> getConditions() {
+		return conditions;
 	}
 	
 	public Element toElement() {
@@ -119,9 +121,9 @@ public class RQuest extends RData {
 		}
 		
 		Element dialog = new Element("dialog");
-		for(Topic topic : topics) {
-			dialog.addContent(topic.toElement());
-		}
+//		for(Topic topic : topics) {
+//			dialog.addContent(topic.toElement());
+//		}
 		quest.addContent(dialog);
 
 		return quest;

@@ -247,7 +247,6 @@ public class JournalState extends State implements FocusListener {
 		}
 		
 		public void actionPerformed(ActionEvent ae) {
-			System.out.println(command);
 			switch(command) {
 			case "esc":
 				bus.publishAsync(new TransitionEvent("cancel"));

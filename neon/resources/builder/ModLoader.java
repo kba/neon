@@ -142,6 +142,7 @@ public class ModLoader {
 				Engine.getResources().addResource(new RQuest(quest, doc.getRootElement()), "quest");
 			}
 		} catch(Exception e) {	// gebeurt bij .svn directory
+			e.printStackTrace();
 			Engine.getLogger().fine("Error loading quest in mod " + path);
 		}
 	}

@@ -70,6 +70,7 @@ public class Engine implements Runnable {
 		files = new FileSystem();
 		physics = new PhysicsSystem();
 		queue = new TaskQueue();
+		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		
 		// create a resourcemanager to keep track of all the resources
 		resources = new ResourceManager();
@@ -77,7 +78,6 @@ public class Engine implements Runnable {
 		new IniBuilder("neon.ini", files, queue).build(resources);
 
 		// nog engine componenten opzetten
-		logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		quests = new QuestTracker();
 		config = new Configuration(resources);
 		initEvents();		

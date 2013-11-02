@@ -20,24 +20,21 @@ package neon.narrative;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import neon.resources.RQuest;
-import neon.resources.quest.Topic;
+import neon.resources.quest.Conversation;
 
 public class Quest {
 	public RQuest template;
 	private int stage = 0;
 	private boolean finished = false;
-	private Collection<Topic> topics;
 	private HashMap<String, Object> objects = new HashMap<String, Object>();
 	
-	public Quest(RQuest template, Collection<Topic> topics) {
+	public Quest(RQuest template) {
 		this.template = template;
-		this.topics = topics;
 	}
 	
-	public Collection<Topic> getTopics() {
-		return topics;
+	public Collection<Conversation> getConversations() {
+		return template.getConversations();
 	}
 	
 	public void setStage(int stage) {

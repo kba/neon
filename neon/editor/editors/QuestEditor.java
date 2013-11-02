@@ -144,9 +144,9 @@ public class QuestEditor extends ObjectEditor implements ActionListener, MouseLi
 		quest.name = nameField.getText();
 		
 		// condities
-		quest.conditions.clear();
+		quest.getConditions().clear();
 		for(Vector<String> data : (Vector<Vector>)conditionModel.getDataVector()) {
-			quest.conditions.add(data.get(0));
+			quest.getConditions().add(data.get(0));
 		}
 		
 		Element vars = new Element("objects");
@@ -163,13 +163,13 @@ public class QuestEditor extends ObjectEditor implements ActionListener, MouseLi
 		}
 		quest.variables = vars;
 		
-		quest.getTopics().clear();
+//		quest.getTopics().clear();
 		for(Vector<?> data : (Vector<Vector>)dialogModel.getDataVector()) {
 			String id = data.get(0).toString();
 			String condition = (data.get(1) != null ? data.get(1).toString() : null);
 			String answer = (data.get(2) != null ? data.get(2).toString() : null);
 			String action = (data.get(3) != null ? data.get(3).toString() : null);
-			quest.getTopics().add(new Topic(id, condition, answer, action));
+//			quest.getTopics().add(new Topic(id, condition, answer, action));
 		}
 	}
 
@@ -192,16 +192,16 @@ public class QuestEditor extends ObjectEditor implements ActionListener, MouseLi
 			}
 		}
 		
-		for(String condition : quest.conditions) {
+		for(String condition : quest.getConditions()) {
 			String[] row = {condition};
 			conditionModel.addRow(row);
 		}
 		
-		for(Topic topic : quest.getTopics()) {
-			String[] data = {topic.getID(), topic.getCondition(), 
-					topic.getAnswer(), topic.getAction()};
-			dialogModel.insertRow(0, data);
-		}
+//		for(Topic topic : quest.getTopics()) {
+//			String[] data = {topic.getID(), topic.getCondition(), 
+//					topic.getAnswer(), topic.getAction()};
+//			dialogModel.insertRow(0, data);
+//		}
 	}
 	
 	public void actionPerformed(ActionEvent e) {

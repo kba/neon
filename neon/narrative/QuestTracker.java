@@ -23,6 +23,7 @@ import neon.core.Engine;
 import neon.core.event.TurnEvent;
 import neon.entities.Creature;
 import neon.resources.RQuest;
+import neon.resources.quest.Conversation;
 import neon.resources.quest.Topic;
 import neon.util.fsm.TransitionEvent;
 import net.engio.mbassy.listener.Handler;
@@ -32,10 +33,9 @@ public class QuestTracker {
 	private HashMap<String, Quest> quests = new HashMap<>();
 	// tijdelijke map voor quests die voor dialogmodule zijn geladen
 	private HashMap<String, Quest> temp = new HashMap<>();
-	private Resolver resolver; 
 	
 	public QuestTracker() {
-		resolver = new Resolver(this);
+		
 	}
 	
 	/**
@@ -49,13 +49,27 @@ public class QuestTracker {
 	 */
 	public Vector<Topic> getDialog(Creature speaker) {
 		Vector<Topic> dialog = new Vector<Topic>();
+		
 		for(Quest quest : getQuests(speaker)) {
-			for(Topic topic : quest.getTopics()) {
-				if(QuestUtils.checkTopic(topic)) {
-					dialog.add(topic);
-				}
+			for(Conversation conversation : quest.getConversations()) {
+				dialog.add(conversation.getRootTopic());
 			}
 		}
+		
+		return dialog;
+	}
+	
+	public Vector<Topic> getSubtopics(Topic topic) {
+		Vector<Topic> dialog = new Vector<Topic>();
+		
+		Quest quest = quests.get(topic.questID);
+		for(Conversation c : quest.getConversations()) {
+			if(c.id.equals(topic.conversationID)) {
+				dialog.addAll(c.getTopics(topic));
+				break;
+			}
+		}
+		
 		return dialog;
 	}
 	
@@ -70,8 +84,8 @@ public class QuestTracker {
 			Engine.getScriptEngine().put(entry.getKey(), entry.getValue());
 		}
 		
-		if(topic.getAction() != null) {
-			Engine.execute(topic.getAction());
+		if(topic.action != null) {
+			Engine.execute(topic.action);
 		}
 	}
 
@@ -86,9 +100,7 @@ public class QuestTracker {
 			quests.put(id, quest);			
 		} else if(!quests.containsKey(id)) {
 			RQuest quest = (RQuest)Engine.getResources().getResource(id, "quest");
-			String[] strings = resolver.resolveVariables(quest.variables).toArray(new String[0]);
-			Collection<Topic> topics = QuestUtils.replaceDialog(quest, strings);
-			quests.put(id, new Quest(quest, topics));
+			quests.put(id, new Quest(quest));
 		}
 	}
 	
@@ -132,20 +144,7 @@ public class QuestTracker {
 	}
 	
 	void checkTransition(TransitionEvent te) {
-		temp.clear();
-		Creature speaker = (Creature)te.getParameter("speaker");
-		Engine.getScriptEngine().put("NPC", speaker);
-		for(RQuest quest : Engine.getResources().getResources(RQuest.class)) {
-			if(!quests.containsKey(quest.id) && QuestUtils.checkQuest(quest)) {
-				String[] variables = resolver.resolveVariables(quest.variables).toArray(new String[0]);
-				String[] strings = new String[variables.length + 2];
-				strings[0] = "$giver$";
-				strings[1] = speaker.getName();
-				System.arraycopy(variables, 0, strings, 2, variables.length);
-				Collection<Topic> topics = QuestUtils.replaceDialog(quest, strings);
-				temp.put(quest.id, new Quest(quest, topics));
-			}
-		}		
+
 	}
 
 	@Handler public void start(TurnEvent te) {

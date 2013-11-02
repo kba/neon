@@ -261,22 +261,22 @@ public class NPCEditor extends ObjectEditor implements MouseListener {
 
 		if(data.aiType != null) {
 			aiTypeBox.setSelectedItem(data.aiType);
-		} else {
+		} else if(species != null) {
 			aiTypeBox.setSelectedItem(species.aiType);
 		}
 		if(data.aiRange > -1) {
 			rangeField.setValue(data.aiRange);
-		} else {
+		} else if(species != null) {
 			rangeField.setValue(species.aiRange);			
 		}
 		if(data.aiAggr > -1) {
 			aggressionSpinner.setValue(data.aiAggr);
-		} else {
+		} else if(species != null) {
 			rangeField.setValue(species.aiAggr);			
 		}
 		if(data.aiConf > -1) {
 			confidenceSpinner.setValue(data.aiConf);
-		} else {
+		} else if(species != null) {
 			rangeField.setValue(species.aiConf);			
 		}
 

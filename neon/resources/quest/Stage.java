@@ -28,12 +28,22 @@ public class Stage {
 	/** The resource ID of the quest this stage belongs to. */
 	public final String questID;
 	
+	private int index;
+	
 	/**
 	 * Initializes a quest stage.
 	 * 
 	 * @param questID	the resouce ID of the quest this stage belongs to
 	 */
-	public Stage(String questID) {
+	public Stage(String questID, int index) {
 		this.questID = questID;
+		this.index = index;
+	}
+	
+	/**
+	 * @return	the stage index
+	 */
+	public int getIndex() {
+		return index;
 	}
 }

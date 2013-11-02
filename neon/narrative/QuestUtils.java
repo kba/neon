@@ -18,8 +18,6 @@
 
 package neon.narrative;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import neon.core.Engine;
 import neon.resources.RQuest;
 import neon.resources.quest.Topic;
@@ -31,7 +29,7 @@ public class QuestUtils {
 	 * @param topic
 	 */
 	protected static boolean checkTopic(Topic topic) {
-		String pre = topic.getCondition();
+		String pre = topic.condition;
 		return (pre == null) || (Engine.execute(pre).equals(true));
 	}
 
@@ -41,47 +39,14 @@ public class QuestUtils {
 	 * @param quest	
 	 */
 	protected static boolean checkQuest(RQuest quest) {		
-		if(quest.conditions.isEmpty()) {
+		if(quest.getConditions().isEmpty()) {
 			return true;	// geen voorwaardes
 		} else {
 			boolean custom = true;
-			for(String condition : quest.conditions) {
+			for(String condition : quest.getConditions()) {
 				custom = custom && Engine.execute(condition).equals(true);			
 			}
 			return custom;
 		}
 	}
-
-	protected static Collection<Topic> replaceDialog(RQuest quest, String... vars) {
-		ArrayList<Topic> list = new ArrayList<Topic>();
-		for(Topic t : quest.getTopics()) {
-			Topic topic = new Topic(t);
-			QuestUtils.replaceString(topic, "$pcr$", Engine.getPlayer().species.getName());
-			QuestUtils.replaceString(topic, "$pcn$", Engine.getPlayer().getName());
-			QuestUtils.replaceString(topic, "$pcp$", Engine.getPlayer().getProfession());
-			QuestUtils.replaceString(topic, "$quest$", quest.name);
-			
-			for(int i = 0; i < vars.length/2; i++) {
-				QuestUtils.replaceString(topic, vars[2*i], vars[2*i + 1]);
-			}
-			
-			list.add(topic);
-		}
-		return list;
-	}
-
-	protected static void replaceString(Topic topic, String old, String fresh) {
-		String pre = topic.getCondition();
-		if(pre != null) {
-			topic.setCondition(pre.replace(old, fresh));
-		}
-		String answer = topic.getAnswer();
-		if(answer != null) {
-			topic.setAnswer(answer.replace(old, fresh));
-		}
-		String action = topic.getAction();
-		if(action != null) {
-			topic.setAction(action.replace(old, fresh));
-		}
-	} 
 }

@@ -23,7 +23,6 @@ import java.io.StringReader;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-
 import neon.ui.graphics.shapes.*;
 import neon.util.ColorFactory;
 
@@ -49,6 +48,7 @@ public class SVGLoader {
 			int opacity = (int)(Float.parseFloat(shape.getAttributeValue("opacity"))*255);
 			color = new Color(color.getRed(), color.getGreen(), color.getBlue(), opacity);
 		}
+//		DitherPaint paint = new DitherPaint(color, Float.parseFloat(shape.getAttributeValue("opacity")));
 
 		if(shape.getName().equals("circle")) {
 			int radius = Integer.parseInt(shape.getAttributeValue("r"));

@@ -128,13 +128,14 @@ public class NewGameDialog {
 		
 		main.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED), new EmptyBorder(10,10,10,10)));		
 		frame.setContentPane(main);
-        try {
-        	frame.setOpacity(0.9f);
-        } catch(UnsupportedOperationException e) {
-        	System.out.println("setOpacity() not supported.");
-        }
+
+		try {
+			frame.setOpacity(0.9f);
+		} catch(UnsupportedOperationException e) {
+			System.out.println("setOpacity() not supported.");
+		}
 	}
-	
+
 	public void show() {
 		name.requestFocus();
 		frame.pack();
