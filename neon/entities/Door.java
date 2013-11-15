@@ -18,7 +18,7 @@
 
 package neon.entities;
 
-import neon.entities.components.CPortal;
+import neon.entities.components.Portal;
 import neon.entities.components.DRenderer;
 import neon.entities.components.Lock;
 import neon.entities.components.Trap;
@@ -27,14 +27,14 @@ import neon.resources.RItem;
 public class Door extends Item {
 	public final Lock lock;
 	public final Trap trap;
-	public final CPortal portal;
+	public final Portal portal;
 	private String sign;
 	
 	public Door(long uid, RItem resource) {
 		super(uid, resource);
 		lock = new Lock(uid);
 		trap = new Trap(uid);
-		portal = new CPortal(uid);
+		portal = new Portal(uid);
 		renderer = new DRenderer(this);
 	}
 	

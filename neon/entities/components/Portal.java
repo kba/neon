@@ -21,14 +21,14 @@ package neon.entities.components;
 import java.awt.Point;
 import neon.maps.Map;
 
-public class CPortal implements Component {
+public class Portal implements Component {
 	private int destMapUID = -1;	// -1 is zelfde map
 	private Point destPos;
 	private int destZone = -1;		// -1 is zelfde zone
 	private String theme;
 	private long uid;
 	
-	public CPortal(long uid) {
+	public Portal(long uid) {
 		this.uid = uid;
 	}
 	

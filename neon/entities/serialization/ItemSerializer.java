@@ -30,7 +30,7 @@ import neon.entities.Door;
 import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Weapon;
-import neon.entities.components.CPortal;
+import neon.entities.components.Portal;
 import neon.entities.components.Enchantment;
 import neon.entities.components.Lock;
 import neon.entities.components.Trap;
@@ -151,7 +151,7 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 		output.writeInt(trap.getTrapDC());
 	}
 	
-	private void readPortal(DataInput input, CPortal portal) throws IOException {
+	private void readPortal(DataInput input, Portal portal) throws IOException {
 		String destTheme = input.readUTF();
 		portal.setDestTheme(destTheme.isEmpty() ? null : destTheme);
 		portal.setDestMap(input.readInt());
@@ -161,7 +161,7 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 		}		
 	}
 	
-	private void writePortal(DataOutput output, CPortal portal) throws IOException {
+	private void writePortal(DataOutput output, Portal portal) throws IOException {
 		if(portal.getDestTheme() != null) {
 			output.writeUTF(portal.getDestTheme());
 		} else {

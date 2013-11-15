@@ -92,7 +92,7 @@ public class MotionHandler {
 			}
 
 			// als er een sign op de deur staat, nu laten zien
-			if(door.hasSign()) {	// TODO: vervangen door een event
+			if(door.hasSign()) {
 				Engine.post(new MessageEvent(door, door.toString(), 3, SwingConstants.BOTTOM));
 			}
 			return OK;

@@ -21,12 +21,10 @@ package neon.entities.components;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
 import neon.entities.Creature;
 import neon.entities.property.Condition;
 import neon.resources.RCreature;
 import neon.resources.RCreature.Size;
-import neon.ui.graphics.Renderable;
 import neon.util.ColorFactory;
 import neon.util.TextureFactory;
 
@@ -36,8 +34,7 @@ import neon.util.TextureFactory;
  * 
  * @author mdriesen
  */
-public class CRenderer implements Renderable, Component {
-	public int z = Byte.MAX_VALUE - 1;
+public class CRenderer extends RenderComponent {
 	protected Creature creature;
 	
 	public CRenderer(Creature creature) {
@@ -49,7 +46,7 @@ public class CRenderer implements Renderable, Component {
 		RCreature species = creature.species;
 		int x = creature.getBounds().x;
 		int y = creature.getBounds().y;
-		String text = creature.hasCondition(Condition.DEAD) ? "%" : creature.species.text;
+		String text = creature.hasCondition(Condition.DEAD) ? "%" : species.text;
 		int zoom = (int)zoomf;
 		Color color = ColorFactory.getColor(species.color);
 		if(species.size == Size.tiny) {
@@ -63,16 +60,6 @@ public class CRenderer implements Renderable, Component {
 			graphics.setPaint(Color.blue);
 			graphics.drawOval(x*zoom, y*zoom, creature.bounds.width*zoom, creature.bounds.height*zoom);
 		} 		
-	}
-
-	@Override
-	public int getZ() {
-		return z;
-	}
-	
-	@Override
-	public void setZ(int z) {
-		this.z = z;
 	}
 
 	@Override

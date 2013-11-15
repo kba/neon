@@ -113,6 +113,7 @@ public class GamePanel extends JComponent {
 		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
         scroller = new JScrollPane(text) {
+        	@Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.setColor(new Color(0, 0, 0, 150));

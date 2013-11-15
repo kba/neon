@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -21,14 +21,14 @@ package neon.ui.graphics;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
-import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import javax.swing.JComponent;
-
 import neon.ui.graphics.event.VectorSelectionEvent;
 import neon.ui.graphics.event.VectorSelectionListener;
 
@@ -40,6 +40,7 @@ import neon.ui.graphics.event.VectorSelectionListener;
 @SuppressWarnings("serial")
 public class JVectorPane extends JComponent implements MouseListener {
 	public static final int DEFAULT_ZOOM = 14;	// default zoom level
+	
 	private HashSet<Renderable> selection; // snelle look-up
 	private boolean editable = false;
 	private ZComparator comparator;
@@ -48,14 +49,22 @@ public class JVectorPane extends JComponent implements MouseListener {
 	private int cx, cy; // camera
 	private ArrayList<Renderable> renderables;
 	private SelectionFilter selectionFilter;
+	private RenderingHints hints;
+	private BufferedImage image;
 
 	public JVectorPane() {
 		comparator = new ZComparator();
 		selection = new HashSet<Renderable>();
 		renderables = new ArrayList<Renderable>();
 		addMouseListener(this);
+		HashMap<RenderingHints.Key, Object> keys = new HashMap<>();
+		keys.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+		keys.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+		keys.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+//		keys.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		hints = new RenderingHints(keys);
 	}
-	
+
 	public void setRenderables(Collection<Renderable> list) {
 		synchronized(renderables) {		
 			renderables.clear();
@@ -83,23 +92,26 @@ public class JVectorPane extends JComponent implements MouseListener {
 	}
 
 	public void paintComponent(Graphics g) {
-//		long tijd = System.currentTimeMillis();
 		synchronized(renderables) {
+			((Graphics2D)g).addRenderingHints(hints);
 			Rectangle view = g.getClipBounds();
 			// cx wordt 0 als pane in jscrollpane zit, view.x wordt 0 indien niet
 			int x = (cx == 0 ? view.x : cx);
 			int y = (cy == 0 ? view.y : cy);
 
-			VolatileImage image = createVolatileImage(view.width, view.height);
+			if(image == null || image.getWidth() != view.width || image.getHeight() != view.height) {
+				image = getGraphicsConfiguration().createCompatibleImage(view.width, view.height);
+			}
+			
 			Graphics2D buffer = image.createGraphics();
 			buffer.translate(-x, -y);
 			Collections.sort(renderables, comparator);
 			for(Renderable r : renderables) {
 				r.paint(buffer, zoom, selection.contains(r));
 			}
-			((Graphics2D)g).drawImage(image.getSnapshot(), filter, view.x, view.y);
+			buffer.dispose();
+			((Graphics2D)g).drawImage(image, filter, view.x, view.y);
 		}
-//		System.out.println("Render time = " + (System.currentTimeMillis() - tijd));
 	}
 
 	public float getZoom() {
