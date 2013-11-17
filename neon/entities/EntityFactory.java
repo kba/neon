@@ -86,7 +86,7 @@ public class EntityFactory {
 		case armor: return new Armor(uid, (RClothing)resource);
 		case coin: return new Item.Coin(uid, resource);
 		case door: return new Door(uid, resource);
-		case light: return new Light(uid, resource);
+		case light: return new Item.Light(uid, resource);
 		case potion: return new Item.Potion(uid, resource);
 		case scroll: return new Item.Scroll(uid, (RItem.Text)resource);
 		case weapon: return new Weapon(uid, (RWeapon)resource);
@@ -115,7 +115,7 @@ public class EntityFactory {
 			creature.animus.addSpell(neon.magic.SpellFactory.getSpell(s));
 		}
 		for(String f : person.factions.keySet()) {
-			creature.addFaction(f, person.factions.get(f));
+			creature.factions.addFaction(f, person.factions.get(f));
 		}
 		return creature;
 	}
@@ -135,14 +135,12 @@ public class EntityFactory {
 		} else {
 			RCreature rc = (RCreature)Engine.getResources().getResource(id);
 			switch(rc.type) {
-			case animal: creature = new Animal(x, y, id, uid, rc); break;
-			case monster: creature = new Monster(x, y, id, uid, Gender.OTHER, rc); break;
-			case construct: creature = new Construct(x, y, id, uid, rc); break;
+			case construct: creature = new Construct(id, uid, rc); break;
 			case humanoid: creature = new Hominid(id, uid, rc); break;
-			case daemon: creature = new Daemon(x, y, id, uid, rc); break;
-			case dragon: creature = new Dragon(x, y, id, uid, rc); break;
-			case goblin: creature = new Hominid.Goblin(x, y, id, uid, rc); break;
-			default: creature = new Animal(x, y, id, uid, rc); break;
+			case daemon: creature = new Daemon(id, uid, rc); break;
+			case dragon: creature = new Dragon(id, uid, rc); break;
+			case goblin: creature = new Hominid(id, uid, rc); break;
+			default: creature = new Creature(id, uid, rc); break;
 			}
 			
 			// positie

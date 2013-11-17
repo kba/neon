@@ -34,10 +34,10 @@ import neon.util.TextureFactory;
  * 
  * @author mdriesen
  */
-public class CRenderer extends RenderComponent {
+public class CreatureRenderComponent extends RenderComponent {
 	protected Creature creature;
 	
-	public CRenderer(Creature creature) {
+	public CreatureRenderComponent(Creature creature) {
 		this.creature = creature;
 	}
 	

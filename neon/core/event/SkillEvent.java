@@ -19,15 +19,15 @@
 package neon.core.event;
 
 import java.util.EventObject;
-
+import neon.entities.property.Attribute;
 import neon.entities.property.Skill;
 
 @SuppressWarnings("serial")
 public class SkillEvent extends EventObject {
 	private boolean levelled;
-	private int stat;
+	private Attribute stat;
 	
-	public SkillEvent(Skill skill, int stat) {
+	public SkillEvent(Skill skill, Attribute stat) {
 		this(skill, false);
 		this.stat = stat;
 	}
@@ -54,7 +54,7 @@ public class SkillEvent extends EventObject {
 		return source.toString();
 	}
 	
-	public int getStat() {
+	public Attribute getStat() {
 		return stat;
 	}
 }

@@ -45,7 +45,8 @@ import net.engio.mbassy.bus.MBassador;
  * @author mdriesen
  */
 public class Engine implements Runnable {
-	// wordt door engine geïnitialiseerd
+	// wordt door engine geÃ¯nitialiseerd
+	// TODO: alle global static state wegwerken
 	private static ScriptEngine engine;	
 	private static FileSystem files;		// virtual file system
 	private static PhysicsSystem physics;	// de physics engine

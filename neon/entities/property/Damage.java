@@ -18,6 +18,11 @@
 
 package neon.entities.property;
 
+/**
+ * Different types of magic damage.
+ * 
+ * @author mdriesen
+ */
 public enum Damage {
 	FIRE, FROST, SHOCK, MANA, HEALTH;
 }

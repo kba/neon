@@ -226,7 +226,7 @@ public class DialogState extends State implements KeyListener {
 	
 	private void heal() {
 		Player player = Engine.getPlayer();
-		player.heal(player.getHealth() - player.getBaseHealth());
+		player.health.heal(player.health.getHealth() - player.health.getBaseHealth());
 		MagicUtils.cure(player, SpellType.CURSE);
 		MagicUtils.cure(player, SpellType.DISEASE);
 		MagicUtils.cure(player, SpellType.POISON);

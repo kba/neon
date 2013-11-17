@@ -49,8 +49,8 @@ public class LeechHandler implements EffectHandler {
 		Creature caster = (Creature)spell.getCaster();
 		switch(type) {
 		case HEALTH: 
-			target.heal(-spell.getMagnitude());
-			caster.heal(spell.getMagnitude());
+			target.health.heal(-spell.getMagnitude());
+			caster.health.heal(spell.getMagnitude());
 			break;
 		case MANA: 
 			target.animus.addMana(-spell.getMagnitude()); 

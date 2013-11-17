@@ -32,7 +32,7 @@ public class Enchantment implements Serializable, Component {
 	private final RSpell spell;	// niet RSpell.Enchantment vanwege scrolls
 	private final int mana;
 	private float modifier = 0;
-	private long uid;
+	private final long uid;
 	
 	public Enchantment(RSpell spell, int mana, long uid) {
 		this.spell = spell;

@@ -188,7 +188,7 @@ public class JournalState extends State implements FocusListener {
 		stuff.add(new JLabel("Intelligence: " + player.getInt()));
 		stuff.add(new JLabel("Charisma: " + player.getCha()));
 		stuff.add(new JLabel("Wisdom: " + player.getWis()));
-		stuff.add(new JLabel("Health: " + player.getHealth() + "/" + player.getBaseHealth()));
+		stuff.add(new JLabel("Health: " + player.health.getHealth() + "/" + player.health.getBaseHealth()));
 		stuff.add(new JLabel("Mana: " + player.animus.getMana() + "/" + player.species.mana*player.species.iq));
 		stuff.add(new JLabel("Size: " + player.species.size));
 		stuff.add(new JLabel("Gender: " + (player.getGender().toString().toLowerCase())));

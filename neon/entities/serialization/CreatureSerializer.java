@@ -24,20 +24,17 @@ import java.io.IOException;
 import java.io.Serializable;
 import neon.ai.AIFactory;
 import neon.core.Engine;
-import neon.entities.Animal;
 import neon.entities.Construct;
 import neon.entities.Creature;
 import neon.entities.Daemon;
 import neon.entities.Dragon;
 import neon.entities.Hominid;
-import neon.entities.Monster;
-import neon.entities.property.Gender;
 import neon.entities.property.Slot;
 import neon.magic.SpellFactory;
 import neon.resources.RCreature;
-
 import org.apache.jdbm.Serializer;
 
+// TODO: factions
 public class CreatureSerializer implements Serializer<Creature>, Serializable {
 	private static final long serialVersionUID = -2452444993764883434L;
 	private static AIFactory aiFactory = new AIFactory();
@@ -52,9 +49,9 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		creature.getBounds().setLocation(x, y);
 		creature.brain = aiFactory.getAI(creature);
 		
-		creature.setHealth(in.readInt());
-		creature.addBaseHealthMod(in.readFloat());
-		creature.heal(in.readFloat());
+		creature.health.setHealth(in.readInt());
+		creature.health.addBaseHealthMod(in.readFloat());
+		creature.health.heal(in.readFloat());
 		creature.addMoney(in.readInt());
 		creature.animus.setBaseModifier(in.readFloat());
 		creature.animus.setModifier(in.readFloat());
@@ -88,9 +85,9 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		out.writeInt(creature.getBounds().y);
 		out.writeLong(creature.getUID());
 		
-		out.writeInt(creature.getBaseHealth());
-		out.writeFloat(creature.getBaseHealthMod());
-		out.writeFloat(creature.getHealthMod());
+		out.writeInt(creature.health.getBaseHealth());
+		out.writeFloat(creature.health.getBaseHealthMod());
+		out.writeFloat(creature.health.getHealthMod());
 		out.writeInt(creature.getMoney());
 		out.writeFloat(creature.animus.getBaseModifier());
 		out.writeFloat(creature.animus.getModifier());
@@ -118,14 +115,12 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		
 		RCreature rc = (RCreature)Engine.getResources().getResource(species);
 		switch(rc.type) {
-		case animal: creature = new Animal(x, y, id, uid, rc); break;
-		case monster: creature = new Monster(x, y, id, uid, Gender.OTHER, rc); break;
-		case construct: creature = new Construct(x, y, id, uid, rc); break;
+		case construct: creature = new Construct(id, uid, rc); break;
 		case humanoid: creature = new Hominid(id, uid, rc); break;
-		case daemon: creature = new Daemon(x, y, id, uid, rc); break;
-		case dragon: creature = new Dragon(x, y, id, uid, rc); break;
-		case goblin: creature = new Hominid.Goblin(x, y, id, uid, rc); break;
-		default: creature = new Animal(x, y, id, uid, rc); break;
+		case daemon: creature = new Daemon(id, uid, rc); break;
+		case dragon: creature = new Dragon(id, uid, rc); break;
+		case goblin: creature = new Hominid(id, uid, rc); break;
+		default: creature = new Creature(id, uid, rc); break;
 		}
 		
 		return creature;

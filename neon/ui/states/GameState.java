@@ -22,6 +22,7 @@ import neon.core.*;
 import neon.core.event.*;
 import neon.core.handlers.TurnHandler;
 import neon.entities.Player;
+import neon.entities.property.Attribute;
 import neon.resources.CClient;
 import neon.resources.RScript;
 import neon.ui.*;
@@ -172,7 +173,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 					panel.print("The " + ce.getDefender() + " blocks the attack.");
 					break;
 				case CombatEvent.ATTACK:
-					panel.print("You strike the " + ce.getDefender() + " (" + ce.getDefender().getHealth() + ").");
+					panel.print("You strike the " + ce.getDefender() + " (" + ce.getDefender().health.getHealth() + ").");
 					break;
 				case CombatEvent.DIE:
 					panel.print("You killed the " + ce.getDefender() + ".");
@@ -184,8 +185,8 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	}
 
 	@Handler public void handleSkill(SkillEvent se) {
-		if(se.getStat() > 0) {
-			panel.print("Stat raised: " + se.getSkill().getStat());
+		if(se.getStat() != Attribute.NONE) {
+			panel.print("Stat raised: " + se.getSkill().stat);
 		} else if(se.hasLevelled()) {
 			panel.print("Level up.");			
 		} else {

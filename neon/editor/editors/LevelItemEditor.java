@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@ package neon.editor.editors;
 
 import java.awt.event.*;
 import javax.swing.*;
-
 import neon.editor.Editor;
 import neon.resources.LItem;
 import neon.resources.RItem;
-
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class LevelItemEditor extends ObjectEditor implements MouseListener {
@@ -39,6 +39,12 @@ public class LevelItemEditor extends ObjectEditor implements MouseListener {
 		super(parent, "Leveled Item Editor: " + data.id);
 		this.data = data;
 				
+		// help
+		JLabel help = new JLabel("<html>Right click on the list to add or "
+				+ "delete an item. An item will start showing up when the "
+				+ "player is at the indicated level.</html>");
+		help.setBorder(new TitledBorder("Instructions"));
+		
 		// tabel
 		String[] columns = {"id", "level"};
 		model = new DefaultTableModel(columns, 0);
@@ -50,7 +56,10 @@ public class LevelItemEditor extends ObjectEditor implements MouseListener {
 		table.addMouseListener(this);
 		table.getTableHeader().addMouseListener(this);
 		JScrollPane scroller = new JScrollPane(table);
+
+		frame.add(help, BorderLayout.PAGE_START);
 		frame.add(scroller, BorderLayout.CENTER);
+		frame.setPreferredSize(new Dimension(400, 400));
 	}
 	
 	protected void save() {

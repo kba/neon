@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 package neon.entities;
 
 import neon.entities.components.Enchantment;
-import neon.entities.components.IRenderer;
+import neon.entities.components.ItemRenderComponent;
 import neon.resources.RItem;
 
 public class Item extends Entity {
@@ -30,7 +30,7 @@ public class Item extends Entity {
 	public Item(long uid, RItem resource) {
 		super(resource.id, uid);
 		this.resource = resource;
-		renderer = new IRenderer(this);
+		renderer = new ItemRenderComponent(this);
 	}
 	
 	@Override
@@ -58,6 +58,17 @@ public class Item extends Entity {
 		return owner;
 	}
 	
+	/**
+	 * A light source.
+	 * 
+	 * @author mdriesen
+	 */
+	public static class Light extends Item {
+		public Light(long uid, RItem resource) {
+			super(uid, resource);
+		}
+	}
+
 	/**
 	 * A first aid item.
 	 * 

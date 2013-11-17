@@ -21,7 +21,12 @@ package neon.entities;
 import neon.resources.RCreature;
 
 public class Construct extends neon.entities.Creature {
-	public Construct(int x, int y, String id, long uid, RCreature species) {
+	public Construct(String id, long uid, RCreature species) {
 		super(id, uid, species);
+	}
+	
+	@Override
+	public boolean hasDialog() {
+		return true;
 	}
 }

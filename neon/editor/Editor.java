@@ -36,6 +36,7 @@ import neon.ui.HelpWindow;
 import javax.swing.border.TitledBorder;
 import javax.swing.tree.*;
 
+// TODO: mbassador gebruiken voor events
 public class Editor implements Runnable, ActionListener {
 	public static JCheckBoxMenuItem tShow, tEdit, oShow, oEdit;
 	public static FileSystem files;

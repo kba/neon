@@ -23,7 +23,7 @@ import java.util.EnumMap;
 import neon.core.Engine;
 import neon.core.handlers.SkillHandler;
 import neon.entities.components.Lock;
-import neon.entities.components.PRenderer;
+import neon.entities.components.PlayerRenderComponent;
 import neon.entities.property.Gender;
 import neon.entities.property.Skill;
 import neon.entities.property.Slot;
@@ -43,7 +43,7 @@ public class Player extends Hominid {
 
 	public Player(RCreature species, String name, Gender gender, Specialisation spec, String profession) {
 		super(species.id, 0, species); 
-		renderer = new PRenderer(this);
+		renderer = new PlayerRenderComponent(this);
 		this.name = name;
 		this.gender = gender;
 		this.spec = spec;
@@ -130,15 +130,6 @@ public class Player extends Hominid {
 	
 	public float getFloatSkill(Skill skill) {
 		return skills.get(skill);
-	}
-	
-	/**
-	 * Adds a certain amount to the speed attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addBaseHealth(int amount) {
-		health += amount;
 	}
 	
 	/**

@@ -102,8 +102,8 @@ public abstract class AI {
 		if(creature.species.id.equals(other.species.id)) {
 			disposition += 5;		// zelfde soort is ok
 		}
-		for(String faction : creature.getFactions().keySet()) {
-			if(creature.isMember(faction)) {
+		for(String faction : creature.factions.getFactions().keySet()) {
+			if(creature.factions.isMember(faction)) {
 				disposition += 10;	// zelfde faction is nog meer ok
 			}
 		}

@@ -47,7 +47,7 @@ public class RestoreHandler implements EffectHandler {
 	public void repeatEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
 		switch(type) {
-		case HEALTH: target.heal(spell.getMagnitude()); break;
+		case HEALTH: target.health.heal(spell.getMagnitude()); break;
 		case MANA: target.animus.addMana(spell.getMagnitude()); break;
 		default: 
 			throw new IllegalArgumentException("Spell does not have a restore effect.");

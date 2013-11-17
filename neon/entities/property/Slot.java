@@ -26,7 +26,7 @@ package neon.entities.property;
  */
 public enum Slot {
 	// armor (gauntlets includes bracers)
-	HELMET(0.1f), PAULDRONS(0.1f), GAUNTLETS(0.1f), 
+	HELMET(0.1f), PAULDRONS(0.2f), GAUNTLETS(0.1f), 
 	CUIRASS(0.4f), CHAUSSES(0.1f), BOOTS(0.1f), SHIELD(0.2f),
 	
 	// juwelen

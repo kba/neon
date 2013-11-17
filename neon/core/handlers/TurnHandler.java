@@ -71,7 +71,7 @@ public class TurnHandler {
 		for(long uid : Engine.getAtlas().getCurrentZone().getCreatures()) {
 			Creature creature = (Creature)Engine.getStore().getEntity(uid);
 			if(!creature.hasCondition(Condition.DEAD)) {
-				creature.heal(creature.getCon()/100f);
+				creature.health.heal(creature.getCon()/100f);
 				creature.animus.addMana(creature.getWis()/100f);
 				if(player.bounds.getLocation().distance(creature.bounds.getLocation()) < range) {
 					int spd = creature.getSpeed();
@@ -92,7 +92,7 @@ public class TurnHandler {
 		}
 
 		// player in gereedheid brengen voor volgende beurt
-		player.heal(player.getCon()/100f);
+		player.health.heal(player.getCon()/100f);
 		player.animus.addMana(player.getWis()/100f);
 		
 		// en systems updaten

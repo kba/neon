@@ -19,12 +19,10 @@
 package neon.entities.components;
 
 import java.awt.Rectangle;
-
 import neon.entities.Entity;
 
 @SuppressWarnings("serial")
 public class ShapeComponent extends Rectangle implements Component {
-	// TODO: ergens wordt shape.equals() gebruikt, wat problemen kan geven met twee gelijke shapes
 	private Entity entity;
 	
 	public ShapeComponent(Entity entity, int x, int y, int width, int height) {

@@ -93,7 +93,6 @@ public class JVectorPane extends JComponent implements MouseListener {
 
 	public void paintComponent(Graphics g) {
 		synchronized(renderables) {
-			((Graphics2D)g).addRenderingHints(hints);
 			Rectangle view = g.getClipBounds();
 			// cx wordt 0 als pane in jscrollpane zit, view.x wordt 0 indien niet
 			int x = (cx == 0 ? view.x : cx);
@@ -104,7 +103,10 @@ public class JVectorPane extends JComponent implements MouseListener {
 			}
 			
 			Graphics2D buffer = image.createGraphics();
+			buffer.addRenderingHints(hints);
+			buffer.clearRect(0, 0, view.width, view.height);
 			buffer.translate(-x, -y);
+			
 			Collections.sort(renderables, comparator);
 			for(Renderable r : renderables) {
 				r.paint(buffer, zoom, selection.contains(r));

@@ -18,16 +18,38 @@
 
 package neon.entities.components;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public class ScriptComponent implements Component {
+/**
+ * Keeps track of the factions a creature belongs to and their standing with 
+ * these factions.
+ * 
+ * @author mdriesen
+ */
+public class FactionComponent implements Component {
 	private final long uid;
-	private ArrayList<String> scripts = new ArrayList<>();
+	private HashMap<String, Integer> factions = new HashMap<>();
 	
-	public ScriptComponent(long uid) {
+	public FactionComponent(long uid) {
 		this.uid = uid;
 	}
 	
+	public HashMap<String, Integer> getFactions() {
+		return factions;
+	}
+	
+	public void addFaction(String faction, int rank) {
+		factions.put(faction, rank);
+	}
+	
+	public int getRank(String faction) {
+		return factions.get(faction);
+	}
+
+	public boolean isMember(String faction) {
+		return factions.containsKey(faction);
+	}	
+		
 	@Override
 	public long getUID() {
 		return uid;

@@ -21,11 +21,12 @@ package neon.entities;
 import java.util.*;
 import neon.magic.*;
 import neon.resources.RCreature;
-import neon.util.Dice;
 import neon.ai.AI;
 import neon.core.Engine;
 import neon.entities.components.Animus;
-import neon.entities.components.CRenderer;
+import neon.entities.components.CreatureRenderComponent;
+import neon.entities.components.FactionComponent;
+import neon.entities.components.HealthComponent;
 import neon.entities.components.Inventory;
 import neon.entities.property.*;
 
@@ -40,17 +41,17 @@ public class Creature extends Entity {
 	public final RCreature species;
 	public final Inventory inventory;
 	public final Animus animus;
-	public AI brain;	// kan voorlopig niet final (npc probleem)
+	public final FactionComponent factions;
+	public final HealthComponent health;
+	public AI brain;	// kan niet final (npc probleem)
 	
 	// allerlei
 	protected Gender gender;
 	protected String name;
-	protected int health;						// health/hit points
-	protected float healthMod, baseHealthMod;	// verschil t.o.v. base health
 	
 	// lijstjes
 	protected EnumMap<Skill, Float> skills;
-	protected ArrayList<Spell> spells;
+	protected ArrayList<Spell> spells;			// active spells
 	protected Set<Feat> feats;
 	protected Set<Trait> traits;
 	protected EnumMap<Ability, Integer> abilities;
@@ -59,7 +60,6 @@ public class Creature extends Entity {
 	// character attributen
 	private int strMod, conMod, dexMod, intMod, wisMod, chaMod, spdMod;	
 	private int date = 0;						// time of death
-	private HashMap<String, Integer> factions;
 	private int money = 0;
 	
 	/**
@@ -70,14 +70,14 @@ public class Creature extends Entity {
 	 */
 	public Creature(String id, long uid, RCreature species) {
 		super(id, uid);
+		
 		this.species = species;
 		animus = new Animus(this);
-		renderer = new CRenderer(this);
+		renderer = new CreatureRenderComponent(this);
+		factions = new FactionComponent(uid);
+		health = new HealthComponent(uid, species.hit);
 
 		// dit eerst
-		health = Dice.roll(species.hit);
-		healthMod = 0;
-		baseHealthMod = 0;
 		gender = Gender.OTHER;
 		name = species.getName();
 		
@@ -85,7 +85,6 @@ public class Creature extends Entity {
 		inventory = new Inventory(uid);
 
 		// collections initialiseren
-		factions = new HashMap<String, Integer>();
 		spells = new ArrayList<Spell>();
 		skills = new EnumMap<Skill, Float>(species.skills);
 		conditions = EnumSet.noneOf(Condition.class);
@@ -159,15 +158,6 @@ public class Creature extends Entity {
 	 */
 	public int getTimeOfDeath() {
 		return date; // 0 is niet dood, negatief is dood voor spel begon
-	}
-	
-	/**
-	 * Heals this creatures.
-	 * 
-	 * @param amount	the amount to add to health
-	 */
-	public void heal(float amount) {
-		healthMod = Math.min(0, healthMod + amount);
 	}
 	
 	/**
@@ -271,15 +261,6 @@ public class Creature extends Entity {
 	}
 	
 	/**
-	 * Sets the base health of this creature to a new value.
-	 * 
-	 * @param health	the new amount of health
-	 */
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
-	/**
 	 * Sets the name of this creature.
 	 * 
 	 * @param name	the new name
@@ -302,50 +283,6 @@ public class Creature extends Entity {
 		return Math.max(1, (int)(species.str + species.iq + species.dex + species.con + species.cha + species.wis)/6);
 	}
 	
-	/**
-	 * Returns the base health of this creature. It is the maximum health this creature can
-	 * have without using magical or other means.
-	 * 
-	 * @return	this creature's base health
-	 */
-	public int getBaseHealth() {
-		return health;
-	}
-	
-	/**
-	 * @return	this creature's base health modifier
-	 */
-	public float getBaseHealthMod() {
-		return baseHealthMod;
-	}
-	
-	/**
-	 * @return	this creature's health modifier
-	 */
-	public float getHealthMod() {
-		return healthMod;
-	}
-	
-	/**
-	 * Returns the current health of this creature. It is the base health, modified
-	 * with magical effects, battle damage, etc.
-	 * 
-	 * @return this creature's health
-	 */
-	public int getHealth() {
-		return (int)(health + baseHealthMod + healthMod);
-	}
-	
-	/**
-	 * Adds to the base health modifier, lowering or raising the maximum attainable
-	 * total health.
-	 * 
-	 * @param value	the amount to add to the base health modifier
-	 */
-	public void addBaseHealthMod(float value) {
-		baseHealthMod += value;
-	}
-
 	/**
 	 * @return	this creature's name
 	 */
@@ -545,24 +482,8 @@ public class Creature extends Entity {
 		return (species.speed + spdMod)*penalty/3;
 	}
 		
-	public HashMap<String, Integer> getFactions() {
-		return factions;
-	}
-	
-	public void addFaction(String faction, int rank) {
-		factions.put(faction, rank);
-	}
-	
-	public int getRank(String faction) {
-		return factions.get(faction);
-	}
-	
 	public int getMoney() {
 		return money;
-	}
-	
-	public boolean isMember(String faction) {
-		return factions.containsKey(faction);
 	}
 	
 	public void addMoney(int amount) {
@@ -570,6 +491,6 @@ public class Creature extends Entity {
 	}
 	
 	public boolean hasDialog() {
-		return true;
+		return false;
 	}
 }

@@ -25,9 +25,9 @@ import javax.swing.Popup;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.core.handlers.MotionHandler;
-import neon.entities.Animal;
 import neon.entities.Creature;
 import neon.entities.Player;
+import neon.resources.RCreature;
 import neon.resources.RCreature.Size;
 import neon.ui.GamePanel;
 import neon.ui.UserInterface;
@@ -123,7 +123,7 @@ public class BumpState extends State implements KeyListener {
 	}
 	
 	private boolean isMount(Creature mount) {
-		return mount instanceof Animal && mount.species.size == Size.large
+		return mount.species.type == RCreature.Type.animal && mount.species.size == Size.large
 				&& !mount.brain.isHostile();
 	}
 }

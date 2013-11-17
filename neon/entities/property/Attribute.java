@@ -16,20 +16,8 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.entities.components;
+package neon.entities.property;
 
-import java.util.ArrayList;
-
-public class ScriptComponent implements Component {
-	private final long uid;
-	private ArrayList<String> scripts = new ArrayList<>();
-	
-	public ScriptComponent(long uid) {
-		this.uid = uid;
-	}
-	
-	@Override
-	public long getUID() {
-		return uid;
-	}
+public enum Attribute {
+	STRENGTH, DEXTERITY, CONSTITUTION, INTELLIGENCE, WISDOM, CHARISMA, NONE;
 }

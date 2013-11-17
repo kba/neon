@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -93,7 +93,7 @@ public class UserInterface {
 		JLabel label = new JLabel("<html><center>" + message + "</center></html>");
 		label.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED), new EmptyBorder(5,10,10,10)));
 		JDialog dialog = new JDialog(window, false);
-		dialog.setAlwaysOnTop(true);
+		dialog.setFocusableWindowState(false);	// anders focus op dialog, niet op contentpane
 		dialog.add(label);
 		dialog.setUndecorated(true);
 
@@ -116,7 +116,6 @@ public class UserInterface {
 		
 		dialog.setLocation(x, y);
 		dialog.setVisible(true);
-		window.getContentPane().requestFocus();
 	}
 
 	/**
@@ -208,6 +207,9 @@ public class UserInterface {
 		help.show("Neon help", text);
 	}
 	
+	/**
+	 * Repaints the content pane.
+	 */
 	public void update() {
 		window.getContentPane().repaint();
 	}

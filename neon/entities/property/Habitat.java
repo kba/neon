@@ -18,6 +18,11 @@
 
 package neon.entities.property;
 
+/**
+ * The preferred environment of a creature.
+ * 
+ * @author mdriesen
+ */
 public enum Habitat {
 	AIR, LAND, WATER, AMPHIBIAN;
 }

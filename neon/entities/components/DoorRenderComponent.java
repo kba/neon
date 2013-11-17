@@ -19,38 +19,36 @@
 package neon.entities.components;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-import neon.entities.Item;
+
+import neon.entities.Door;
+import neon.resources.RItem;
 import neon.util.TextureFactory;
 
 /**
- * Class used to render {@code Item}s.
+ * Class used to render doors. Rendering takes into account the state of the
+ * door (open, locked or closed).
  * 
  * @author mdriesen
  */
-public class IRenderer extends RenderComponent {
-	protected Item item;
-	
-	public IRenderer(Item item) {
-		this.item = item;
+public class DoorRenderComponent extends ItemRenderComponent {
+	public DoorRenderComponent(Door door) {
+		super(door);
 	}
-	
+
 	@Override
 	public void paint(Graphics2D graphics, float zoom, boolean isSelected) {
 		Rectangle2D rect = new Rectangle2D.Float(item.getBounds().x*zoom, item.getBounds().y*zoom, zoom, zoom);
-		graphics.setPaint(TextureFactory.getTexture(item.resource.text, (int)zoom, item.resource.color));
-		graphics.fill(rect);
-	}
-
-	@Override
-	public Rectangle getBounds() {
-		return item.getBounds();
-	}
-
-	@Override
-	public long getUID() {
-		return item.getUID();
+		String text = item.resource.text;
+		Lock lock = ((Door)item).lock;
+		if(lock != null) {
+			if(lock.isLocked()) {
+				text = ((RItem.Door)item.resource).locked;
+			} else if(lock.isClosed()) {
+				text = ((RItem.Door)item.resource).closed;
+			}
+		}
+		graphics.setPaint(TextureFactory.getTexture(text, (int)zoom, item.resource.color));
+		graphics.fill(rect);		
 	}
 }
-

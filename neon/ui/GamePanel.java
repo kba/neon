@@ -201,12 +201,14 @@ public class GamePanel extends JComponent {
 	private void drawStats() {
 		Player player = Engine.getPlayer();
 
-		if(player.getHealth()*4 < player.getBaseHealth()) {
-			healthLabel.setText("<html>health: <font color=red>" + player.getHealth() + "/" + player.getBaseHealth() + "</font></html>");
-		} else if(player.getHealth() > player.getBaseHealth()) {
-			healthLabel.setText("<html>health: <font color=green>" + player.getHealth() + "/" + player.getBaseHealth() + "</font></html>");
+		if(player.health.getHealth()*4 < player.health.getBaseHealth()) {
+			healthLabel.setText("<html>health: <font color=red>" + player.health.getHealth() + "/" + 
+					player.health.getBaseHealth() + "</font></html>");
+		} else if(player.health.getHealth() > player.health.getBaseHealth()) {
+			healthLabel.setText("<html>health: <font color=green>" + player.health.getHealth() + "/" + 
+					player.health.getBaseHealth() + "</font></html>");
 		} else {
-			healthLabel.setText("health: " + player.getHealth() + "/" + player.getBaseHealth());
+			healthLabel.setText("health: " + player.health.getHealth() + "/" + player.health.getBaseHealth());
 		}
 		if(player.animus.getMana() > player.species.mana*player.species.iq) {
 			magicLabel.setText("<html>magic: <font color=green>" + player.animus.getMana() + "/" +

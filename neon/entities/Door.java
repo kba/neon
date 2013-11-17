@@ -19,7 +19,7 @@
 package neon.entities;
 
 import neon.entities.components.Portal;
-import neon.entities.components.DRenderer;
+import neon.entities.components.DoorRenderComponent;
 import neon.entities.components.Lock;
 import neon.entities.components.Trap;
 import neon.resources.RItem;
@@ -35,7 +35,7 @@ public class Door extends Item {
 		lock = new Lock(uid);
 		trap = new Trap(uid);
 		portal = new Portal(uid);
-		renderer = new DRenderer(this);
+		renderer = new DoorRenderComponent(this);
 	}
 	
 	/**

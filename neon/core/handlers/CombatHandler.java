@@ -134,7 +134,7 @@ public class CombatHandler {
 				int DV = CombatUtils.getDV(defender);
 				
 				// altijd minimum 1 damage
-				defender.heal(Math.min(-1, -(int)((AV - DV)/(DV + 1))));
+				defender.health.heal(Math.min(-1, -(int)((AV - DV)/(DV + 1))));
 				
 				// enchanted weapon spell casten
 				if(weapon != null && weapon.enchantment.getSpell() != null) {
@@ -142,7 +142,7 @@ public class CombatHandler {
 				}
 				
 				// berichten bepalen
-				if(defender.getHealth() < 0) {
+				if(defender.health.getHealth() < 0) {
 					result = CombatEvent.DIE;
 				} else {
 					result = CombatEvent.ATTACK;

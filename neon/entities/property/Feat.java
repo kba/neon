@@ -18,6 +18,11 @@
 
 package neon.entities.property;
 
+/**
+ * 
+ * 
+ * @author mdriesen
+ */
 public enum Feat {
 	BREW_POTION("brew potion"), CRAFT_MAGIC_ARMS_AND_ARMOR("craft magic arms and armor"), TWO_WEAPON_FIGHTING("two-weapon fighting"), 
 	SCRIBE_TATTOO("scribe tattoo"), MOUNTED_ARCHERY("mounted archery"), MOUNTED_COMBAT("mounted combat"), SNATCH_ARROWS("snatch arrows"),

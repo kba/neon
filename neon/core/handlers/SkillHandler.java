@@ -116,12 +116,12 @@ public class SkillHandler {
 
 	private static int getStatValue(Skill skill, Creature creature) {
 		switch(skill.stat) {
-		case Skill.STR: return creature.getStr();
-		case Skill.CON: return creature.getCon();
-		case Skill.DEX: return creature.getDex();
-		case Skill.INT: return creature.getInt();
-		case Skill.WIS: return creature.getWis();
-		case Skill.CHA: return creature.getCha();
+		case STRENGTH: return creature.getStr();
+		case CONSTITUTION: return creature.getCon();
+		case DEXTERITY: return creature.getDex();
+		case INTELLIGENCE: return creature.getInt();
+		case WISDOM: return creature.getWis();
+		case CHARISMA: return creature.getCha();
 		default: return 0;
 		}		
 	}
@@ -141,24 +141,25 @@ public class SkillHandler {
 			int stat = getStatValue(skill, player);
 			// kijken welke stat er stijgt
 			switch(skill.stat) {
-			case Skill.STR: player.addBaseStr(0.1f); break;
-			case Skill.CON: 
+			case STRENGTH: player.addBaseStr(0.1f); break;
+			case CONSTITUTION: 
 				player.addBaseCon(0.1f);
 				player.addBaseSpd(0.01f);
 				break;
-			case Skill.DEX: 
+			case DEXTERITY: 
 				player.addBaseDex(0.1f); 
 				player.addBaseSpd(0.01f);
 				break;
-			case Skill.INT: player.addBaseInt(0.1f); break;
-			case Skill.WIS: player.addBaseWis(0.1f); break;
-			case Skill.CHA: player.addBaseCha(0.1f); break;
+			case INTELLIGENCE: player.addBaseInt(0.1f); break;
+			case WISDOM: player.addBaseWis(0.1f); break;
+			case CHARISMA: player.addBaseCha(0.1f); break;
+			default: break;
 			}
 			if(stat < getStatValue(skill, player)) {	// stat is met 1 gestegen
 				Engine.post(new SkillEvent(skill, skill.stat));
 			}
 			if(level < player.getLevel()) {	// level is met 1 gestegen
-				player.addBaseHealth(Dice.roll(player.species.hit));
+				player.health.addBaseHealth(Dice.roll(player.species.hit));
 				Engine.post(new SkillEvent(skill, true));
 			}
 		}

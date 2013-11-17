@@ -23,8 +23,8 @@ import neon.core.Engine;
 import neon.entities.Player;
 import neon.util.ColorFactory;
 
-public class PRenderer extends CRenderer {
-	public PRenderer(Player player) {
+public class PlayerRenderComponent extends CreatureRenderComponent {
+	public PlayerRenderComponent(Player player) {
 		super(player);
 	}
 	

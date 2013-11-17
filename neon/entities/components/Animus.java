@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import neon.entities.Creature;
 import neon.resources.RSpell;
 
@@ -39,7 +38,7 @@ public class Animus implements Component{
 	private RSpell spell;		// geëquipte spell
 	private Set<RSpell> spells = new HashSet<RSpell>();
 	private HashMap<RSpell.Power, Integer> powers = new HashMap<RSpell.Power, Integer>();
-	private Creature creature;	// Creature nemen, want int kan veranderen
+	private Creature creature;	// Creature nemen, want intelligence kan veranderen
 	
 	/**
 	 * 

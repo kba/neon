@@ -21,7 +21,12 @@ package neon.entities;
 import neon.resources.RCreature;
 
 public class Daemon extends neon.entities.Creature {
-	public Daemon(int x, int y, String id, long uid, RCreature species) {
+	public Daemon(String id, long uid, RCreature species) {
 		super(id, uid, species);
+	}
+	
+	@Override
+	public boolean hasDialog() {
+		return true;
 	}
 }

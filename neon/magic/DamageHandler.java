@@ -46,7 +46,7 @@ public class DamageHandler implements EffectHandler {
 		case MANA: 
 			target.animus.addMana(-spell.getMagnitude()); break;
 		default:
-			target.heal(-spell.getMagnitude()); break;
+			target.health.heal(-spell.getMagnitude()); break;
 		}
 	}
 
@@ -57,9 +57,9 @@ public class DamageHandler implements EffectHandler {
 	public void repeatEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
 		switch(type) {	
-		case FROST: target.heal(-spell.getMagnitude()); break;
-		case SHOCK: target.heal(-spell.getMagnitude()); break;
-		case FIRE: target.heal(-spell.getMagnitude()); break;
+		case FROST: target.health.heal(-spell.getMagnitude()); break;
+		case SHOCK: target.health.heal(-spell.getMagnitude()); break;
+		case FIRE: target.health.heal(-spell.getMagnitude()); break;
 		default: 
 			throw new IllegalArgumentException("The given spell does not have a repeat damage effect.");
 		}

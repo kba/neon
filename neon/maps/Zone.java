@@ -25,14 +25,12 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.*;
-
 import neon.resources.RZoneTheme;
 import neon.ui.graphics.*;
 import neon.util.spatial.*;
 import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Item;
-import neon.entities.Light;
 
 public class Zone implements Externalizable {
 	private static ZComparator comparator = new ZComparator();
@@ -272,7 +270,7 @@ public class Zone implements Externalizable {
 		} else {
 			items.insert(item.getUID(), item.bounds);
 		}
-		if(item instanceof Light) {
+		if(item instanceof Item.Light) {
 			Point p = item.bounds.getLocation();
 			if(!lights.containsKey(p)) {
 				lights.put(p, 0);
@@ -292,7 +290,7 @@ public class Zone implements Externalizable {
 	
 	public void removeItem(Item item) {
 		items.remove(item.getUID());
-		if(item instanceof Light) {
+		if(item instanceof Item.Light) {
 			Point point = new Point(item.bounds.x, item.bounds.y);
 			lights.put(point, lights.get(point) - 1);
 			if(lights.get(point) < 1) {

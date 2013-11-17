@@ -18,6 +18,11 @@
 
 package neon.entities.property;
 
+/**
+ * Different abilities a creature can have. Abilities function like a constant effect spell with a certain magnitude. 
+ * 
+ * @author mdriesen
+ */
 public enum Ability {
 	DARKVISION("darkvision"), SPELL_ABSORPTION("spell absorption"), COLD_RESISTANCE("cold resistance"), FIRE_RESISTANCE("fire resistance"),
 	SPELL_RESISTANCE("spell resistance"), SHOCK_RESISTANCE("shock resistance"), FAST_HEALING("fast healing"), 

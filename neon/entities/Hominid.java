@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -50,14 +50,8 @@ public class Hominid extends neon.entities.Creature {
 		}
 	}
 	
-	/**
-	 * A goblinoid.
-	 * 
-	 * @author mdriesen
-	 */
-	public static class Goblin extends Hominid {
-		public Goblin(int x, int y, String type, long uid, RCreature species) {
-			super(type, uid, species);
-		}
+	@Override
+	public boolean hasDialog() {
+		return true;
 	}
 }

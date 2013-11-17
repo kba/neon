@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -18,53 +18,47 @@
 
 package neon.entities.property;
 
+/**
+ * The different skills a creature can have. Each skill is governed by an attribute. Each skill increase will 
+ * also increase its attribute with a certain amount.
+ * 
+ * @author mdriesen
+ */
 public enum Skill {
 	// magic
-	CREATION(4, 0.1f), DESTRUCTION(5, 0.1f), RESTORATION(5, 0.1f), ALTERATION(4, 0.1f), ILLUSION(6, 0.1f), ENCHANT(4, 0.1f), ALCHEMY(4, 0.1f),
-	CONJURATION(5, 0.1f),
+	CREATION(Attribute.INTELLIGENCE, 0.1f), DESTRUCTION(Attribute.WISDOM, 0.1f), RESTORATION(Attribute.WISDOM, 0.1f), 
+	ALTERATION(Attribute.INTELLIGENCE, 0.1f), ILLUSION(Attribute.CHARISMA, 0.1f), ENCHANT(Attribute.INTELLIGENCE, 0.1f), 
+	ALCHEMY(Attribute.INTELLIGENCE, 0.1f), CONJURATION(Attribute.WISDOM, 0.1f),
 	
 	// wapens
-	ARCHERY(3, 0.1f), AXE(1, 0.1f), BLUNT(1, 0.1f), BLADE(1, 0.1f), SPEAR(1, 0.1f), UNARMED(2, 0.1f), 
+	ARCHERY(Attribute.DEXTERITY, 0.1f), AXE(Attribute.STRENGTH, 0.1f), BLUNT(Attribute.STRENGTH, 0.1f), 
+	BLADE(Attribute.STRENGTH, 0.1f), SPEAR(Attribute.STRENGTH, 0.1f), UNARMED(Attribute.CONSTITUTION, 0.1f), 
 	
 	// bewegen
-	CLIMBING(2, 0.1f), SWIMMING(2, 0.1f), SNEAK(3, 0.1f),
+	CLIMBING(Attribute.CONSTITUTION, 0.1f), SWIMMING(Attribute.CONSTITUTION, 0.1f), SNEAK(Attribute.DEXTERITY, 0.1f),
 	
 	// combat
-	HEAVY_ARMOR(1, 0.1f), MEDIUM_ARMOR(2, 0.1f), LIGHT_ARMOR(3, 0.1f), DODGING(3, 0.1f), BLOCK(1, 0.1f), UNARMORED(2, 0.1f), 
+	HEAVY_ARMOR(Attribute.STRENGTH, 0.1f), MEDIUM_ARMOR(Attribute.CONSTITUTION, 0.1f), LIGHT_ARMOR(Attribute.DEXTERITY, 0.1f), 
+	DODGING(Attribute.DEXTERITY, 0.1f), BLOCK(Attribute.STRENGTH, 0.1f), UNARMORED(Attribute.CONSTITUTION, 0.1f), 
 	
 	// allerlei
-	MERCANTILE(6, 0.1f), PICKPOCKET(3, 0.1f), ARMORER(2, 0.1f), LOCKPICKING(3, 0.1f), MEDICAL(5, 0.1f), DISABLE(4, 0.1f), SPEECHCRAFT(6, 0.1f), 
-	PERFORM(6, 0.1f), DISGUISE(6, 0.1f), RIDING(5, 0.1f);
+	MERCANTILE(Attribute.CHARISMA, 0.1f), PICKPOCKET(Attribute.DEXTERITY, 0.1f), ARMORER(Attribute.CONSTITUTION, 0.1f), 
+	LOCKPICKING(Attribute.DEXTERITY, 0.1f), MEDICAL(Attribute.WISDOM, 0.1f), DISABLE(Attribute.INTELLIGENCE, 0.1f), 
+	SPEECHCRAFT(Attribute.CHARISMA, 0.1f), PERFORM(Attribute.CHARISMA, 0.1f), DISGUISE(Attribute.CHARISMA, 0.1f), 
+	RIDING(Attribute.WISDOM, 0.1f),
 	
-	public final static int STR = 1;
-	public final static int CON = 2;
-	public final static int DEX = 3;
-	public final static int INT = 4;
-	public final static int WIS = 5;
-	public final static int CHA = 6;
-	public final static int NONE = 0;
+	// en deze
+	NONE(Attribute.NONE, 0.0f);
 	
-	public final int stat;
+	public final Attribute stat;
 	public final float increase;
 
 	private Skill(float increase) {
-		this(NONE, increase);
+		this(Attribute.NONE, increase);
 	}
 
-	private Skill(int stat, float increase) {
+	private Skill(Attribute stat, float increase) {
 		this.increase = increase;
 		this.stat = stat;
-	}
-
-	public String getStat() {
-		switch(stat) {
-		case 1: return "strength";
-		case 2: return "constitution";
-		case 3: return "dexterity";
-		case 4: return "intelligence";
-		case 5: return "wisdom";
-		case 6: return "charisma";
-		default: return "none";
-		}
 	}
 }
