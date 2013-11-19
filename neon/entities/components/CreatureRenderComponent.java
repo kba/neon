@@ -44,8 +44,9 @@ public class CreatureRenderComponent extends RenderComponent {
 	@Override
 	public void paint(Graphics2D graphics, float zoomf, boolean isSelected) {
 		RCreature species = creature.species;
-		int x = creature.getBounds().x;
-		int y = creature.getBounds().y;
+		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		int x = bounds.x;
+		int y = bounds.y;
 		String text = creature.hasCondition(Condition.DEAD) ? "%" : species.text;
 		int zoom = (int)zoomf;
 		Color color = ColorFactory.getColor(species.color);
@@ -64,7 +65,7 @@ public class CreatureRenderComponent extends RenderComponent {
 
 	@Override
 	public Rectangle getBounds() {
-		return creature.getBounds();
+		return creature.getComponent(ShapeComponent.class);
 	}
 
 	@Override

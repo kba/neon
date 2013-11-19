@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -18,18 +18,20 @@
 
 package neon.entities.components;
 
-import neon.entities.Entity;
+import java.awt.Rectangle;
 import net.phys2d.raw.Body;
 import net.phys2d.raw.shapes.Box;
 
 public class PhysicsComponent extends Body implements Component {
-	public PhysicsComponent(Entity entity) {
-		super(new Box(entity.bounds.width, entity.bounds.height), 1);
-		setUserData(entity);
+	private long uid;
+
+	public PhysicsComponent(long uid, Rectangle bounds) {
+		super(new Box(bounds.width, bounds.height), 1);
+		setUserData(uid);
 		setEnabled(true);
-		setPosition((float)entity.bounds.getCenterX(), (float)entity.bounds.getCenterY());
+		setPosition((float)bounds.getCenterX(), (float)bounds.getCenterY());
 	}
-	
+
 	@Override
 	public boolean isStatic() {
 		return false;
@@ -37,6 +39,6 @@ public class PhysicsComponent extends Body implements Component {
 
 	@Override
 	public long getUID() {
-		return ((Entity)getUserData()).getUID();
+		return uid;
 	}
 }

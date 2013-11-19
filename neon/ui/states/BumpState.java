@@ -18,15 +18,19 @@
 
 package neon.ui.states;
 
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.EventObject;
+
 import javax.swing.Popup;
+
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.core.handlers.MotionHandler;
 import neon.entities.Creature;
 import neon.entities.Player;
+import neon.entities.components.ShapeComponent;
 import neon.resources.RCreature;
 import neon.resources.RCreature.Size;
 import neon.ui.GamePanel;
@@ -100,7 +104,7 @@ public class BumpState extends State implements KeyListener {
 			if(isMount(creature)) {
 				Player player = Engine.getPlayer();
 				player.mount(creature);
-				player.getBounds().setLocation(creature.getBounds().x, creature.getBounds().y);
+				player.bounds.setLocation(creature.bounds.x, creature.bounds.y);
 				Engine.getAtlas().getCurrentZone().removeCreature(creature.getUID());
 				panel.repaint();
 				bus.publishAsync(new TransitionEvent("return"));
@@ -115,10 +119,12 @@ public class BumpState extends State implements KeyListener {
 	
 	private void swap() {
 		Player player = Engine.getPlayer();
-		int px = player.getBounds().x;
-		int py = player.getBounds().y;
-		if(MotionHandler.move(player, creature.getBounds().x, creature.getBounds().y) == MotionHandler.OK) {
-			creature.getBounds().setLocation(px, py);			
+		Rectangle pBounds = player.getComponent(ShapeComponent.class);
+		Rectangle cBounds = creature.getComponent(ShapeComponent.class);
+		
+		
+		if(MotionHandler.move(player, cBounds.x, cBounds.y) == MotionHandler.OK) {
+			cBounds.setLocation(pBounds.x, pBounds.y);			
 		}
 	}
 	

@@ -87,9 +87,10 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 		output.writeInt(item.bounds.y);
 		output.writeLong(item.getOwner());
 		
-		if(item.enchantment != null) {
+		Enchantment enchantment = item.getComponent(Enchantment.class);
+		if(enchantment != null) {
 			output.writeBoolean(true);
-			writeEnchantment(output, item.enchantment);
+			writeEnchantment(output, enchantment);
 		} else {
 			output.writeBoolean(false);
 		}
@@ -118,7 +119,7 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 		float modifier = input.readFloat();
 		Enchantment enchantment = new Enchantment(SpellFactory.getSpell(id), mana, uid);
 		enchantment.setModifier(modifier);
-		item.enchantment = enchantment;
+		item.setComponent(Enchantment.class, enchantment);
 	}
 	
 	private void writeEnchantment(DataOutput output, Enchantment enchantment) throws IOException {

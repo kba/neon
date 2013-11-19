@@ -122,7 +122,7 @@ public class GameLoader {
 		}
 		
 		// player in positie brengen
-		player.getBounds().setLocation(game.getStartPosition().x, game.getStartPosition().y);
+		player.bounds.setLocation(game.getStartPosition().x, game.getStartPosition().y);
 		Map map = Engine.getAtlas().getMap(Engine.getStore().getMapUID(game.getStartMap()));
 		Engine.getScriptEngine().put("map", map);
 		Engine.getAtlas().setMap(map);
@@ -233,7 +233,7 @@ public class GameLoader {
 				Gender.valueOf(playerData.getAttributeValue("gender").toUpperCase()), Player.Specialisation.valueOf(playerData.getAttributeValue("spec")),
 				playerData.getAttributeValue("prof"));
 		Engine.startGame(new Game(player, Engine.getFileSystem()));
-		player.getBounds().setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
+		player.bounds.setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
 		player.setSign(playerData.getAttributeValue("sign"));
 		player.species.text = "@";
 		

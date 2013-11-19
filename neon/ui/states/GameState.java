@@ -22,15 +22,18 @@ import neon.core.*;
 import neon.core.event.*;
 import neon.core.handlers.TurnHandler;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Attribute;
 import neon.resources.CClient;
 import neon.resources.RScript;
 import neon.ui.*;
 import neon.ui.dialog.MapDialog;
+
 import java.awt.event.*;
 import java.io.InputStream;
 import java.util.EventObject;
 import java.util.Scanner;
+
 import neon.util.fsm.*;
 import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.listener.Handler;
@@ -145,13 +148,14 @@ public class GameState extends State implements KeyListener, CollisionListener {
 	public void collisionOccured(CollisionEvent event) {
 		Object one = event.getBodyA().getUserData();
 		Object two = event.getBodyB().getUserData();
+
 		try {
-			if(one instanceof Player && two instanceof neon.maps.Region) {
+			if(one.equals(0L) && two instanceof neon.maps.Region) {
 				for(String s : ((neon.maps.Region)two).getScripts()) {
 					RScript rs = (RScript)Engine.getResources().getResource(s, "script");
 					Engine.execute(rs.script);
 				}
-			} else if(one instanceof neon.maps.Region && two instanceof Player) {
+			} else if(one instanceof neon.maps.Region && two.equals(0L)) {
 				for(String s : ((neon.maps.Region)one).getScripts()) {
 					RScript rs = (RScript)Engine.getResources().getResource(s, "script");
 					Engine.execute(rs.script);
@@ -173,7 +177,8 @@ public class GameState extends State implements KeyListener, CollisionListener {
 					panel.print("The " + ce.getDefender() + " blocks the attack.");
 					break;
 				case CombatEvent.ATTACK:
-					panel.print("You strike the " + ce.getDefender() + " (" + ce.getDefender().health.getHealth() + ").");
+					HealthComponent health = ce.getDefender().getComponent(HealthComponent.class);
+					panel.print("You strike the " + ce.getDefender() + " (" + health.getHealth() + ").");
 					break;
 				case CombatEvent.DIE:
 					panel.print("You killed the " + ce.getDefender() + ".");

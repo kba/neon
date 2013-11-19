@@ -19,10 +19,14 @@
 package neon.ai;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+
 import neon.core.Engine;
 import neon.core.handlers.MagicHandler;
 import neon.entities.Creature;
+import neon.entities.components.ShapeComponent;
 import neon.entities.property.Skill;
+import neon.entities.property.Slot;
 import neon.resources.RSpell;
 import neon.util.Dice;
 
@@ -37,24 +41,28 @@ public class HuntBehaviour implements Behaviour {
 	
 	public void act() {
 		int dice = Dice.roll(1,2,0);
+		Rectangle creaturePos = creature.getComponent(ShapeComponent.class);
+		Rectangle preyPos = prey.getComponent(ShapeComponent.class);
 
 		if(dice == 1) {
 			int time = Engine.getTimer().getTime();
 			for(RSpell.Power power : creature.animus.getPowers()) {
 				if(power.effect.getSchool().equals(Skill.DESTRUCTION) && creature.animus.canUse(power, time) && 
-						power.range >= Point.distance(creature.getBounds().x, creature.getBounds().y, 
-								prey.getBounds().x, prey.getBounds().y)) {
+						power.range >= Point.distance(creaturePos.x, creaturePos.y, 
+								preyPos.x, preyPos.y)) {
 					creature.animus.equipSpell(power);
-					MagicHandler.cast(creature, prey.bounds.getLocation());
+					ShapeComponent bounds = prey.getComponent(ShapeComponent.class);
+					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
 			for(RSpell spell : creature.animus.getSpells()) {
 				if(spell.effect.getSchool().equals(Skill.DESTRUCTION) && 
-						spell.range >= Point.distance(creature.getBounds().x, creature.getBounds().y, 
-								prey.getBounds().x, prey.getBounds().y)) {
+						spell.range >= Point.distance(creaturePos.x, creaturePos.y, 
+								preyPos.x, preyPos.y)) {
 					creature.animus.equipSpell(spell);
-					MagicHandler.cast(creature, prey.bounds.getLocation());
+					ShapeComponent bounds = prey.getComponent(ShapeComponent.class);
+					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
@@ -64,23 +72,25 @@ public class HuntBehaviour implements Behaviour {
 		if(creature.getInt() < 5) {		// als wezen lomp is, gewoon kortste weg proberen
 			int dx = 0;
 			int dy = 0;
-			if(creature.getBounds().x < prey.getBounds().x) { 
+			if(creaturePos.x < preyPos.x) { 
 				dx = 1; 
-			} else if(creature.getBounds().x > prey.getBounds().x) { 
+			} else if(creaturePos.x > preyPos.x) { 
 				dx = -1; 
 			}
-			if(creature.getBounds().y < prey.getBounds().y) { 
+			if(creaturePos.y < preyPos.y) { 
 				dy = 1; 
-			} else if(creature.getBounds().y > prey.getBounds().y) { 
+			} else if(creaturePos.y > preyPos.y) { 
 				dy = -1; 
-			}				
-			p = new Point(creature.getBounds().x + dx, creature.getBounds().y + dy);
+			}
+			p = new Point(creaturePos.x + dx, creaturePos.y + dy);
 		} else {						// als wezen slimmer is, A* proberen
-			p = PathFinder.findPath(creature, creature.bounds.getLocation(), prey.bounds.getLocation())[0];
+			ShapeComponent cBounds = creature.getComponent(ShapeComponent.class);
+			ShapeComponent pBounds = prey.getComponent(ShapeComponent.class);
+			p = PathFinder.findPath(creature, cBounds.getLocation(), pBounds.getLocation())[0];
 		}
 
-		if(p.distance(prey.getBounds().x, prey.getBounds().y) < 1) {
-//			if(creature.inventory.hasEquiped(Slot.WEAPON) && creature.getWeapon().isRanged()) {
+		if(p.distance(preyPos.x, preyPos.y) < 1) {
+			if(creature.inventory.hasEquiped(Slot.WEAPON) && creature.getWeapon().isRanged()) {
 //				if(!(creature.inventory.getWeaponType().equals(WeaponType.THROWN) || equip(Slot.AMMO))) {
 //					InventoryHandler.unequip(creature.getWeapon().getUID(), creature);
 //				}
@@ -91,9 +101,9 @@ public class HuntBehaviour implements Behaviour {
 //		} else if(Atlas.getCurrentZone().getCreature(p) == null) {
 //			if(MotionHandler.move(creature, p) == MotionHandler.DOOR) {
 //				open(p);	// deur opendoen indien nodig
-//			}
+			}
 		} else {	// als een ander creature in de weg staat
-//			wander();
+			//			wander();
 		}		
 	}
 }

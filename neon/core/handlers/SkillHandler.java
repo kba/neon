@@ -22,6 +22,7 @@ import neon.core.Engine;
 import neon.core.event.SkillEvent;
 import neon.entities.Creature;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Feat;
 import neon.entities.property.Skill;
 import neon.entities.property.Trait;
@@ -159,7 +160,8 @@ public class SkillHandler {
 				Engine.post(new SkillEvent(skill, skill.stat));
 			}
 			if(level < player.getLevel()) {	// level is met 1 gestegen
-				player.health.addBaseHealth(Dice.roll(player.species.hit));
+				HealthComponent health = player.getComponent(HealthComponent.class);
+				health.addBaseHealth(Dice.roll(player.species.hit));
 				Engine.post(new SkillEvent(skill, true));
 			}
 		}

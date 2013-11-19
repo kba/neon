@@ -105,7 +105,8 @@ public class EnchantDialog implements KeyListener, ListSelectionListener {
 		
 		for(Long uid : Engine.getPlayer().inventory) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
-			if((item instanceof Weapon || item instanceof Clothing) && item.enchantment == null) {
+			if((item instanceof Weapon || item instanceof Clothing) && 
+					item.getComponent(Enchantment.class) == null) {
 				itemModel.addElement(item);
 			}
 		}
@@ -134,7 +135,7 @@ public class EnchantDialog implements KeyListener, ListSelectionListener {
 				Effect effect = spellList.getSelectedValue();
 				Item item = itemList.getSelectedValue();
 				RSpell spell = new RSpell(effect.toString(), 0, 0, effect.name(), 0, 0, "enchant");
-				item.enchantment = new Enchantment(spell, 100, item.getUID());
+				item.setComponent(Enchantment.class, new Enchantment(spell, 100, item.getUID()));
 				ui.showMessage("Item enchanted.", 2);
 				initLists();
 			} else {

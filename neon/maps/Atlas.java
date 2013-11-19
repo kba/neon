@@ -21,10 +21,9 @@ package neon.maps;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.jdbm.DB;
 import org.apache.jdbm.DBMaker;
-
 import neon.core.Engine;
 import neon.entities.Door;
-import neon.entities.Player;
+import neon.entities.components.PhysicsComponent;
 import neon.systems.files.FileSystem;
 
 /**
@@ -108,8 +107,8 @@ public class Atlas {
 			}
 		}
 		// niet vergeten player terug te registreren
-		Player player = Engine.getPlayer();
-		Engine.getPhysicsEngine().register(player.physics);
+		PhysicsComponent physics = Engine.getPlayer().getComponent(PhysicsComponent.class);
+		Engine.getPhysicsEngine().register(physics);
 	}
 	
 	/**

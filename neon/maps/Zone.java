@@ -31,6 +31,7 @@ import neon.util.spatial.*;
 import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.Item;
+import neon.entities.components.RenderComponent;
 
 public class Zone implements Externalizable {
 	private static ZComparator comparator = new ZComparator();
@@ -78,16 +79,16 @@ public class Zone implements Externalizable {
 	public Collection<Renderable> getRenderables(Rectangle bounds) {
 		ArrayList<Renderable> elements = new ArrayList<Renderable>();
 		for(long uid : creatures.getElements(bounds)) {
-			elements.add(Engine.getStore().getEntity(uid).renderer);
+			elements.add(Engine.getStore().getEntity(uid).getComponent(RenderComponent.class));
 		}
 		for(long uid : items.getElements(bounds)) {
-			elements.add(Engine.getStore().getEntity(uid).renderer);
+			elements.add(Engine.getStore().getEntity(uid).getComponent(RenderComponent.class));
 		}
 //		for(Region r : regions.getElements(bounds)) {
 			elements.addAll(regions.getElements(bounds));
 //		}
 		for(long uid : top.getElements(bounds)) {
-			elements.add(Engine.getStore().getEntity(uid).renderer);
+			elements.add(Engine.getStore().getEntity(uid).getComponent(RenderComponent.class));
 		}
 		return elements;
 	}
@@ -337,7 +338,7 @@ public class Zone implements Externalizable {
 		int cSize = in.readInt();
 		for(int i = 0; i < cSize; i++) {
 			long uid = in.readLong();
-			Rectangle bounds = Engine.getStore().getEntity(uid).getBounds();
+			Rectangle bounds = Engine.getStore().getEntity(uid).bounds;
 			creatures.insert(uid, bounds);
 		}
 		

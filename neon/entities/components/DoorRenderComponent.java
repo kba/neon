@@ -19,8 +19,8 @@
 package neon.entities.components;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
-
 import neon.entities.Door;
 import neon.resources.RItem;
 import neon.util.TextureFactory;
@@ -38,7 +38,8 @@ public class DoorRenderComponent extends ItemRenderComponent {
 
 	@Override
 	public void paint(Graphics2D graphics, float zoom, boolean isSelected) {
-		Rectangle2D rect = new Rectangle2D.Float(item.getBounds().x*zoom, item.getBounds().y*zoom, zoom, zoom);
+		Rectangle bounds = item.getComponent(ShapeComponent.class);
+		Rectangle2D rect = new Rectangle2D.Float(bounds.x*zoom, bounds.y*zoom, zoom, zoom);
 		String text = item.resource.text;
 		Lock lock = ((Door)item).lock;
 		if(lock != null) {

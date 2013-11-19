@@ -23,6 +23,8 @@ import neon.core.event.CombatEvent;
 import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Weapon;
+import neon.entities.components.Enchantment;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Slot;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
@@ -134,15 +136,16 @@ public class CombatHandler {
 				int DV = CombatUtils.getDV(defender);
 				
 				// altijd minimum 1 damage
-				defender.health.heal(Math.min(-1, -(int)((AV - DV)/(DV + 1))));
+				HealthComponent health = defender.getComponent(HealthComponent.class);
+				health.heal(Math.min(-1, -(int)((AV - DV)/(DV + 1))));
 				
 				// enchanted weapon spell casten
-				if(weapon != null && weapon.enchantment.getSpell() != null) {
+				if(weapon != null && weapon.getComponent(Enchantment.class).getSpell() != null) {
 					MagicHandler.cast(attacker, defender.bounds.getLocation(), weapon);
 				}
 				
 				// berichten bepalen
-				if(defender.health.getHealth() < 0) {
+				if(health.getHealth() < 0) {
 					result = CombatEvent.DIE;
 				} else {
 					result = CombatEvent.ATTACK;

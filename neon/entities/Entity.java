@@ -1,6 +1,6 @@
 /*
  *	Neon, a roguelike engine.
- *	Copyright (C) 2012 - Maarten Driesen
+ *	Copyright (C) 2012-2013 - Maarten Driesen
  * 
  *	This program is free software; you can redistribute it and/or modify
  *	it under the terms of the GNU General Public License as published by
@@ -18,9 +18,12 @@
 
 package neon.entities;
 
+import com.google.common.collect.ClassToInstanceMap;
+import com.google.common.collect.MutableClassToInstanceMap;
+import neon.entities.components.Component;
 import neon.entities.components.PhysicsComponent;
+import neon.entities.components.ScriptComponent;
 import neon.entities.components.ShapeComponent;
-import neon.ui.graphics.Renderable;
 
 /**
  * This class represents a game entity that can be drawn on screen.
@@ -29,31 +32,54 @@ import neon.ui.graphics.Renderable;
  */
 public abstract class Entity {
 	public final ShapeComponent bounds;
-	public final PhysicsComponent physics;
-	public Renderable renderer;	// waarom niet final?
 	private final long uid;
 	private final String id;
-	
+	protected ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
+
+	/**
+	 * @param id	the id of the resource this entity is an instance of
+	 * @param uid
+	 */
 	public Entity(String id, long uid) {
-		bounds = new ShapeComponent(this, 0, 0, 1, 1);
-		physics = new PhysicsComponent(this);
 		this.id = id;
 		this.uid = uid;
+
+		// components
+		bounds = new ShapeComponent(this, 0, 0, 1, 1);
+		components.putInstance(ShapeComponent.class, bounds);
+		components.putInstance(PhysicsComponent.class, new PhysicsComponent(uid, bounds));
+		components.putInstance(ScriptComponent.class, new ScriptComponent(uid));
 	}
 
+	/**
+	 * @return	the uid of this entity
+	 */
 	public long getUID() {
 		return uid;
 	}
-	
+
+	/**
+	 * @return	the id of the resource this entity is an instance of
+	 */
 	public String getID() {
 		return id;
 	}
 
-	public ShapeComponent getBounds() {
-		return bounds;
+	/**
+	 * @param component
+	 * @return	the requested component
+	 */
+	public <T extends Component> T getComponent(Class<T> component) {
+		return components.getInstance(component);
 	}
-	
-	public Renderable getRenderer() {
-		return renderer;
+
+	/**
+	 * Sets a component.
+	 * 
+	 * @param type
+	 * @param component
+	 */
+	public <T extends Component> void setComponent(Class<T> type, T component) {
+		components.putInstance(type, component);
 	}
 }

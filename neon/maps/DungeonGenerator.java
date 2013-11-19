@@ -86,7 +86,7 @@ public class DungeonGenerator {
 			p.y = Dice.roll(1, height, -1);
 		} while(tiles[p.x][p.y] != MapUtils.FLOOR || !zone.getItems(p).isEmpty());
 		
-		Point destPoint = new Point(door.getBounds().x, door.getBounds().y);
+		Point destPoint = new Point(door.bounds.x, door.bounds.y);
 		int destMap = previous.getMap();
 		int destZone = previous.getIndex();
 		String doorType = theme.doors.split(",")[0];
@@ -135,7 +135,7 @@ public class DungeonGenerator {
 								Engine.getStore().addEntity(toDoor);
 								tiles[pos.x][pos.y] = MapUtils.DOOR;
 								toDoor.lock.open();
-								toDoor.portal.setDestination(new Point(fromDoor.getBounds().x, fromDoor.getBounds().y), to, 0);
+								toDoor.portal.setDestination(new Point(fromDoor.bounds.x, fromDoor.bounds.y), to, 0);
 								zone.addItem(toDoor);
 								fromDoor.portal.setDestPos(pos);
 								break;

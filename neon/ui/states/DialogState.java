@@ -21,6 +21,7 @@ package neon.ui.states;
 import neon.core.*;
 import neon.entities.Creature;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
 import neon.magic.MagicUtils;
 import neon.resources.CClient;
 import neon.resources.RPerson;
@@ -41,9 +42,12 @@ import neon.ui.dialog.TravelDialog;
 import neon.util.fsm.State;
 import neon.util.fsm.TransitionEvent;
 import net.engio.mbassy.bus.MBassador;
+
 import java.util.EventObject;
 import java.util.Vector;
+
 import org.jdom2.Element;
+
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -52,6 +56,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
+
 import java.awt.event.*;
 import java.awt.*;
 import java.io.IOException;
@@ -226,7 +231,8 @@ public class DialogState extends State implements KeyListener {
 	
 	private void heal() {
 		Player player = Engine.getPlayer();
-		player.health.heal(player.health.getHealth() - player.health.getBaseHealth());
+		HealthComponent health = player.getComponent(HealthComponent.class);
+		health.heal(health.getHealth() - health.getBaseHealth());
 		MagicUtils.cure(player, SpellType.CURSE);
 		MagicUtils.cure(player, SpellType.DISEASE);
 		MagicUtils.cure(player, SpellType.POISON);

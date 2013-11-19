@@ -24,12 +24,17 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorModel;
 import java.util.Collection;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.DefaultCaret;
+
 import neon.core.Engine;
 import neon.core.handlers.CombatUtils;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
+import neon.entities.components.RenderComponent;
+import neon.entities.components.ShapeComponent;
 import neon.entities.property.Condition;
 import neon.ui.graphics.*;
 import neon.util.ColorFactory;
@@ -157,10 +162,11 @@ public class GamePanel extends JComponent {
 	public void repaint() {
 		if(Engine.getPlayer() != null) {
 			drawStats();
-			drawing.updateCamera(Engine.getPlayer().getBounds().getLocation());
+			ShapeComponent bounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+			drawing.updateCamera(bounds.getLocation());
 		} 
 		Collection<Renderable> renderables = Engine.getAtlas().getCurrentZone().getRenderables(getVisibleRectangle());
-		renderables.add(Engine.getPlayer().getRenderer());
+		renderables.add(Engine.getPlayer().getComponent(RenderComponent.class));
 		if(cursor != null) {
 			renderables.add(cursor);
 		}
@@ -199,16 +205,18 @@ public class GamePanel extends JComponent {
 	}
 
 	private void drawStats() {
+		// components 
 		Player player = Engine.getPlayer();
+		HealthComponent health = player.getComponent(HealthComponent.class);
 
-		if(player.health.getHealth()*4 < player.health.getBaseHealth()) {
-			healthLabel.setText("<html>health: <font color=red>" + player.health.getHealth() + "/" + 
-					player.health.getBaseHealth() + "</font></html>");
-		} else if(player.health.getHealth() > player.health.getBaseHealth()) {
-			healthLabel.setText("<html>health: <font color=green>" + player.health.getHealth() + "/" + 
-					player.health.getBaseHealth() + "</font></html>");
+		if(health.getHealth()*4 < health.getBaseHealth()) {
+			healthLabel.setText("<html>health: <font color=red>" + health.getHealth() + "/" + 
+					health.getBaseHealth() + "</font></html>");
+		} else if(health.getHealth() > health.getBaseHealth()) {
+			healthLabel.setText("<html>health: <font color=green>" + health.getHealth() + "/" + 
+					health.getBaseHealth() + "</font></html>");
 		} else {
-			healthLabel.setText("health: " + player.health.getHealth() + "/" + player.health.getBaseHealth());
+			healthLabel.setText("health: " + health.getHealth() + "/" + health.getBaseHealth());
 		}
 		if(player.animus.getMana() > player.species.mana*player.species.iq) {
 			magicLabel.setText("<html>magic: <font color=green>" + player.animus.getMana() + "/" +
@@ -311,6 +319,8 @@ public class GamePanel extends JComponent {
 	}
 	
 	private class LightFilter implements BufferedImageOp {
+		private BufferedImage image;	// omdat dest altijd null is
+		
 		public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel destCM) {
 			return new BufferedImage(src.getWidth(), src.getHeight(), src.getType());
 		}
@@ -320,17 +330,26 @@ public class GamePanel extends JComponent {
 			Player player = Engine.getPlayer();
 			float zoom = drawing.getZoom();
 			Area area = new Area(new Rectangle(src.getWidth(), src.getHeight()));
+			
+			// TODO: player staat niet gecentreerd op outdoor map
 			// 8 en 17: cirkel met diameter 16, gecentreerd op player
-			area.subtract(new Area(new Ellipse2D.Float((player.getBounds().x - 8)*zoom - view.x*zoom, 
-					(player.getBounds().y - 8)*zoom - view.y*zoom, (int)(17*zoom), (int)(17*zoom))));
+			ShapeComponent bounds = player.getComponent(ShapeComponent.class);
+			area.subtract(new Area(new Ellipse2D.Float((bounds.x - 8)*zoom - view.x*zoom, 
+					(bounds.y - 8)*zoom - view.y*zoom, (int)(17*zoom), (int)(17*zoom))));
 			for(Point p : Engine.getAtlas().getCurrentZone().getLightMap().keySet()) {
 				// 4 en 9: cirkel met diameter 8, gecentreerd op licht
 				area.subtract(new Area(new Ellipse2D.Float((p.x - 4)*zoom - view.x*zoom, (p.y - 4)*zoom - view.y*zoom, 
 						9*zoom, 9*zoom)));
 			}
-			dest = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D)dest.getGraphics();
+
+			if(image == null || image.getWidth() != src.getWidth() || image.getHeight() != src.getHeight()) {
+				image = getGraphicsConfiguration().createCompatibleImage(src.getWidth(), src.getHeight());
+			} 
+			
+			Graphics2D g = (Graphics2D)image.getGraphics();
+			g.clearRect(0, 0, src.getWidth(), src.getHeight());
 			g.drawImage(src, src.getMinX(), src.getMinY(), null);
+			
 			if(Engine.getAtlas().getCurrentMap() instanceof World) {
 				int hour = (Engine.getTimer().getTime()/(60*1) + 12)%24;
 				g.setColor(new Color(0, 0, 0, (hour-12)*(hour-12)*3/2));
@@ -340,7 +359,7 @@ public class GamePanel extends JComponent {
 				g.setColor(new Color(0, 0, 0, 200));
 				g.fill(area);
 			}
-			return dest;
+			return image;
 		}
 		
 		public Rectangle2D getBounds2D(BufferedImage src) {

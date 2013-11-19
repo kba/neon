@@ -22,6 +22,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
+
 import neon.ai.AIFactory;
 import neon.core.Engine;
 import neon.entities.Construct;
@@ -29,9 +30,11 @@ import neon.entities.Creature;
 import neon.entities.Daemon;
 import neon.entities.Dragon;
 import neon.entities.Hominid;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Slot;
 import neon.magic.SpellFactory;
 import neon.resources.RCreature;
+
 import org.apache.jdbm.Serializer;
 
 // TODO: factions
@@ -46,12 +49,13 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		int y = in.readInt();
 		long uid = in.readLong();
 		Creature creature = getCreature(id, x, y, uid, species);
-		creature.getBounds().setLocation(x, y);
+		creature.bounds.setLocation(x, y);
 		creature.brain = aiFactory.getAI(creature);
 		
-		creature.health.setHealth(in.readInt());
-		creature.health.addBaseHealthMod(in.readFloat());
-		creature.health.heal(in.readFloat());
+		HealthComponent health = creature.getComponent(HealthComponent.class);
+		health.setHealth(in.readInt());
+		health.addBaseHealthMod(in.readFloat());
+		health.heal(in.readFloat());
 		creature.addMoney(in.readInt());
 		creature.animus.setBaseModifier(in.readFloat());
 		creature.animus.setModifier(in.readFloat());
@@ -81,13 +85,14 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 	public void serialize(DataOutput out, Creature creature) throws IOException {
 		out.writeUTF(creature.getID());
 		out.writeUTF(creature.species.id);
-		out.writeInt(creature.getBounds().x);
-		out.writeInt(creature.getBounds().y);
+		out.writeInt(creature.bounds.x);
+		out.writeInt(creature.bounds.y);
 		out.writeLong(creature.getUID());
 		
-		out.writeInt(creature.health.getBaseHealth());
-		out.writeFloat(creature.health.getBaseHealthMod());
-		out.writeFloat(creature.health.getHealthMod());
+		HealthComponent health = creature.getComponent(HealthComponent.class);
+		out.writeInt(health.getBaseHealth());
+		out.writeFloat(health.getBaseHealthMod());
+		out.writeFloat(health.getHealthMod());
 		out.writeInt(creature.getMoney());
 		out.writeFloat(creature.animus.getBaseModifier());
 		out.writeFloat(creature.animus.getModifier());

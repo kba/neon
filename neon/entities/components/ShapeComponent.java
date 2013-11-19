@@ -32,29 +32,34 @@ public class ShapeComponent extends Rectangle implements Component {
 	
 	public void setWidth(int width) {
 		this.width = width;
-		entity.physics.move(x + width/2, y + height/2);	
+		PhysicsComponent physics = entity.getComponent(PhysicsComponent.class);
+		physics.move(x + width/2, y + height/2);	
 	}
 
 	public void setHeight(int height) {
 		this.height = height;
-		entity.physics.move(x + width/2, y + height/2);	
+		PhysicsComponent physics = entity.getComponent(PhysicsComponent.class);
+		physics.move(x + width/2, y + height/2);	
 	}
 	
 	public void setX(int x) {
 		this.x = x;
-		entity.physics.move(x + width/2, y + height/2);	
+		PhysicsComponent physics = entity.getComponent(PhysicsComponent.class);
+		physics.move(x + width/2, y + height/2);	
 	}
 
 	public void setY(int y) {
 		this.y = y;
-		entity.physics.move(x + width/2, y + height/2);	
+		PhysicsComponent physics = entity.getComponent(PhysicsComponent.class);
+		physics.move(x + width/2, y + height/2);	
 	}
 	
 	@Override
 	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
-		entity.physics.move(x + width/2, y + height/2);		
+		PhysicsComponent physics = entity.getComponent(PhysicsComponent.class);
+		physics.move(x + width/2, y + height/2);		
 	}
 
 	@Override

@@ -38,14 +38,15 @@ public class ItemRenderComponent extends RenderComponent {
 	
 	@Override
 	public void paint(Graphics2D graphics, float zoom, boolean isSelected) {
-		Rectangle2D rect = new Rectangle2D.Float(item.getBounds().x*zoom, item.getBounds().y*zoom, zoom, zoom);
+		Rectangle bounds = item.getComponent(ShapeComponent.class);
+		Rectangle2D rect = new Rectangle2D.Float(bounds.x*zoom, bounds.y*zoom, zoom, zoom);
 		graphics.setPaint(TextureFactory.getTexture(item.resource.text, (int)zoom, item.resource.color));
 		graphics.fill(rect);
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return item.getBounds();
+		return item.getComponent(ShapeComponent.class);
 	}
 
 	@Override

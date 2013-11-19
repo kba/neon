@@ -23,10 +23,13 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
+
 import javax.swing.*;
 import javax.swing.border.*;
+
 import neon.entities.Item;
 import neon.entities.Player;
+import neon.entities.components.Enchantment;
 import neon.ui.UserInterface;
 import neon.core.Engine;
 
@@ -95,7 +98,7 @@ public class ChargeDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				Item item = (Item)items.getSelectedValue();
-				item.enchantment.setModifier(0);
+				item.getComponent(Enchantment.class).setModifier(0);
 				ui.showMessage("Item charged.", 2);
 			} catch (ArrayIndexOutOfBoundsException f) {
 				ui.showMessage("No item selected.", 2);
@@ -108,7 +111,8 @@ public class ChargeDialog implements KeyListener {
 		Vector<Item> listData = new Vector<Item>();
 		for(long uid : player.inventory) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
-			if(item.enchantment != null && item.enchantment.getMana() < item.enchantment.getBaseMana()) {
+			Enchantment enchantment = item.getComponent(Enchantment.class);
+			if(enchantment != null && enchantment.getMana() < enchantment.getBaseMana()) {
 				listData.add(item);
 			}
 		}

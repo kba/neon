@@ -19,6 +19,10 @@
 package neon.ui.states;
 
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.Popup;
 import neon.core.*;
 import neon.core.event.CombatEvent;
 import neon.core.handlers.*;
@@ -27,11 +31,9 @@ import neon.entities.Door;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.Weapon;
+import neon.entities.components.ShapeComponent;
 import neon.entities.property.Slot;
-import java.awt.event.*;
 import neon.maps.Zone;
-import java.util.*;
-import javax.swing.Popup;
 import neon.resources.CClient;
 import neon.resources.RWeapon.WeaponType;
 import neon.systems.animation.Translation;
@@ -131,7 +133,8 @@ public class AimState extends State implements KeyListener {
 	}
 
 	private void shoot() {
-		if(target.distance(player.getBounds().x, player.getBounds().y) < 5) {
+		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		if(target.distance(bounds.x, bounds.y) < 5) {
 			Creature victim = Engine.getAtlas().getCurrentZone().getCreature(target);
 			if(victim != null) {
 				Weapon ammo = (Weapon)Engine.getStore().getEntity(player.inventory.get(Slot.AMMO));
@@ -164,14 +167,21 @@ public class AimState extends State implements KeyListener {
 	}
 	
 	private void shoot(Item projectile, Creature victim) {
-		projectile.getBounds().setLocation(victim.getBounds().x, victim.getBounds().y);
+		// get bounds of all involved entities
+		Rectangle prBounds = projectile.getComponent(ShapeComponent.class);
+		Rectangle vBounds = victim.getComponent(ShapeComponent.class);
+		Rectangle plBounds = projectile.getComponent(ShapeComponent.class);
+
+		// shoot
+		prBounds.setLocation(vBounds.x, vBounds.y);
 		Engine.getAtlas().getCurrentZone().addItem(projectile);
-		new Thread(new Translation(projectile, player.getBounds().x, player.getBounds().y, 
-				victim.getBounds().x, victim.getBounds().y, 100, panel)).start();
+		new Thread(new Translation(projectile, plBounds.x, plBounds.y, 
+				vBounds.x, vBounds.y, 100, panel)).start();
 	}
 	
 	private void talk() {
-		if(target.distance(player.getBounds().getLocation()) < 2) {
+		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		if(target.distance(bounds.getLocation()) < 2) {
 			Creature creature = Engine.getAtlas().getCurrentZone().getCreature(target);
 			if(creature != null) {
 				if(creature.hasDialog()) {
@@ -214,7 +224,8 @@ public class AimState extends State implements KeyListener {
 		cursor.setY(target.y);
 		panel.repaint();
 		// beschrijving van waar naar gekeken wordt
-		if(target.distance(player.getBounds().getLocation()) < 20) {
+		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		if(target.distance(bounds.getLocation()) < 20) {
 			Zone zone = Engine.getAtlas().getCurrentZone();
 			String items = "";
 			String actors = "";

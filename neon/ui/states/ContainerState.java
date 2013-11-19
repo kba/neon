@@ -146,7 +146,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 					if(container instanceof Container) {	// verandering registreren
 						((Container)container).addItem(item.getUID());
 					} else if(container instanceof Zone) {	// itempositie aanpassen
-						item.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
+						item.bounds.setLocation(player.bounds.x, player.bounds.y);
 						Engine.getAtlas().getCurrentZone().addItem(item);
 					} else if(container instanceof Creature) {
 						InventoryHandler.addItem(((Creature)container), item.getUID());

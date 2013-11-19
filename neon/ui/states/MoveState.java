@@ -70,7 +70,7 @@ public class MoveState extends State implements KeyListener {
 	}
 	
 	private void move(int x, int y) {
-		Point p = new Point(player.getBounds().x + x, player.getBounds().y + y);
+		Point p = new Point(player.bounds.x + x, player.bounds.y + y);
 
 		// kijken of creature in de weg staat
 		Creature other = Engine.getAtlas().getCurrentZone().getCreature(p);
@@ -169,7 +169,7 @@ public class MoveState extends State implements KeyListener {
 				Creature mount = player.getMount();
 				player.unmount();
 				Engine.getAtlas().getCurrentZone().addCreature(mount);
-				mount.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
+				mount.bounds.setLocation(player.bounds.x, player.bounds.y);
 			}
 		} else if(code == keys.magic) {
 			int out = MagicHandler.RANGE;

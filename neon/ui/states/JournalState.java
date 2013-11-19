@@ -19,14 +19,15 @@
 package neon.ui.states;
 
 import java.awt.*;
+import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import neon.core.*;
 import neon.core.handlers.CombatUtils;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.util.*;
-import java.awt.event.*;
 import neon.resources.RSpell;
 import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
@@ -173,6 +174,8 @@ public class JournalState extends State implements FocusListener {
 	
 	private void initStats() {
 		Player player = Engine.getPlayer();
+		HealthComponent health = player.getComponent(HealthComponent.class);
+
 		stuff.removeAll();
 		skills.removeAll();
 		feats.removeAll();
@@ -188,7 +191,7 @@ public class JournalState extends State implements FocusListener {
 		stuff.add(new JLabel("Intelligence: " + player.getInt()));
 		stuff.add(new JLabel("Charisma: " + player.getCha()));
 		stuff.add(new JLabel("Wisdom: " + player.getWis()));
-		stuff.add(new JLabel("Health: " + player.health.getHealth() + "/" + player.health.getBaseHealth()));
+		stuff.add(new JLabel("Health: " + health.getHealth() + "/" + health.getBaseHealth()));
 		stuff.add(new JLabel("Mana: " + player.animus.getMana() + "/" + player.species.mana*player.species.iq));
 		stuff.add(new JLabel("Size: " + player.species.size));
 		stuff.add(new JLabel("Gender: " + (player.getGender().toString().toLowerCase())));

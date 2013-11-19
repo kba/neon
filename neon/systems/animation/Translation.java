@@ -19,9 +19,10 @@
 package neon.systems.animation;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import javax.swing.JComponent;
-
 import neon.entities.Entity;
+import neon.entities.components.ShapeComponent;
 
 public class Translation implements Runnable {
 	private JComponent component;
@@ -49,12 +50,13 @@ public class Translation implements Runnable {
 	}
 	
 	public void run() {
-		entity.getBounds().setLocation(x1, y1);
+		Rectangle bounds = entity.getComponent(ShapeComponent.class);
+		bounds.setLocation(x1, y1);
 		int distance = (int)Point.distance(x1, y1, x2, y2);
 		for(int i = 0; i < distance + 1; i++) {
 			int dx = (x2 - x1)*i/distance;
 			int dy = (y2 - y1)*i/distance;
-			entity.getBounds().setLocation(x1 + dx, y1 + dy);
+			bounds.setLocation(x1 + dx, y1 + dy);
 //			System.out.println(entity.getBounds().getLocation());
 			component.repaint();
 			try {

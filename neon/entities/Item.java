@@ -18,19 +18,18 @@
 
 package neon.entities;
 
-import neon.entities.components.Enchantment;
 import neon.entities.components.ItemRenderComponent;
+import neon.entities.components.RenderComponent;
 import neon.resources.RItem;
 
 public class Item extends Entity {
 	public final RItem resource;
-	public Enchantment enchantment;	// niet final, want items zijn enchantbaar
 	protected long owner = 0;
 		
 	public Item(long uid, RItem resource) {
 		super(resource.id, uid);
 		this.resource = resource;
-		renderer = new ItemRenderComponent(this);
+		components.putInstance(RenderComponent.class, new ItemRenderComponent(this));
 	}
 	
 	@Override

@@ -140,6 +140,6 @@ public class TravelDialog implements KeyListener {
 	}
 	
 	private void travel(String point) {
-		player.getBounds().setLocation(listData.get(point).x, listData.get(point).y);
+		player.bounds.setLocation(listData.get(point).x, listData.get(point).y);
 	}
 }

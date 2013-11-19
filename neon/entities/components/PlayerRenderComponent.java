@@ -19,7 +19,7 @@
 package neon.entities.components;
 
 import java.awt.Graphics2D;
-import neon.core.Engine;
+import java.awt.Rectangle;
 import neon.entities.Player;
 import neon.util.ColorFactory;
 
@@ -31,12 +31,13 @@ public class PlayerRenderComponent extends CreatureRenderComponent {
 	@Override
 	public void paint(Graphics2D graphics, float zoomf, boolean isSelected) {
 		super.paint(graphics, zoomf, isSelected);
-		int x = creature.getBounds().x;
-		int y = creature.getBounds().y;
+		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		int x = bounds.x;
+		int y = bounds.y;
 		int zoom = (int)zoomf;
 		graphics.setPaint(ColorFactory.getColor(creature.species.color));
 		graphics.drawLine(x*zoom + 2, y*zoom + zoom, x*zoom + zoom - 4, y*zoom + zoom);
-		if(Engine.getPlayer().isSneaking()) {
+		if(((Player)creature).isSneaking()) {
 			graphics.drawLine(x*zoom + 2, y*zoom, x*zoom + zoom - 4, y*zoom);
 		}		
 	}

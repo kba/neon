@@ -28,6 +28,7 @@ import neon.entities.components.CreatureRenderComponent;
 import neon.entities.components.FactionComponent;
 import neon.entities.components.HealthComponent;
 import neon.entities.components.Inventory;
+import neon.entities.components.RenderComponent;
 import neon.entities.property.*;
 
 /**
@@ -41,8 +42,6 @@ public class Creature extends Entity {
 	public final RCreature species;
 	public final Inventory inventory;
 	public final Animus animus;
-	public final FactionComponent factions;
-	public final HealthComponent health;
 	public AI brain;	// kan niet final (npc probleem)
 	
 	// allerlei
@@ -71,11 +70,12 @@ public class Creature extends Entity {
 	public Creature(String id, long uid, RCreature species) {
 		super(id, uid);
 		
+		// components
 		this.species = species;
 		animus = new Animus(this);
-		renderer = new CreatureRenderComponent(this);
-		factions = new FactionComponent(uid);
-		health = new HealthComponent(uid, species.hit);
+		components.putInstance(RenderComponent.class, new CreatureRenderComponent(this));
+		components.putInstance(FactionComponent.class, new FactionComponent(uid));
+		components.putInstance(HealthComponent.class, new HealthComponent(uid, species.hit));
 
 		// dit eerst
 		gender = Gender.OTHER;

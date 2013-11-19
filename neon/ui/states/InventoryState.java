@@ -18,18 +18,19 @@
 
 package neon.ui.states;
 
-import neon.core.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.*;
 import java.awt.event.*;
+import neon.core.*;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.MagicHandler;
 import neon.core.handlers.SkillHandler;
 import neon.entities.Item;
 import neon.entities.Player;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Skill;
 import neon.resources.CClient;
 import neon.resources.RItem;
@@ -114,7 +115,8 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		} else if(item instanceof Item.Aid) {
 			InventoryHandler.removeItem(player, item.getUID());
 			initList();
-			player.health.heal(SkillHandler.check(player, Skill.MEDICAL)/5f);
+			HealthComponent health = player.getComponent(HealthComponent.class);
+			health.heal(SkillHandler.check(player, Skill.MEDICAL)/5f);
 		} else if(!player.inventory.hasEquiped(item.getUID())) {
 			InventoryHandler.equip(item, player);			
 		} else {
@@ -179,7 +181,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			if(inventory.getSelectedValue() != null) {
 				Item item = inventory.getSelectedValue();
 				InventoryHandler.removeItem(player, item.getUID());
-				item.getBounds().setLocation(player.getBounds().x, player.getBounds().y);
+				item.bounds.setLocation(player.bounds.x, player.bounds.y);
 				Engine.getAtlas().getCurrentZone().addItem(item);
 				initList();
 				inventory.setSelectedIndex(0);

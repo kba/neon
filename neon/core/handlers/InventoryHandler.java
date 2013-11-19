@@ -26,6 +26,7 @@ import neon.entities.Clothing;
 import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Weapon;
+import neon.entities.components.Enchantment;
 import neon.entities.components.Inventory;
 import neon.entities.property.Slot;
 import neon.magic.MagicUtils;
@@ -132,7 +133,7 @@ public class InventoryHandler {
 			default:
 				break;
 			}
-			if(c.enchantment.getSpell() != null) {
+			if(c.getComponent(Enchantment.class).getSpell() != null) {
 				MagicUtils.equip(creature, (Clothing)item);
 			}
 		} else if(item instanceof Weapon) {
@@ -189,7 +190,7 @@ public class InventoryHandler {
 			} else {
 				inventory.remove(c.getSlot());
 			}
-			if(c.enchantment.getSpell() != null) {
+			if(c.getComponent(Enchantment.class).getSpell() != null) {
 				MagicUtils.unequip(creature, (Clothing)item);
 			}
 		} else if(item instanceof Weapon) {

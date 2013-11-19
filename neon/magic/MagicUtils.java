@@ -21,6 +21,7 @@ package neon.magic;
 import neon.core.handlers.SkillHandler;
 import neon.entities.Clothing;
 import neon.entities.Creature;
+import neon.entities.components.Enchantment;
 import neon.resources.RSpell;
 
 public class MagicUtils {
@@ -115,7 +116,8 @@ public class MagicUtils {
 	 * @param item
 	 */
 	public static void equip(Creature creature, Clothing item) {
-		Spell spell = new Spell(item.enchantment.getSpell(), 0, creature, null);
+		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Spell spell = new Spell(enchantment.getSpell(), 0, creature, null);
 		spell.getHandler().addEffect(spell);
 	}
 
@@ -126,7 +128,8 @@ public class MagicUtils {
 	 * @param item
 	 */
 	public static void unequip(Creature creature, Clothing item) {
-		Spell spell = new Spell(item.enchantment.getSpell(), 0, creature, null);
+		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Spell spell = new Spell(enchantment.getSpell(), 0, creature, null);
 		spell.getHandler().removeEffect(spell);
 	}
 }

@@ -20,10 +20,9 @@ package neon.ui.graphics.shapes;
 
 import java.awt.Paint;
 import java.awt.Rectangle;
+import neon.entities.components.RenderComponent;
 
-import neon.ui.graphics.Renderable;
-
-public abstract class JVShape implements Renderable {
+public abstract class JVShape extends RenderComponent {
 	protected Paint paint;
 	private int z;
 

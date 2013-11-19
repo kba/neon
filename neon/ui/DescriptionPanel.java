@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-
 import neon.entities.Armor;
 import neon.entities.Clothing;
 import neon.entities.Container;
@@ -35,6 +34,9 @@ import neon.entities.Door;
 import neon.entities.Entity;
 import neon.entities.Item;
 import neon.entities.Weapon;
+import neon.entities.components.Enchantment;
+import neon.entities.components.RenderComponent;
+import neon.entities.components.ShapeComponent;
 import neon.resources.RClothing;
 import neon.resources.RSpell;
 import neon.resources.RWeapon;
@@ -69,8 +71,9 @@ public class DescriptionPanel extends JPanel {
 		if(entity != null) {
 			BufferedImage image = new BufferedImage(50, 60, BufferedImage.TYPE_INT_RGB);
 			Graphics2D buffer = image.createGraphics();
-			buffer.translate(-entity.bounds.x * 50, -entity.bounds.y * 50);
-			entity.getRenderer().paint(buffer, 50, false);
+			ShapeComponent bounds = entity.getComponent(ShapeComponent.class);
+			buffer.translate(-bounds.x * 50, -bounds.y * 50);
+			entity.getComponent(RenderComponent.class).paint(buffer, 50, false);
 			label.setIcon(new ImageIcon(image));
 			label.setText(entity.toString());
 			add(label, BorderLayout.PAGE_START);
@@ -88,9 +91,11 @@ public class DescriptionPanel extends JPanel {
 				if(item.resource.weight > 0) {
 					properties.add(new JLabel("  Weight: " + item.resource.weight));
 				}
-				if(item.enchantment != null) {
+				
+				Enchantment enchantment = item.getComponent(Enchantment.class);
+				if(enchantment != null) {
 					String def = item instanceof Item.Food ? "  Effect: " : "  Enchantment: ";
-					RSpell spell = item.enchantment.getSpell();
+					RSpell spell = enchantment.getSpell();
 					String text = (spell.name != null ? spell.name : spell.id);
 					properties.add(new JLabel(def + text));
 				}
@@ -108,9 +113,9 @@ public class DescriptionPanel extends JPanel {
 					properties.add(new JLabel("  Type: " + resource.weaponType));
 					properties.add(new JLabel("  Damage: " + resource.damage));
 					properties.add(new JLabel("  State: " + ((Weapon)item).getState() + "%"));
-					if(item.enchantment != null) {
-						properties.add(new JLabel("  Magic charge: " + item.enchantment.getMana() + 
-								"/" + item.enchantment.getBaseMana()));						
+					if(enchantment != null) {
+						properties.add(new JLabel("  Magic charge: " + enchantment.getMana() + 
+								"/" + enchantment.getBaseMana()));						
 					}
 				}
 			}

@@ -203,7 +203,6 @@ public class Engine implements Runnable {
 		engine.put("journal", player.getJournal());	
 		engine.put("player", player);
 		engine.put("PC", player);
-		physics.register(player.physics);
 	}
 	
 	/**

@@ -19,6 +19,7 @@
 package neon.magic;
 
 import neon.entities.Creature;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Damage;
 
 public class DamageHandler implements EffectHandler {
@@ -44,9 +45,12 @@ public class DamageHandler implements EffectHandler {
 		Creature target = (Creature)spell.getTarget();		
 		switch(type) {
 		case MANA: 
-			target.animus.addMana(-spell.getMagnitude()); break;
+			target.animus.addMana(-spell.getMagnitude()); 
+			break;
 		default:
-			target.health.heal(-spell.getMagnitude()); break;
+			HealthComponent health = target.getComponent(HealthComponent.class);
+			health.heal(-spell.getMagnitude()); 
+			break;
 		}
 	}
 
@@ -56,10 +60,11 @@ public class DamageHandler implements EffectHandler {
 
 	public void repeatEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
+		HealthComponent health = target.getComponent(HealthComponent.class);
 		switch(type) {	
-		case FROST: target.health.heal(-spell.getMagnitude()); break;
-		case SHOCK: target.health.heal(-spell.getMagnitude()); break;
-		case FIRE: target.health.heal(-spell.getMagnitude()); break;
+		case FROST: health.heal(-spell.getMagnitude()); break;
+		case SHOCK: health.heal(-spell.getMagnitude()); break;
+		case FIRE: health.heal(-spell.getMagnitude()); break;
 		default: 
 			throw new IllegalArgumentException("The given spell does not have a repeat damage effect.");
 		}

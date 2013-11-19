@@ -21,13 +21,16 @@ package neon.core.handlers;
 import neon.magic.*;
 import neon.resources.RSpell;
 import neon.util.Dice;
+
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.util.Collection;
+
 import neon.core.Engine;
 import neon.core.event.MagicTask;
 import neon.entities.Creature;
 import neon.entities.Item;
+import neon.entities.components.Enchantment;
 import neon.entities.property.Ability;
 import neon.entities.property.Condition;
 import neon.entities.property.Skill;
@@ -78,7 +81,7 @@ public class MagicHandler {
 			for(Creature creature : creatures) {
 				castSpell(creature, null, spell);
 			}
-			if(box.contains(Engine.getPlayer().getBounds())) {
+			if(box.contains(Engine.getPlayer().bounds)) {
 				castSpell(Engine.getPlayer(), null, spell);
 			}
 		}
@@ -138,7 +141,7 @@ public class MagicHandler {
 				}
 			} else {
 				Collection<Creature> creatures = Engine.getAtlas().getCurrentZone().getCreatures(box);
-				if(box.contains(Engine.getPlayer().getBounds().getLocation())) {
+				if(box.contains(Engine.getPlayer().bounds.getLocation())) {
 					creatures.add(Engine.getPlayer());
 				}
 				for(Creature creature : creatures) {
@@ -160,14 +163,16 @@ public class MagicHandler {
 	 * @return	the result of the cast
 	 */
 	public static int cast(Creature caster, Point target, Item item) {
+		Enchantment enchantment = item.getComponent(Enchantment.class);
 		RSpell formula = null;
+		
 		if(item instanceof Item.Scroll) {
-			formula = ((Item.Scroll)item).enchantment.getSpell();
+			formula = enchantment.getSpell();
 		}
 		
 		if(formula == null) {
 			return NONE;
-		} else if(!(item instanceof Item.Scroll) && MagicUtils.getMana(formula) > item.enchantment.getMana()) {
+		} else if(!(item instanceof Item.Scroll) && MagicUtils.getMana(formula) > enchantment.getMana()) {
 			return MANA;			
 		} else if(target == null) {
 			return NULL;
@@ -177,7 +182,7 @@ public class MagicHandler {
 			if(item instanceof Item.Scroll) {
 				InventoryHandler.removeItem(caster, item.getUID());
 			} else {
-				item.enchantment.addMana(-MagicUtils.getMana(formula));				
+				enchantment.addMana(-MagicUtils.getMana(formula));				
 			}
 			
 			int area = formula.radius;
@@ -193,7 +198,7 @@ public class MagicHandler {
 				}
 			} else {
 				Collection<Creature> creatures = Engine.getAtlas().getCurrentZone().getCreatures(box);
-				if(box.contains(Engine.getPlayer().getBounds().getLocation())) {
+				if(box.contains(Engine.getPlayer().bounds.getLocation())) {
 					creatures.add(Engine.getPlayer());
 				}
 				for(Creature creature : creatures) {
@@ -214,19 +219,21 @@ public class MagicHandler {
 	 * @return	the result of the cast
 	 */
 	public static int cast(Creature caster, Item item) {
+		Enchantment enchantment = item.getComponent(Enchantment.class);
 		RSpell formula = null;
+		
 		if(item instanceof Item.Scroll) {
-			formula = ((Item.Scroll)item).enchantment.getSpell();
+			formula = enchantment.getSpell();
 		}
 
 		if(formula == null) {
 			return NONE;
-		} else if(!(item instanceof Item.Scroll) && MagicUtils.getMana(formula) > item.enchantment.getMana()) {
+		} else if(!(item instanceof Item.Scroll) && MagicUtils.getMana(formula) > enchantment.getMana()) {
 			return MANA;			
 		} else if(formula.range > 0) {
 			return RANGE;
 		} else {
-			item.enchantment.addMana(-MagicUtils.getMana(formula));
+			enchantment.addMana(-MagicUtils.getMana(formula));
 			if(item instanceof Item.Scroll) {
 				InventoryHandler.removeItem(caster, item.getUID());
 			}
@@ -341,9 +348,10 @@ public class MagicHandler {
 	 * @return
 	 */
 	public static int eat(Creature eater, Item.Food food) {
+		Enchantment enchantment = food.getComponent(Enchantment.class);
 		int check = Math.max(1, SkillHandler.check(eater, Skill.ALCHEMY)/10);
 		RSpell spell = new RSpell("", 0, Dice.roll(1, check, 0), 
-				food.enchantment.getSpell().effect.toString(), 1, Dice.roll(1, check, 0), "spell");
+				enchantment.getSpell().effect.toString(), 1, Dice.roll(1, check, 0), "spell");
 		return castSpell(eater, eater, spell);
 	}
 
@@ -355,7 +363,8 @@ public class MagicHandler {
 	 * @return
 	 */
 	public static int drink(Creature drinker, Item.Potion potion) {
-		RSpell spell = potion.enchantment.getSpell();
+		Enchantment enchantment = potion.getComponent(Enchantment.class);
+		RSpell spell = enchantment.getSpell();
 		InventoryHandler.removeItem(drinker, potion.getUID());
 		return castSpell(drinker, drinker, spell);
 	}

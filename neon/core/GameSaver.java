@@ -64,7 +64,7 @@ public class GameSaver {
 			dir.mkdir();
 		}
 		
-		// eerst alles vanuit temp naar save kopiëren, zodat savedoc zeker niet overschreven wordt
+		// eerst alles vanuit temp naar save kopiï¿½ren, zodat savedoc zeker niet overschreven wordt
 		Engine.getAtlas().getCache().commit();
 		Engine.getStore().getCache().commit();
 		Engine.getFileSystem().storeTemp(dir);
@@ -140,8 +140,8 @@ public class GameSaver {
 		PC.setAttribute("map", Integer.toString(atlas.getCurrentMap().getUID()));
 		int l = atlas.getCurrentZoneIndex();
 		PC.setAttribute("l", Integer.toString(l));
-		PC.setAttribute("x", String.valueOf(player.getBounds().x));
-		PC.setAttribute("y", String.valueOf(player.getBounds().y));
+		PC.setAttribute("x", String.valueOf(player.bounds.x));
+		PC.setAttribute("y", String.valueOf(player.bounds.y));
 		PC.setAttribute("sign", player.getSign());
 		
 		Element skills = new Element("skills");

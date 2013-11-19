@@ -19,6 +19,7 @@
 package neon.magic;
 
 import neon.entities.Creature;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Damage;
 
 public class DrainHandler implements EffectHandler {
@@ -47,7 +48,10 @@ public class DrainHandler implements EffectHandler {
 	public void repeatEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
 		switch(type) {
-		case HEALTH: target.health.heal(-spell.getMagnitude()); break;
+		case HEALTH: 
+			HealthComponent health = target.getComponent(HealthComponent.class);
+			health.heal(-spell.getMagnitude()); 
+			break;
 		case MANA: target.animus.addMana(-spell.getMagnitude()); break;
 		default: 
 			throw new IllegalArgumentException("The given spell does not have a drain effect."); 

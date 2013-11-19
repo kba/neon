@@ -167,7 +167,7 @@ public class MotionHandler {
 		if(actor.species.habitat == Habitat.WATER) {
 			return OK;
 		} else if(SkillHandler.check(actor, Skill.SWIMMING) > 20) {
-			actor.getBounds().setLocation(p.x, p.y);
+			actor.bounds.setLocation(p.x, p.y);
 			return OK;
 		} else {
 			return SWIM;
@@ -184,7 +184,7 @@ public class MotionHandler {
 		if(actor.species.habitat == Habitat.WATER) {
 			return HABITAT;
 		} if(SkillHandler.check(actor, Skill.CLIMBING) > 25) {
-			actor.getBounds().setLocation(p.x, p.y);
+			actor.bounds.setLocation(p.x, p.y);
 			return OK;
 		} else {
 			return CLIMB;
@@ -195,7 +195,7 @@ public class MotionHandler {
 		if(actor.species.habitat == Habitat.WATER) {
 			return HABITAT;
 		} else {
-			actor.getBounds().setLocation(p.x, p.y);
+			actor.bounds.setLocation(p.x, p.y);
 			return OK;
 		}
 	}

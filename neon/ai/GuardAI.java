@@ -20,6 +20,8 @@ package neon.ai;
 
 import neon.core.Engine;
 import neon.entities.Creature;
+import neon.entities.components.HealthComponent;
+import neon.entities.components.ShapeComponent;
 
 import java.awt.Point;
 
@@ -30,13 +32,17 @@ public class GuardAI extends AI {
 	public GuardAI(Creature creature, byte aggression, byte confidence, int range) {
 		super(creature, aggression, confidence);
 		this.range = range;
-		home = new Point(creature.getBounds().x, creature.getBounds().y);
+		ShapeComponent bounds = creature.getComponent(ShapeComponent.class);
+		home = new Point(bounds.x, bounds.y);
 	}
 
 	public void act() {
 		// TODO: niet alleen op player letten, maar ook op andere wezens in zicht
-		if(isHostile() && creature.bounds.getLocation().distance(Engine.getPlayer().bounds.getLocation()) < range){
-			if(100*creature.health.getHealth()/creature.health.getBaseHealth() < confidence/100) {	
+		ShapeComponent cBounds = creature.getComponent(ShapeComponent.class);
+		ShapeComponent pBounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+		if(isHostile() && cBounds.getLocation().distance(pBounds.getLocation()) < range){
+			HealthComponent health = creature.getComponent(HealthComponent.class);
+			if(100*health.getHealth()/health.getBaseHealth() < confidence/100) {	
 				// 80% kans om gewoon te vluchten, 20% kans om te healen; als geen heal spell, toch vluchten
 				if(Math.random() > 0.2 || !(cure() || heal())) {	
 					flee(Engine.getPlayer());

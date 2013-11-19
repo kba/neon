@@ -24,6 +24,7 @@ import neon.core.Engine;
 import neon.core.handlers.SkillHandler;
 import neon.entities.components.Lock;
 import neon.entities.components.PlayerRenderComponent;
+import neon.entities.components.RenderComponent;
 import neon.entities.property.Gender;
 import neon.entities.property.Skill;
 import neon.entities.property.Slot;
@@ -43,7 +44,7 @@ public class Player extends Hominid {
 
 	public Player(RCreature species, String name, Gender gender, Specialisation spec, String profession) {
 		super(species.id, 0, species); 
-		renderer = new PlayerRenderComponent(this);
+		components.putInstance(RenderComponent.class, new PlayerRenderComponent(this));
 		this.name = name;
 		this.gender = gender;
 		this.spec = spec;

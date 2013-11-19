@@ -19,6 +19,7 @@
 package neon.magic;
 
 import neon.entities.Creature;
+import neon.entities.components.HealthComponent;
 import neon.entities.property.Damage;
 
 public class LeechHandler implements EffectHandler {
@@ -49,8 +50,10 @@ public class LeechHandler implements EffectHandler {
 		Creature caster = (Creature)spell.getCaster();
 		switch(type) {
 		case HEALTH: 
-			target.health.heal(-spell.getMagnitude());
-			caster.health.heal(spell.getMagnitude());
+			HealthComponent tHealth = target.getComponent(HealthComponent.class);
+			HealthComponent cHealth = target.getComponent(HealthComponent.class);
+			tHealth.heal(-spell.getMagnitude());
+			cHealth.heal(spell.getMagnitude());
 			break;
 		case MANA: 
 			target.animus.addMana(-spell.getMagnitude()); 

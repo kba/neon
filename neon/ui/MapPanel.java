@@ -21,10 +21,10 @@ package neon.ui;
 import javax.swing.JComponent;
 import java.awt.*;
 import neon.core.Engine;
+import neon.entities.components.ShapeComponent;
 import neon.maps.Zone;
 import neon.maps.Region;
 import neon.ui.graphics.ZComparator;
-
 import java.util.*;
 
 /**
@@ -63,8 +63,9 @@ public class MapPanel extends JComponent {
 		drawTerrain(new ArrayList<Region>(zone.getRegions()), (Graphics2D)g);
 		g.setColor(Color.white);
 		try {
-			g.drawString("x", (int)(zoom*(Engine.getPlayer().getBounds().x + 0.5)), 
-					(int)(zoom*(Engine.getPlayer().getBounds().y + 0.9)));	
+			Rectangle bounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+			g.drawString("x", (int)(zoom*(bounds.x + 0.5)), 
+					(int)(zoom*(bounds.y + 0.9)));	
 		} catch(NullPointerException e) {}
 	}
 	
