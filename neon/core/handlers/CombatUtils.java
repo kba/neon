@@ -66,7 +66,7 @@ public class CombatUtils {
 	 * @return	the attack value
 	 */
 	protected static int getAV(Creature creature) {
-		Inventory inventory = creature.inventory;
+		Inventory inventory = creature.getInventoryComponent();
 		
 		int damage;
 		if(inventory.hasEquiped(Slot.WEAPON)) {
@@ -111,9 +111,9 @@ public class CombatUtils {
 	 * @return	a block skill check
 	 */
 	protected static int block(Creature creature) {
-		if(creature.inventory.hasEquiped(Slot.SHIELD)) {
+		if(creature.getInventoryComponent().hasEquiped(Slot.SHIELD)) {
 			float mod = 1f;
-			Armor armor = (Armor)Engine.getStore().getEntity(creature.inventory.get(Slot.SHIELD));
+			Armor armor = (Armor)Engine.getStore().getEntity(creature.getInventoryComponent().get(Slot.SHIELD));
 			switch(((RClothing)(armor.resource)).kind) {
 			case LIGHT: mod = creature.getSkill(Skill.LIGHT_ARMOR)/20f; break;
 			case MEDIUM: mod = creature.getSkill(Skill.MEDIUM_ARMOR)/20f; break;
@@ -145,8 +145,8 @@ public class CombatUtils {
 	 */
 	public static int getDV(Creature creature) {
 		float AR = creature.species.dv;
-		for(Slot s : creature.inventory.slots()) {
-			Entity item = Engine.getStore().getEntity(creature.inventory.get(s));
+		for(Slot s : creature.getInventoryComponent().slots()) {
+			Entity item = Engine.getStore().getEntity(creature.getInventoryComponent().get(s));
 			if(item instanceof Armor) {
 				Armor c = (Armor)item;
 				int mod = 0;
@@ -167,7 +167,7 @@ public class CombatUtils {
 	 * @return	the type of the currently equiped weapon
 	 */
 	public static WeaponType getWeaponType(Creature creature) {
-		Inventory inventory = creature.inventory;
+		Inventory inventory = creature.getInventoryComponent();
 		if(inventory.hasEquiped(Slot.WEAPON)) {
 			Weapon weapon = (Weapon)Engine.getStore().getEntity(inventory.get(Slot.WEAPON));
 			return (weapon.getWeaponType());

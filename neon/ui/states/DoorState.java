@@ -22,14 +22,15 @@ import neon.core.*;
 import neon.entities.Creature;
 import neon.entities.Door;
 import neon.entities.Player;
-import java.awt.event.*;
-import java.util.EventObject;
-import javax.swing.Popup;
 import neon.resources.RItem;
 import neon.ui.GamePanel;
 import neon.ui.UserInterface;
 import neon.util.fsm.*;
 import net.engio.mbassy.bus.MBassador;
+import java.awt.Rectangle;
+import java.awt.event.*;
+import java.util.EventObject;
+import javax.swing.Popup;
 
 public class DoorState extends State implements KeyListener {
 	private Door door;
@@ -49,8 +50,11 @@ public class DoorState extends State implements KeyListener {
 		panel = (GamePanel)getVariable("panel");
 		panel.addKeyListener(this);
 		door = (Door)e.getParameter("door");
-			
-		if(Engine.getPlayer().bounds.getLocation().distance(door.bounds.getLocation()) < 2) {
+		
+		Rectangle pBounds = Engine.getPlayer().getShapeComponent();
+		Rectangle dBounds = door.getShapeComponent();
+		
+		if(pBounds.getLocation().distance(dBounds.getLocation()) < 2) {
 			if(door.lock.isClosed()) {
 				popup = ui.showPopup("1) open door 2) lock door 0) cancel");
 			} else if(door.lock.isLocked()) {
@@ -129,7 +133,7 @@ public class DoorState extends State implements KeyListener {
 	}
 	
 	private boolean hasItem(Creature creature, RItem item) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			if(Engine.getStore().getEntity(uid).getID().equals(item.id)) {
 				return true;
 			}

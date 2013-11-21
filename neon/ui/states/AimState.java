@@ -31,7 +31,6 @@ import neon.entities.Door;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.Weapon;
-import neon.entities.components.ShapeComponent;
 import neon.entities.property.Slot;
 import neon.maps.Zone;
 import neon.resources.CClient;
@@ -74,7 +73,8 @@ public class AimState extends State implements KeyListener {
 	public void enter(TransitionEvent e) {
 		panel = (GamePanel)getVariable("panel");
 		player = Engine.getPlayer();
-		target.setLocation(player.bounds.getLocation());
+		Rectangle bounds = player.getShapeComponent();
+		target.setLocation(bounds.getLocation());
 		panel.print("Use arrow keys to move cursor. Press L to cancel, " +
 				"F to shoot, T to talk and G to cast a spell.");
 		panel.addKeyListener(this);
@@ -133,23 +133,23 @@ public class AimState extends State implements KeyListener {
 	}
 
 	private void shoot() {
-		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		Rectangle bounds = player.getShapeComponent();
 		if(target.distance(bounds.x, bounds.y) < 5) {
 			Creature victim = Engine.getAtlas().getCurrentZone().getCreature(target);
 			if(victim != null) {
-				Weapon ammo = (Weapon)Engine.getStore().getEntity(player.inventory.get(Slot.AMMO));
-				if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.THROWN) {
+				Weapon ammo = (Weapon)Engine.getStore().getEntity(player.getInventoryComponent().get(Slot.AMMO));
+				if(player.getInventoryComponent().hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.THROWN) {
 					shoot(ammo, victim);
 					bus.publishAsync(new CombatEvent(CombatEvent.FLING, player, victim));
 				} else if(CombatUtils.getWeaponType(player) == WeaponType.BOW) {
-					if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.ARROW) {
+					if(player.getInventoryComponent().hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.ARROW) {
 						shoot(ammo, victim);
 						bus.publishAsync(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
 						ui.showMessage("No arrows equiped!", 1);
 					}
 				} else if(CombatUtils.getWeaponType(player) == WeaponType.CROSSBOW) {
-					if(player.inventory.hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.BOLT) {
+					if(player.getInventoryComponent().hasEquiped(Slot.AMMO) && ammo.getWeaponType() == WeaponType.BOLT) {
 						bus.publishAsync(new CombatEvent(CombatEvent.SHOOT, player, victim));
 					} else {
 						ui.showMessage("No bolts equiped!", 1);
@@ -168,9 +168,9 @@ public class AimState extends State implements KeyListener {
 	
 	private void shoot(Item projectile, Creature victim) {
 		// get bounds of all involved entities
-		Rectangle prBounds = projectile.getComponent(ShapeComponent.class);
-		Rectangle vBounds = victim.getComponent(ShapeComponent.class);
-		Rectangle plBounds = projectile.getComponent(ShapeComponent.class);
+		Rectangle prBounds = projectile.getShapeComponent();
+		Rectangle vBounds = victim.getShapeComponent();
+		Rectangle plBounds = player.getShapeComponent();
 
 		// shoot
 		prBounds.setLocation(vBounds.x, vBounds.y);
@@ -180,7 +180,7 @@ public class AimState extends State implements KeyListener {
 	}
 	
 	private void talk() {
-		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		Rectangle bounds = player.getShapeComponent();
 		if(target.distance(bounds.getLocation()) < 2) {
 			Creature creature = Engine.getAtlas().getCurrentZone().getCreature(target);
 			if(creature != null) {
@@ -201,10 +201,10 @@ public class AimState extends State implements KeyListener {
 	private void cast() {
 		int out = MagicHandler.NULL;
 
-		if(player.animus.getSpell() != null) {
+		if(player.getMagicComponent().getSpell() != null) {
 			out = MagicHandler.cast(player, target);
-		} else if(player.inventory.hasEquiped(Slot.MAGIC)) {
-			Item item = (Item)Engine.getStore().getEntity(player.inventory.get(Slot.MAGIC));
+		} else if(player.getInventoryComponent().hasEquiped(Slot.MAGIC)) {
+			Item item = (Item)Engine.getStore().getEntity(player.getInventoryComponent().get(Slot.MAGIC));
 			out = MagicHandler.cast(player, target, item);
 		}
 
@@ -224,7 +224,7 @@ public class AimState extends State implements KeyListener {
 		cursor.setY(target.y);
 		panel.repaint();
 		// beschrijving van waar naar gekeken wordt
-		Rectangle bounds = player.getComponent(ShapeComponent.class);
+		Rectangle bounds = player.getShapeComponent();
 		if(target.distance(bounds.getLocation()) < 20) {
 			Zone zone = Engine.getAtlas().getCurrentZone();
 			String items = "";

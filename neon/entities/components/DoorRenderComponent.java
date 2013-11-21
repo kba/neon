@@ -38,7 +38,7 @@ public class DoorRenderComponent extends ItemRenderComponent {
 
 	@Override
 	public void paint(Graphics2D graphics, float zoom, boolean isSelected) {
-		Rectangle bounds = item.getComponent(ShapeComponent.class);
+		Rectangle bounds = item.getShapeComponent();
 		Rectangle2D rect = new Rectangle2D.Float(bounds.x*zoom, bounds.y*zoom, zoom, zoom);
 		String text = item.resource.text;
 		Lock lock = ((Door)item).lock;

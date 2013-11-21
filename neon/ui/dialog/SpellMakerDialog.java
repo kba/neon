@@ -132,7 +132,7 @@ public class SpellMakerDialog {
 	private class OkAction extends AbstractAction {
 		public void actionPerformed(ActionEvent e) {
 			if(isValid()) {
-				player.animus.addSpell(createSpell());
+				player.getMagicComponent().addSpell(createSpell());
 				frame.dispose();
 			} else {
 				ui.showMessage("Please fill in all required fields.", 2);

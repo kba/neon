@@ -18,11 +18,11 @@
 
 package neon.entities.components;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class ScriptComponent implements Component {
 	private final long uid;
-	private ArrayList<String> scripts = new ArrayList<>();
+//	private ArrayList<String> scripts = new ArrayList<>();
 	
 	public ScriptComponent(long uid) {
 		this.uid = uid;

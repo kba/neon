@@ -62,7 +62,7 @@ public class InventoryCellRenderer extends JLabel implements ListCellRenderer<En
     		text = text + " (" + data.get(text) + ")";
     	}
     	setText(text);
-        if(Engine.getPlayer().inventory.hasEquiped(value.getUID())) {
+        if(Engine.getPlayer().getInventoryComponent().hasEquiped(value.getUID())) {
 			setFont(new Font(font.getName(), Font.BOLD, font.getSize()));
         } else {
         	setFont(font);

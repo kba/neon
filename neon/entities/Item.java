@@ -18,6 +18,7 @@
 
 package neon.entities;
 
+import neon.entities.components.Enchantment;
 import neon.entities.components.ItemRenderComponent;
 import neon.entities.components.RenderComponent;
 import neon.resources.RItem;
@@ -30,6 +31,14 @@ public class Item extends Entity {
 		super(resource.id, uid);
 		this.resource = resource;
 		components.putInstance(RenderComponent.class, new ItemRenderComponent(this));
+	}
+	
+	public Enchantment getMagicComponent() {
+		return components.getInstance(Enchantment.class);
+	}
+	
+	public Enchantment setMagicComponent(Enchantment enchantment) {
+		return components.putInstance(Enchantment.class, enchantment);
 	}
 	
 	@Override

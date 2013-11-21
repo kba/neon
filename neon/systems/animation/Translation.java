@@ -22,7 +22,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import javax.swing.JComponent;
 import neon.entities.Entity;
-import neon.entities.components.ShapeComponent;
 
 public class Translation implements Runnable {
 	private JComponent component;
@@ -50,7 +49,7 @@ public class Translation implements Runnable {
 	}
 	
 	public void run() {
-		Rectangle bounds = entity.getComponent(ShapeComponent.class);
+		Rectangle bounds = entity.getShapeComponent();
 		bounds.setLocation(x1, y1);
 		int distance = (int)Point.distance(x1, y1, x2, y2);
 		for(int i = 0; i < distance + 1; i++) {

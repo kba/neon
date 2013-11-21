@@ -151,7 +151,7 @@ public class PathFinder {
 	}
 	
 	private static boolean hasItem(Creature creature, RItem item) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			if(Engine.getStore().getEntity(uid).getID().equals(item.id)) {
 				return true;
 			}

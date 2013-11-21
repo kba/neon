@@ -42,24 +42,24 @@ public class DrainStatHandler implements EffectHandler {
 	public void addEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
 		switch(stat) {
-		case "str": target.addStr(-(int)spell.getMagnitude()); break;
-		case "dex": target.addDex(-(int)spell.getMagnitude()); break;
-		case "con": target.addCon(-(int)spell.getMagnitude()); break;
-		case "cha": target.addCha(-(int)spell.getMagnitude()); break;
-		case "wis": target.addInt(-(int)spell.getMagnitude()); break;
-		case "int": target.addWis(-(int)spell.getMagnitude()); break;
+		case "str": target.getStatsComponent().addStr(-(int)spell.getMagnitude()); break;
+		case "dex": target.getStatsComponent().addDex(-(int)spell.getMagnitude()); break;
+		case "con": target.getStatsComponent().addCon(-(int)spell.getMagnitude()); break;
+		case "cha": target.getStatsComponent().addCha(-(int)spell.getMagnitude()); break;
+		case "wis": target.getStatsComponent().addInt(-(int)spell.getMagnitude()); break;
+		case "int": target.getStatsComponent().addWis(-(int)spell.getMagnitude()); break;
 		}
 	}
 
 	public void removeEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
 		switch(stat) {
-		case "str": target.addStr((int)spell.getMagnitude()); break;
-		case "dex": target.addDex((int)spell.getMagnitude()); break;
-		case "con": target.addCon((int)spell.getMagnitude()); break;
-		case "cha": target.addCha((int)spell.getMagnitude()); break;
-		case "wis": target.addInt((int)spell.getMagnitude()); break;
-		case "int": target.addWis((int)spell.getMagnitude()); break;
+		case "str": target.getStatsComponent().addStr((int)spell.getMagnitude()); break;
+		case "dex": target.getStatsComponent().addDex((int)spell.getMagnitude()); break;
+		case "con": target.getStatsComponent().addCon((int)spell.getMagnitude()); break;
+		case "cha": target.getStatsComponent().addCha((int)spell.getMagnitude()); break;
+		case "wis": target.getStatsComponent().addInt((int)spell.getMagnitude()); break;
+		case "int": target.getStatsComponent().addWis((int)spell.getMagnitude()); break;
 		}
 	}
 

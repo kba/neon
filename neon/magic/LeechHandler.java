@@ -50,14 +50,14 @@ public class LeechHandler implements EffectHandler {
 		Creature caster = (Creature)spell.getCaster();
 		switch(type) {
 		case HEALTH: 
-			HealthComponent tHealth = target.getComponent(HealthComponent.class);
-			HealthComponent cHealth = target.getComponent(HealthComponent.class);
+			HealthComponent tHealth = target.getHealthComponent();
+			HealthComponent cHealth = caster.getHealthComponent();
 			tHealth.heal(-spell.getMagnitude());
 			cHealth.heal(spell.getMagnitude());
 			break;
 		case MANA: 
-			target.animus.addMana(-spell.getMagnitude()); 
-			caster.animus.addMana(spell.getMagnitude()); 
+			target.getMagicComponent().addMana(-spell.getMagnitude()); 
+			caster.getMagicComponent().addMana(spell.getMagnitude()); 
 			break;
 		default:
 			throw new IllegalArgumentException("The given spell does not have a leech effect.");

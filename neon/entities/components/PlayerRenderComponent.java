@@ -31,7 +31,7 @@ public class PlayerRenderComponent extends CreatureRenderComponent {
 	@Override
 	public void paint(Graphics2D graphics, float zoomf, boolean isSelected) {
 		super.paint(graphics, zoomf, isSelected);
-		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		Rectangle bounds = creature.getShapeComponent();
 		int x = bounds.x;
 		int y = bounds.y;
 		int zoom = (int)zoomf;

@@ -18,12 +18,12 @@
 
 package neon.core;
 
+import java.awt.Rectangle;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-
 import neon.core.event.LoadEvent;
 import neon.core.event.MagicTask;
 import neon.core.event.ScriptAction;
@@ -34,6 +34,7 @@ import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.UIDStore;
+import neon.entities.components.StatsComponent;
 import neon.entities.property.Ability;
 import neon.entities.property.Feat;
 import neon.entities.property.Gender;
@@ -52,6 +53,7 @@ import neon.systems.files.XMLTranslator;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.References;
+
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
@@ -118,11 +120,12 @@ public class GameLoader {
 		}
 		// starting spells
 		for(String i : game.getStartingSpells()) {
-			player.animus.addSpell(SpellFactory.getSpell(i));
+			player.getMagicComponent().addSpell(SpellFactory.getSpell(i));
 		}
 		
 		// player in positie brengen
-		player.bounds.setLocation(game.getStartPosition().x, game.getStartPosition().y);
+		Rectangle bounds = player.getShapeComponent();
+		bounds.setLocation(game.getStartPosition().x, game.getStartPosition().y);
 		Map map = Engine.getAtlas().getMap(Engine.getStore().getMapUID(game.getStartMap()));
 		Engine.getScriptEngine().put("map", map);
 		Engine.getAtlas().setMap(map);
@@ -132,7 +135,7 @@ public class GameLoader {
 	private void setSign(Player player, RSign sign) {
 		player.setSign(sign.id);
 		for(String power : sign.powers) {
-			player.animus.addSpell(SpellFactory.getSpell(power));
+			player.getMagicComponent().addSpell(SpellFactory.getSpell(power));
 		}
 		for(Ability ability : sign.abilities.keySet()) {
 			player.addAbility(ability, sign.abilities.get(ability));
@@ -233,7 +236,8 @@ public class GameLoader {
 				Gender.valueOf(playerData.getAttributeValue("gender").toUpperCase()), Player.Specialisation.valueOf(playerData.getAttributeValue("spec")),
 				playerData.getAttributeValue("prof"));
 		Engine.startGame(new Game(player, Engine.getFileSystem()));
-		player.bounds.setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
+		Rectangle bounds = player.getShapeComponent();
+		bounds.setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
 		player.setSign(playerData.getAttributeValue("sign"));
 		player.species.text = "@";
 		
@@ -244,12 +248,13 @@ public class GameLoader {
 		Engine.getAtlas().setCurrentZone(level);
 		
 		// stats
-		player.addStr(Integer.parseInt(playerData.getChild("stats").getAttributeValue("str")) - player.getStr());
-		player.addCon(Integer.parseInt(playerData.getChild("stats").getAttributeValue("con")) - player.getCon());
-		player.addDex(Integer.parseInt(playerData.getChild("stats").getAttributeValue("dex")) - player.getDex());
-		player.addInt(Integer.parseInt(playerData.getChild("stats").getAttributeValue("int")) - player.getInt());
-		player.addWis(Integer.parseInt(playerData.getChild("stats").getAttributeValue("wis")) - player.getWis());
-		player.addCha(Integer.parseInt(playerData.getChild("stats").getAttributeValue("cha")) - player.getCha());
+		StatsComponent stats = player.getStatsComponent();
+		stats.addStr(Integer.parseInt(playerData.getChild("stats").getAttributeValue("str")) - stats.getStr());
+		stats.addCon(Integer.parseInt(playerData.getChild("stats").getAttributeValue("con")) - stats.getCon());
+		stats.addDex(Integer.parseInt(playerData.getChild("stats").getAttributeValue("dex")) - stats.getDex());
+		stats.addInt(Integer.parseInt(playerData.getChild("stats").getAttributeValue("int")) - stats.getInt());
+		stats.addWis(Integer.parseInt(playerData.getChild("stats").getAttributeValue("wis")) - stats.getWis());
+		stats.addCha(Integer.parseInt(playerData.getChild("stats").getAttributeValue("cha")) - stats.getCha());
 		
 		// skills
 		for(Attribute skill : (List<Attribute>)playerData.getChild("skills").getAttributes()) {
@@ -259,12 +264,12 @@ public class GameLoader {
 		// items
 		for(Element e : playerData.getChildren("item")) {
 			long uid = Long.parseLong(e.getAttributeValue("uid"));
-			player.inventory.addItem(uid);
+			player.getInventoryComponent().addItem(uid);
 		}
 		
 		// spells
 		for(Element e : playerData.getChildren("spell")) {
-			player.animus.addSpell(SpellFactory.getSpell(e.getText()));
+			player.getMagicComponent().addSpell(SpellFactory.getSpell(e.getText()));
 		}
 		
 		// feats

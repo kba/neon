@@ -163,7 +163,7 @@ public class Animus implements Component{
 	 * @return this creature's mana
 	 */
 	public int getMana() {
-		return (int)(creature.getInt() * creature.species.mana + baseManaMod + manaMod);
+		return (int)(creature.getStatsComponent().getInt() * creature.species.mana + baseManaMod + manaMod);
 	}
 	
 	/**

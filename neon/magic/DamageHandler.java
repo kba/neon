@@ -45,10 +45,10 @@ public class DamageHandler implements EffectHandler {
 		Creature target = (Creature)spell.getTarget();		
 		switch(type) {
 		case MANA: 
-			target.animus.addMana(-spell.getMagnitude()); 
+			target.getMagicComponent().addMana(-spell.getMagnitude()); 
 			break;
 		default:
-			HealthComponent health = target.getComponent(HealthComponent.class);
+			HealthComponent health = target.getHealthComponent();
 			health.heal(-spell.getMagnitude()); 
 			break;
 		}
@@ -60,7 +60,7 @@ public class DamageHandler implements EffectHandler {
 
 	public void repeatEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
-		HealthComponent health = target.getComponent(HealthComponent.class);
+		HealthComponent health = target.getHealthComponent();
 		switch(type) {	
 		case FROST: health.heal(-spell.getMagnitude()); break;
 		case SHOCK: health.heal(-spell.getMagnitude()); break;

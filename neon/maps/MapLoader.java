@@ -211,7 +211,7 @@ public class MapLoader {
 		if(door.getAttribute("spell") != null) {
 			String spell = door.getAttributeValue("spell");
 			RSpell.Enchantment enchantment = (RSpell.Enchantment)Engine.getResources().getResource(spell, "magic");
-			d.setComponent(Enchantment.class, new Enchantment(enchantment, 0, d.getUID()));
+			d.setMagicComponent(new Enchantment(enchantment, 0, d.getUID()));
 		}
 		
 		// bestemming van de deur
@@ -277,7 +277,7 @@ public class MapLoader {
 		if(container.getAttribute("spell") != null) {
 			String spell = container.getAttributeValue("spell");
 			RSpell.Enchantment enchantment = (RSpell.Enchantment)Engine.getResources().getResource(spell, "magic");
-			cont.setComponent(Enchantment.class, new Enchantment(enchantment, 0, cont.getUID()));
+			cont.setMagicComponent(new Enchantment(enchantment, 0, cont.getUID()));
 		}
 		
 		if(!container.getChildren("item").isEmpty()) {	// indien items in map file

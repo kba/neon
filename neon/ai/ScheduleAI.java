@@ -19,7 +19,6 @@
 package neon.ai;
 
 import java.awt.Point;
-
 import neon.core.Engine;
 import neon.entities.Creature;
 import neon.entities.components.HealthComponent;
@@ -37,7 +36,7 @@ public class ScheduleAI extends AI {
 
 	public void act() { 
 		if(isHostile() && sees(Engine.getPlayer())){
-			HealthComponent health = creature.getComponent(HealthComponent.class);
+			HealthComponent health = creature.getHealthComponent();
 			if(100*health.getHealth()/health.getBaseHealth() < confidence) {	
 				// 80% kans om gewoon te vluchten, 20% kans om te healen; als geen heal spell, toch vluchten
 				if(Math.random() > 0.2 || !(cure() || heal())) {	
@@ -47,7 +46,7 @@ public class ScheduleAI extends AI {
 				hunt(Engine.getPlayer());
 			} 
 		} else {
-			ShapeComponent bounds = creature.getComponent(ShapeComponent.class);
+			ShapeComponent bounds = creature.getShapeComponent();
 			if(bounds.getLocation().equals(schedule[current])) {
 				current++;
 				if(current >= schedule.length) {

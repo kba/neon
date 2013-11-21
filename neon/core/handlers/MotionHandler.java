@@ -19,7 +19,9 @@
 package neon.core.handlers;
 
 import neon.maps.*;
+
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Collection;
 import javax.swing.SwingConstants;
 import neon.core.Engine;
@@ -84,7 +86,8 @@ public class MotionHandler {
 			
 			walk(creature, door.portal.getDestPos());
 			// kijken of er op de bestemming een deur staat, zo ja, deze deur unlocken en openen
-			for(long uid : Engine.getAtlas().getCurrentZone().getItems(creature.bounds)) {
+			Rectangle bounds = creature.getShapeComponent();
+			for(long uid : Engine.getAtlas().getCurrentZone().getItems(bounds)) {
 				Entity i = Engine.getStore().getEntity(uid);
 				if(i instanceof Door) {
 					((Door)i).lock.open();
@@ -163,11 +166,12 @@ public class MotionHandler {
 		return move(creature, new Point(x, y));
 	}
 	
-	private static byte swim(Creature actor, Point p) {
-		if(actor.species.habitat == Habitat.WATER) {
+	private static byte swim(Creature swimmer, Point p) {
+		if(swimmer.species.habitat == Habitat.WATER) {
 			return OK;
-		} else if(SkillHandler.check(actor, Skill.SWIMMING) > 20) {
-			actor.bounds.setLocation(p.x, p.y);
+		} else if(SkillHandler.check(swimmer, Skill.SWIMMING) > 20) {
+			Rectangle bounds = swimmer.getShapeComponent();
+			bounds.setLocation(p.x, p.y);
 			return OK;
 		} else {
 			return SWIM;
@@ -180,22 +184,24 @@ public class MotionHandler {
 	 * 
 	 * @param tile
 	 */
-	private static byte climb(Creature actor, Point p) {
-		if(actor.species.habitat == Habitat.WATER) {
+	private static byte climb(Creature climber, Point p) {
+		if(climber.species.habitat == Habitat.WATER) {
 			return HABITAT;
-		} if(SkillHandler.check(actor, Skill.CLIMBING) > 25) {
-			actor.bounds.setLocation(p.x, p.y);
+		} if(SkillHandler.check(climber, Skill.CLIMBING) > 25) {
+			Rectangle bounds = climber.getShapeComponent();
+			bounds.setLocation(p.x, p.y);
 			return OK;
 		} else {
 			return CLIMB;
 		}
 	}
 	
-	private static byte walk(Creature actor, Point p) {
-		if(actor.species.habitat == Habitat.WATER) {
+	private static byte walk(Creature walker, Point p) {
+		Rectangle bounds = walker.getShapeComponent();
+		if(walker.species.habitat == Habitat.WATER) {
 			return HABITAT;
 		} else {
-			actor.bounds.setLocation(p.x, p.y);
+			bounds.setLocation(p.x, p.y);
 			return OK;
 		}
 	}

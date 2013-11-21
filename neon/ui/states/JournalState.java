@@ -25,8 +25,10 @@ import javax.swing.*;
 import javax.swing.border.*;
 import neon.core.*;
 import neon.core.handlers.CombatUtils;
+import neon.core.handlers.InventoryHandler;
 import neon.entities.Player;
 import neon.entities.components.HealthComponent;
+import neon.entities.components.StatsComponent;
 import neon.entities.property.*;
 import neon.resources.RSpell;
 import neon.ui.UserInterface;
@@ -167,14 +169,14 @@ public class JournalState extends State implements FocusListener {
 	
 	private void initSpells() {
 		ArrayList<RSpell> formulae = new ArrayList<RSpell>();
-		formulae.addAll(Engine.getPlayer().animus.getSpells());
-		formulae.addAll(Engine.getPlayer().animus.getPowers());
+		formulae.addAll(Engine.getPlayer().getMagicComponent().getSpells());
+		formulae.addAll(Engine.getPlayer().getMagicComponent().getPowers());
 		sList.setListData(formulae.toArray(new RSpell[0]));
 	}
 	
 	private void initStats() {
 		Player player = Engine.getPlayer();
-		HealthComponent health = player.getComponent(HealthComponent.class);
+		HealthComponent health = player.getHealthComponent();
 
 		stuff.removeAll();
 		skills.removeAll();
@@ -182,23 +184,24 @@ public class JournalState extends State implements FocusListener {
 		traits.removeAll();
 		abilities.removeAll();
 		
+		StatsComponent stats = player.getStatsComponent();
 		stuff.add(new JLabel("Name: " + player.getName()));
 		stuff.add(new JLabel("Race: " + player.species.id));
 		stuff.add(new JLabel("Specialisation: " + player.getSpecialisation()));
-		stuff.add(new JLabel("Strength: " + player.getStr()));
-		stuff.add(new JLabel("Constitution: " + player.getCon()));
-		stuff.add(new JLabel("Dexterity: " + player.getDex()));
-		stuff.add(new JLabel("Intelligence: " + player.getInt()));
-		stuff.add(new JLabel("Charisma: " + player.getCha()));
-		stuff.add(new JLabel("Wisdom: " + player.getWis()));
+		stuff.add(new JLabel("Strength: " + stats.getStr()));
+		stuff.add(new JLabel("Constitution: " + stats.getCon()));
+		stuff.add(new JLabel("Dexterity: " + stats.getDex()));
+		stuff.add(new JLabel("Intelligence: " + stats.getInt()));
+		stuff.add(new JLabel("Charisma: " + stats.getCha()));
+		stuff.add(new JLabel("Wisdom: " + stats.getWis()));
 		stuff.add(new JLabel("Health: " + health.getHealth() + "/" + health.getBaseHealth()));
-		stuff.add(new JLabel("Mana: " + player.animus.getMana() + "/" + player.species.mana*player.species.iq));
+		stuff.add(new JLabel("Mana: " + player.getMagicComponent().getMana() + "/" + player.species.mana*player.species.iq));
 		stuff.add(new JLabel("Size: " + player.species.size));
 		stuff.add(new JLabel("Gender: " + (player.getGender().toString().toLowerCase())));
-		int light = player.getStr()*3;
-		int medium = player.getStr()*6;
-		int heavy = player.getStr()*9;
-		stuff.add(new JLabel("Encumbrance: " + player.getWeight() + " (of " + light + "/" + medium + "/" + heavy + ") kg"));
+		int light = stats.getStr()*3;
+		int medium = stats.getStr()*6;
+		int heavy = stats.getStr()*9;
+		stuff.add(new JLabel("Encumbrance: " + InventoryHandler.getWeight(player) + " (of " + light + "/" + medium + "/" + heavy + ") kg"));
 		stuff.add(new JLabel("Defense value: " + CombatUtils.getDV(player)));
 		stuff.add(new JLabel("Attack value: " + player.getAVString()));
 		
@@ -277,7 +280,7 @@ public class JournalState extends State implements FocusListener {
 				}
 				break;
 			case "equip":
-				Engine.getPlayer().animus.equipSpell((RSpell)sList.getSelectedValue());
+				Engine.getPlayer().getMagicComponent().equipSpell((RSpell)sList.getSelectedValue());
 				initSpells();
 				break;
 			case "quests":
@@ -324,7 +327,7 @@ public class JournalState extends State implements FocusListener {
 		 */
 		public Component getListCellRendererComponent(JList<? extends RSpell> list, RSpell spell, int index, boolean isSelected, boolean cellHasFocus) {
 			setText(spell.name != null ? spell.name : spell.id);
-	        if(Engine.getPlayer().animus.getSpell() == spell) {
+	        if(Engine.getPlayer().getMagicComponent().getSpell() == spell) {
 				setFont(new Font(getFont().getName(), Font.BOLD, getFont().getSize()));
 	        } else {
 	        	setFont(font);

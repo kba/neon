@@ -19,9 +19,9 @@
 package neon.entities;
 
 import java.util.EnumMap;
-
 import neon.core.Engine;
 import neon.core.handlers.SkillHandler;
+import neon.entities.components.Inventory;
 import neon.entities.components.Lock;
 import neon.entities.components.PlayerRenderComponent;
 import neon.entities.components.RenderComponent;
@@ -81,6 +81,7 @@ public class Player extends Hominid {
 	}
 	
 	public String getAVString() {
+		Inventory inventory = getInventoryComponent();
 		String damage;
 		
 		if(inventory.hasEquiped(Slot.WEAPON)) {

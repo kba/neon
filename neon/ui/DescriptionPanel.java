@@ -35,7 +35,6 @@ import neon.entities.Entity;
 import neon.entities.Item;
 import neon.entities.Weapon;
 import neon.entities.components.Enchantment;
-import neon.entities.components.RenderComponent;
 import neon.entities.components.ShapeComponent;
 import neon.resources.RClothing;
 import neon.resources.RSpell;
@@ -71,9 +70,9 @@ public class DescriptionPanel extends JPanel {
 		if(entity != null) {
 			BufferedImage image = new BufferedImage(50, 60, BufferedImage.TYPE_INT_RGB);
 			Graphics2D buffer = image.createGraphics();
-			ShapeComponent bounds = entity.getComponent(ShapeComponent.class);
+			ShapeComponent bounds = entity.getShapeComponent();
 			buffer.translate(-bounds.x * 50, -bounds.y * 50);
-			entity.getComponent(RenderComponent.class).paint(buffer, 50, false);
+			entity.getRenderComponent().paint(buffer, 50, false);
 			label.setIcon(new ImageIcon(image));
 			label.setText(entity.toString());
 			add(label, BorderLayout.PAGE_START);
@@ -92,7 +91,7 @@ public class DescriptionPanel extends JPanel {
 					properties.add(new JLabel("  Weight: " + item.resource.weight));
 				}
 				
-				Enchantment enchantment = item.getComponent(Enchantment.class);
+				Enchantment enchantment = item.getMagicComponent();
 				if(enchantment != null) {
 					String def = item instanceof Item.Food ? "  Effect: " : "  Enchantment: ";
 					RSpell spell = enchantment.getSpell();

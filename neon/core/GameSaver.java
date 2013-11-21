@@ -18,6 +18,7 @@
 
 package neon.core;
 
+import java.awt.Rectangle;
 import java.io.File;
 import neon.core.event.TaskQueue;
 import neon.core.event.MagicTask;
@@ -29,8 +30,8 @@ import neon.magic.Spell;
 import neon.maps.Atlas;
 import neon.resources.RSpell;
 import neon.systems.files.XMLTranslator;
-import com.google.common.collect.Multimap;
 import neon.util.fsm.Action;
+import com.google.common.collect.Multimap;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -140,8 +141,9 @@ public class GameSaver {
 		PC.setAttribute("map", Integer.toString(atlas.getCurrentMap().getUID()));
 		int l = atlas.getCurrentZoneIndex();
 		PC.setAttribute("l", Integer.toString(l));
-		PC.setAttribute("x", String.valueOf(player.bounds.x));
-		PC.setAttribute("y", String.valueOf(player.bounds.y));
+		Rectangle bounds = player.getShapeComponent();
+		PC.setAttribute("x", String.valueOf(bounds.x));
+		PC.setAttribute("y", String.valueOf(bounds.y));
 		PC.setAttribute("sign", player.getSign());
 		
 		Element skills = new Element("skills");
@@ -151,31 +153,31 @@ public class GameSaver {
 		PC.addContent(skills);
 		
 		Element stats = new Element("stats");
-		stats.setAttribute("str", String.valueOf(player.getStr()));
-		stats.setAttribute("con", String.valueOf(player.getCon()));
-		stats.setAttribute("dex", String.valueOf(player.getDex()));
-		stats.setAttribute("int", String.valueOf(player.getInt()));
-		stats.setAttribute("wis", String.valueOf(player.getWis()));
-		stats.setAttribute("cha", String.valueOf(player.getCha()));
+		stats.setAttribute("str", String.valueOf(player.getStatsComponent().getStr()));
+		stats.setAttribute("con", String.valueOf(player.getStatsComponent().getCon()));
+		stats.setAttribute("dex", String.valueOf(player.getStatsComponent().getDex()));
+		stats.setAttribute("int", String.valueOf(player.getStatsComponent().getInt()));
+		stats.setAttribute("wis", String.valueOf(player.getStatsComponent().getWis()));
+		stats.setAttribute("cha", String.valueOf(player.getStatsComponent().getCha()));
 		PC.addContent(stats);
 		
 		Element money = new Element("money");
 		money.setText(String.valueOf(player.getMoney()));
 		PC.addContent(money);
 		
-		for(long uid : player.inventory) {
+		for(long uid : player.getInventoryComponent()) {
 			Element item = new Element("item");
 			item.setAttribute("uid", Long.toString(uid));
 			PC.addContent(item);
 		}
 		
-		for(RSpell s : player.animus.getSpells()) {
+		for(RSpell s : player.getMagicComponent().getSpells()) {
 			Element spell = new Element("spell");
 			spell.setText(s.id);
 			PC.addContent(spell);
 		}
 		
-		for(RSpell p : player.animus.getPowers()) {
+		for(RSpell p : player.getMagicComponent().getPowers()) {
 			Element spell = new Element("spell");
 			spell.setText(p.id);
 			PC.addContent(spell);

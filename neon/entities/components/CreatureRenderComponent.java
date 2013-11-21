@@ -21,6 +21,7 @@ package neon.entities.components;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+
 import neon.entities.Creature;
 import neon.entities.property.Condition;
 import neon.resources.RCreature;
@@ -44,7 +45,7 @@ public class CreatureRenderComponent extends RenderComponent {
 	@Override
 	public void paint(Graphics2D graphics, float zoomf, boolean isSelected) {
 		RCreature species = creature.species;
-		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		Rectangle bounds = creature.getShapeComponent();
 		int x = bounds.x;
 		int y = bounds.y;
 		String text = creature.hasCondition(Condition.DEAD) ? "%" : species.text;
@@ -59,13 +60,13 @@ public class CreatureRenderComponent extends RenderComponent {
 		}
 		if(creature.getActiveSpells().size() != 0) {
 			graphics.setPaint(Color.blue);
-			graphics.drawOval(x*zoom, y*zoom, creature.bounds.width*zoom, creature.bounds.height*zoom);
+			graphics.drawOval(x*zoom, y*zoom, bounds.width*zoom, bounds.height*zoom);
 		} 		
 	}
 
 	@Override
 	public Rectangle getBounds() {
-		return creature.getComponent(ShapeComponent.class);
+		return creature.getShapeComponent();
 	}
 
 	@Override

@@ -27,10 +27,7 @@ import java.util.Collection;
 import org.jdom2.Element;
 import org.texgen.signals.AnimalStripe;
 import neon.core.Engine;
-import neon.entities.Container;
-import neon.entities.Creature;
-import neon.entities.EntityFactory;
-import neon.entities.Item;
+import neon.entities.*;
 import neon.entities.property.Habitat;
 import neon.resources.RItem;
 import neon.resources.RRegionTheme;
@@ -331,7 +328,7 @@ public class WildernessGenerator {
 			for(String id : theme.vegetation.keySet()) {
 				int abundance = theme.vegetation.get(id);
 				Item dummy = EntityFactory.getItem(id, 0);
-				int size = dummy.bounds.width;	// size van boom in rekening brengen
+				int size = dummy.getShapeComponent().width;	// size van boom in rekening brengen
 				int ratio = (width/size)*(height/size);
 				boolean[][] fill = generateIslands(width/size, height/size, abundance, 5, ratio/size);
 				for(int i = 0; i < fill.length; i++) {

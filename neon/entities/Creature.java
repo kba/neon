@@ -19,16 +19,10 @@
 package neon.entities;
 
 import java.util.*;
-import neon.magic.*;
+import neon.magic.Spell;
 import neon.resources.RCreature;
 import neon.ai.AI;
-import neon.core.Engine;
-import neon.entities.components.Animus;
-import neon.entities.components.CreatureRenderComponent;
-import neon.entities.components.FactionComponent;
-import neon.entities.components.HealthComponent;
-import neon.entities.components.Inventory;
-import neon.entities.components.RenderComponent;
+import neon.entities.components.*;
 import neon.entities.property.*;
 
 /**
@@ -40,9 +34,7 @@ import neon.entities.property.*;
 public class Creature extends Entity {
 	// componenten
 	public final RCreature species;
-	public final Inventory inventory;
-	public final Animus animus;
-	public AI brain;	// kan niet final (npc probleem)
+	public AI brain;
 	
 	// allerlei
 	protected Gender gender;
@@ -57,7 +49,6 @@ public class Creature extends Entity {
 	protected Set<Condition> conditions;
 	
 	// character attributen
-	private int strMod, conMod, dexMod, intMod, wisMod, chaMod, spdMod;	
 	private int date = 0;						// time of death
 	private int money = 0;
 	
@@ -72,18 +63,17 @@ public class Creature extends Entity {
 		
 		// components
 		this.species = species;
-		animus = new Animus(this);
+		components.putInstance(Animus.class, new Animus(this));
 		components.putInstance(RenderComponent.class, new CreatureRenderComponent(this));
 		components.putInstance(FactionComponent.class, new FactionComponent(uid));
 		components.putInstance(HealthComponent.class, new HealthComponent(uid, species.hit));
+		components.putInstance(Inventory.class, new Inventory(uid));
+		components.putInstance(StatsComponent.class, new StatsComponent(uid, species));
 
 		// dit eerst
 		gender = Gender.OTHER;
 		name = species.getName();
 		
-		// dan dit
-		inventory = new Inventory(uid);
-
 		// collections initialiseren
 		spells = new ArrayList<Spell>();
 		skills = new EnumMap<Skill, Float>(species.skills);
@@ -98,12 +88,24 @@ public class Creature extends Entity {
 		this.name = name;
 	}
 
-	public void addSpeed(int i) {
-		spdMod++;
+	public FactionComponent getFactionComponent() {
+		return components.getInstance(FactionComponent.class);
 	}
 	
-	public AI getAI() {
-		return brain;
+	public HealthComponent getHealthComponent() {
+		return components.getInstance(HealthComponent.class);
+	}
+	
+	public Animus getMagicComponent() {
+		return components.getInstance(Animus.class);
+	}
+	
+	public Inventory getInventoryComponent() {
+		return components.getInstance(Inventory.class);
+	}
+	
+	public StatsComponent getStatsComponent() {
+		return components.getInstance(StatsComponent.class);
 	}
 	
 // conditions die een actor kan hebben
@@ -207,60 +209,6 @@ public class Creature extends Entity {
 	}
 
 	/**
-	 * Adds a certain amount to the strength attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addStr(int amount) {
-		strMod += amount;
-	}
-	
-	/**
-	 * Adds a certain amount to the dexterity attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addDex(int amount) {
-		dexMod += amount;
-	}
-	
-	/**
-	 * Adds a certain amount to the constitution attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addCon(int amount) {
-		conMod += amount;
-	}
-	
-	/**
-	 * Adds a certain amount to the charisma attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addCha(int amount) {
-		chaMod += amount;
-	}
-	
-	/**
-	 * Adds a certain amount to the wisdom attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addWis(int amount) {
-		wisMod += amount;
-	}
-	
-	/**
-	 * Adds a certain amount to the intelligence attribute.
-	 * 
-	 * @param amount	the amount to add
-	 */
-	public void addInt(int amount) {
-		intMod += amount;
-	}
-	
-	/**
 	 * Sets the name of this creature.
 	 * 
 	 * @param name	the new name
@@ -288,55 +236,6 @@ public class Creature extends Entity {
 	 */
 	public String getName() {
 		return name;
-	}
-	
-	/**
-	 * @return	this creature's strength
-	 */
-	public int getStr() {
-		return (int)species.str + strMod;
-	}
-
-	/**
-	 * @return	this creature's constitution
-	 */
-	public int getCon() {
-		return (int)species.con + conMod;
-	}
-
-	/**
-	 * @return	this creature's dexterity
-	 */
-	public int getDex() {
-		return (int)species.dex + dexMod;
-	}
-
-	/**
-	 * @return	this creature's intelligence
-	 */
-	public int getInt() {
-		return (int)species.iq + intMod;
-	}
-
-	/**
-	 * @return	this creature's wisdom
-	 */
-	public int getWis() {
-		return (int)species.wis + wisMod;
-	}
-
-	/**
-	 * @return	this creature's charisma
-	 */
-	public int getCha() {
-		return (int)species.cha + chaMod;
-	}
-	
-	/**
-	 * @return	this creature's currently equiped weapon
-	 */
-	public Weapon getWeapon() {
-		return (Weapon)Engine.getStore().getEntity(inventory.get(Slot.WEAPON));
 	}
 	
 	/**
@@ -430,27 +329,7 @@ public class Creature extends Entity {
 	public Gender getGender() {
 		return gender;
 	}
-	
-	/**
-	 * @return	this creature's weight
-	 */
-	public int getWeight() {
-		float sum = 0;
-		for(long uid : inventory) {
-			sum += ((Item)Engine.getStore().getEntity(uid)).resource.weight;
-		}
-		// in geval van 'burden' spell
-		for(Spell s : spells) {
-			if(s.getEffect() == Effect.BURDEN) {
-				sum += s.getMagnitude();
-			}
-		}
-		return (int)sum;
-	}
 
-/*
- * alle acties. 
- */
 	/** 
 	 * @param skill	the skill to check
 	 * @return		the skill check
@@ -468,18 +347,6 @@ public class Creature extends Entity {
 	 */
 	public EnumMap<Skill, Float> getSkills() {
 		return skills;		
-	}
-	
-	public int getSpeed() {
-		int penalty = 3;
-		if(getWeight() > 9*species.str) {
-			return 0;
-		} else if(getWeight() > 6*species.str) {
-			penalty = 1;
-		} else if(getWeight() > 3*species.str) {
-			penalty = 2;
-		}
-		return (species.speed + spdMod)*penalty/3;
 	}
 		
 	public int getMoney() {

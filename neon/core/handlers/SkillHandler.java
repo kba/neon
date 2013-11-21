@@ -117,12 +117,12 @@ public class SkillHandler {
 
 	private static int getStatValue(Skill skill, Creature creature) {
 		switch(skill.stat) {
-		case STRENGTH: return creature.getStr();
-		case CONSTITUTION: return creature.getCon();
-		case DEXTERITY: return creature.getDex();
-		case INTELLIGENCE: return creature.getInt();
-		case WISDOM: return creature.getWis();
-		case CHARISMA: return creature.getCha();
+		case STRENGTH: return creature.getStatsComponent().getStr();
+		case CONSTITUTION: return creature.getStatsComponent().getCon();
+		case DEXTERITY: return creature.getStatsComponent().getDex();
+		case INTELLIGENCE: return creature.getStatsComponent().getInt();
+		case WISDOM: return creature.getStatsComponent().getWis();
+		case CHARISMA: return creature.getStatsComponent().getCha();
 		default: return 0;
 		}		
 	}
@@ -131,7 +131,7 @@ public class SkillHandler {
 		int value = player.getSkill(skill);
 //		System.out.println("skill check: " + skill + ", " + player.getSkill(skill));
 		// snelheid van skills leren hangt af van INT
-		player.trainSkill(skill, skill.increase*(float)player.getInt()/10);
+		player.trainSkill(skill, skill.increase*(float)player.getStatsComponent().getInt()/10);
 
 		if(value < player.getSkill(skill)) {	// skill is met 1 gestegen
 			Engine.post(new SkillEvent(skill));
@@ -160,7 +160,7 @@ public class SkillHandler {
 				Engine.post(new SkillEvent(skill, skill.stat));
 			}
 			if(level < player.getLevel()) {	// level is met 1 gestegen
-				HealthComponent health = player.getComponent(HealthComponent.class);
+				HealthComponent health = player.getHealthComponent();
 				health.addBaseHealth(Dice.roll(player.species.hit));
 				Engine.post(new SkillEvent(skill, true));
 			}

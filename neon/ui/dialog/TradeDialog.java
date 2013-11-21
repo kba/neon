@@ -171,13 +171,13 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 	
 	private void initGoods() {
 		Vector<Item> sellData = new Vector<Item>();
-		for(long uid : Engine.getPlayer().inventory) {
+		for(long uid : Engine.getPlayer().getInventoryComponent()) {
 			sellData.add((Item)Engine.getStore().getEntity(uid));				
 		}
 		sellList.setListData(sellData);
 
 		Vector<Item> buyData = new Vector<Item>();
-		for(long uid : trader.inventory) {
+		for(long uid : trader.getInventoryComponent()) {
 			buyData.add((Item)Engine.getStore().getEntity(uid));				
 		}
 		buyList.setListData(buyData);
@@ -202,14 +202,14 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 			ui.showMessage("Not enough money to buy this item.", 2);
 		} else {
 			InventoryHandler.removeItem(trader, item.getUID());
-			player.inventory.addItem(item.getUID());				
+			player.getInventoryComponent().addItem(item.getUID());				
 			player.addMoney(-price);
 		}
 	}
 	
 	private void sell(Item item) {
 		InventoryHandler.removeItem(player, item.getUID());
-		trader.inventory.addItem(item.getUID());
+		trader.getInventoryComponent().addItem(item.getUID());
 		player.addMoney(item.resource.cost);
 	}
 

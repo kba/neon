@@ -21,6 +21,7 @@ package neon.ui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.EventObject;
@@ -140,6 +141,7 @@ public class TravelDialog implements KeyListener {
 	}
 	
 	private void travel(String point) {
-		player.bounds.setLocation(listData.get(point).x, listData.get(point).y);
+		Rectangle bounds = player.getShapeComponent();
+		bounds.setLocation(listData.get(point).x, listData.get(point).y);
 	}
 }

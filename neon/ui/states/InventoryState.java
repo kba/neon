@@ -22,6 +22,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.util.*;
 import java.awt.event.*;
 import neon.core.*;
@@ -115,9 +116,9 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		} else if(item instanceof Item.Aid) {
 			InventoryHandler.removeItem(player, item.getUID());
 			initList();
-			HealthComponent health = player.getComponent(HealthComponent.class);
+			HealthComponent health = player.getHealthComponent();
 			health.heal(SkillHandler.check(player, Skill.MEDICAL)/5f);
-		} else if(!player.inventory.hasEquiped(item.getUID())) {
+		} else if(!player.getInventoryComponent().hasEquiped(item.getUID())) {
 			InventoryHandler.equip(item, player);			
 		} else {
 			InventoryHandler.unequip(item.getUID(), player);	
@@ -129,7 +130,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 		Vector<Item> buffer = new Vector<Item>();
 		listData.clear();
 		
-		for(long uid : Engine.getPlayer().inventory) {
+		for(long uid : Engine.getPlayer().getInventoryComponent()) {
 			Item i = (Item)Engine.getStore().getEntity(uid);
 			if(!listData.containsKey(i.getID())) {
 				listData.put(i.getID(), 1);
@@ -139,7 +140,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			}
 		}
 		
-		info.setText("Weight: " + player.getWeight() + " kg. Money: " + moneyString(player.getMoney()) + ".");
+		info.setText("Weight: " + InventoryHandler.getWeight(player) + " kg. Money: " + moneyString(player.getMoney()) + ".");
     	inventory.setListData(buffer);
 	}
 	
@@ -181,7 +182,9 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			if(inventory.getSelectedValue() != null) {
 				Item item = inventory.getSelectedValue();
 				InventoryHandler.removeItem(player, item.getUID());
-				item.bounds.setLocation(player.bounds.x, player.bounds.y);
+				Rectangle pBounds = player.getShapeComponent();
+				Rectangle iBounds = item.getShapeComponent();
+				iBounds.setLocation(pBounds.x, pBounds.y);
 				Engine.getAtlas().getCurrentZone().addItem(item);
 				initList();
 				inventory.setSelectedIndex(0);

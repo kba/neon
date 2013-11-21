@@ -18,11 +18,11 @@
 
 package neon.entities.serialization;
 
+import java.awt.Rectangle;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.io.Serializable;
-
 import neon.ai.AIFactory;
 import neon.core.Engine;
 import neon.entities.Construct;
@@ -49,19 +49,20 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		int y = in.readInt();
 		long uid = in.readLong();
 		Creature creature = getCreature(id, x, y, uid, species);
-		creature.bounds.setLocation(x, y);
+		Rectangle bounds = creature.getShapeComponent();
+		bounds.setLocation(x, y);
 		creature.brain = aiFactory.getAI(creature);
 		
-		HealthComponent health = creature.getComponent(HealthComponent.class);
+		HealthComponent health = creature.getHealthComponent();
 		health.setHealth(in.readInt());
 		health.addBaseHealthMod(in.readFloat());
 		health.heal(in.readFloat());
 		creature.addMoney(in.readInt());
-		creature.animus.setBaseModifier(in.readFloat());
-		creature.animus.setModifier(in.readFloat());
+		creature.getMagicComponent().setBaseModifier(in.readFloat());
+		creature.getMagicComponent().setModifier(in.readFloat());
 		String spell = in.readUTF();
 		if(!spell.isEmpty()) {
-			creature.animus.equipSpell(SpellFactory.getSpell(spell));
+			creature.getMagicComponent().equipSpell(SpellFactory.getSpell(spell));
 		}
 		
 		int date = in.readInt();
@@ -71,12 +72,12 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		
 		byte iCount = in.readByte();
 		for(int i = 0; i < iCount; i++) {
-			creature.inventory.addItem(in.readLong());
+			creature.getInventoryComponent().addItem(in.readLong());
 		}
 		
 		byte sCount = in.readByte();
 		for(int i = 0; i < sCount; i++) {
-			creature.inventory.put(Slot.valueOf(in.readUTF()), in.readLong());
+			creature.getInventoryComponent().put(Slot.valueOf(in.readUTF()), in.readLong());
 		}
 		
 		return creature;
@@ -85,33 +86,34 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 	public void serialize(DataOutput out, Creature creature) throws IOException {
 		out.writeUTF(creature.getID());
 		out.writeUTF(creature.species.id);
-		out.writeInt(creature.bounds.x);
-		out.writeInt(creature.bounds.y);
+		Rectangle bounds = creature.getShapeComponent();
+		out.writeInt(bounds.x);
+		out.writeInt(bounds.y);
 		out.writeLong(creature.getUID());
 		
-		HealthComponent health = creature.getComponent(HealthComponent.class);
+		HealthComponent health = creature.getHealthComponent();
 		out.writeInt(health.getBaseHealth());
 		out.writeFloat(health.getBaseHealthMod());
 		out.writeFloat(health.getHealthMod());
 		out.writeInt(creature.getMoney());
-		out.writeFloat(creature.animus.getBaseModifier());
-		out.writeFloat(creature.animus.getModifier());
-		if(creature.animus.getSpell() != null) {
-			out.writeUTF(creature.animus.getSpell().id);
+		out.writeFloat(creature.getMagicComponent().getBaseModifier());
+		out.writeFloat(creature.getMagicComponent().getModifier());
+		if(creature.getMagicComponent().getSpell() != null) {
+			out.writeUTF(creature.getMagicComponent().getSpell().id);
 		} else {
 			out.writeUTF("");
 		}
 		out.writeInt(creature.getTimeOfDeath());
 		
-		out.writeByte(creature.inventory.getItems().size());
-		for(long uid : creature.inventory) {
+		out.writeByte(creature.getInventoryComponent().getItems().size());
+		for(long uid : creature.getInventoryComponent()) {
 			out.writeLong(uid);
 		}
 		
-		out.writeByte(creature.inventory.slots().size());
-		for(Slot slot : creature.inventory.slots()) {
+		out.writeByte(creature.getInventoryComponent().slots().size());
+		for(Slot slot : creature.getInventoryComponent().slots()) {
 			out.writeUTF(slot.name());
-			out.writeLong(creature.inventory.get(slot));
+			out.writeLong(creature.getInventoryComponent().get(slot));
 		}
 	}
 	

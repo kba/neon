@@ -117,8 +117,8 @@ public class SpellTradeDialog implements KeyListener {
 			try {
 				RSpell spell = buy.getSelectedValue();
 				if(player.getMoney() >= spell.cost) {
-					if(!player.animus.getSpells().contains(spell)) {
-						player.animus.addSpell(spell);
+					if(!player.getMagicComponent().getSpells().contains(spell)) {
+						player.getMagicComponent().addSpell(spell);
 						ui.showMessage("You bought the spell " + spell + ".", 2);
 						initSpells();
 					} else {
@@ -146,7 +146,7 @@ public class SpellTradeDialog implements KeyListener {
 	
 	private void initSpells() {
 		Vector<RSpell> spells = new Vector<RSpell>();
-		for(RSpell s : trader.animus.getSpells()) {
+		for(RSpell s : trader.getMagicComponent().getSpells()) {
 			spells.add(s);			
 		}
 		

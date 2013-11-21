@@ -24,17 +24,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorModel;
 import java.util.Collection;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.text.DefaultCaret;
-
 import neon.core.Engine;
 import neon.core.handlers.CombatUtils;
 import neon.entities.Player;
 import neon.entities.components.HealthComponent;
-import neon.entities.components.RenderComponent;
 import neon.entities.components.ShapeComponent;
+import neon.entities.components.StatsComponent;
 import neon.entities.property.Condition;
 import neon.ui.graphics.*;
 import neon.util.ColorFactory;
@@ -162,11 +160,11 @@ public class GamePanel extends JComponent {
 	public void repaint() {
 		if(Engine.getPlayer() != null) {
 			drawStats();
-			ShapeComponent bounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+			ShapeComponent bounds = Engine.getPlayer().getShapeComponent();
 			drawing.updateCamera(bounds.getLocation());
 		} 
 		Collection<Renderable> renderables = Engine.getAtlas().getCurrentZone().getRenderables(getVisibleRectangle());
-		renderables.add(Engine.getPlayer().getComponent(RenderComponent.class));
+		renderables.add(Engine.getPlayer().getRenderComponent());
 		if(cursor != null) {
 			renderables.add(cursor);
 		}
@@ -207,7 +205,7 @@ public class GamePanel extends JComponent {
 	private void drawStats() {
 		// components 
 		Player player = Engine.getPlayer();
-		HealthComponent health = player.getComponent(HealthComponent.class);
+		HealthComponent health = player.getHealthComponent();
 
 		if(health.getHealth()*4 < health.getBaseHealth()) {
 			healthLabel.setText("<html>health: <font color=red>" + health.getHealth() + "/" + 
@@ -218,56 +216,59 @@ public class GamePanel extends JComponent {
 		} else {
 			healthLabel.setText("health: " + health.getHealth() + "/" + health.getBaseHealth());
 		}
-		if(player.animus.getMana() > player.species.mana*player.species.iq) {
-			magicLabel.setText("<html>magic: <font color=green>" + player.animus.getMana() + "/" +
+		if(player.getMagicComponent().getMana() > player.species.mana*player.species.iq) {
+			magicLabel.setText("<html>magic: <font color=green>" + 
+					player.getMagicComponent().getMana() + "/" +
 					(int)(player.species.mana*player.species.iq) + "</font></html>");
 		} else {
-			magicLabel.setText("magic: " + player.animus.getMana() + "/" + (int)(player.species.mana*player.species.iq));			
+			magicLabel.setText("magic: " + player.getMagicComponent().getMana() + 
+					"/" + (int)(player.species.mana*player.species.iq));			
 		}
 		AVLabel.setText("AV: " + player.getAVString());
 		DVLabel.setText("DV: " + CombatUtils.getDV(player));
 
-		if(player.getStr() > (int)player.species.str) {
-			strLabel.setText("<html>strength: <font color=green>" + player.getStr() + "</font></html>");			
-		} else if(player.getStr() < (int)player.species.str) {
-			strLabel.setText("<html>strength: <font color=red>" + player.getStr() + "</font></html>");			
+		StatsComponent stats = player.getStatsComponent();
+		if(stats.getStr() > (int)player.species.str) {
+			strLabel.setText("<html>strength: <font color=green>" + stats.getStr() + "</font></html>");			
+		} else if(stats.getStr() < (int)player.species.str) {
+			strLabel.setText("<html>strength: <font color=red>" + stats.getStr() + "</font></html>");			
 		} else {
-			strLabel.setText("strength: " + player.getStr());			
+			strLabel.setText("strength: " + stats.getStr());			
 		}
-		if(player.getDex() > (int)player.species.dex) {
-			dexLabel.setText("<html>dexterity: <font color=green>" + player.getDex() + "</font></html>");			
-		} else if(player.getDex() < (int)player.species.dex) {
-			dexLabel.setText("<html>dexterity: <font color=red>" + player.getDex() + "</font></html>");			
+		if(stats.getDex() > (int)player.species.dex) {
+			dexLabel.setText("<html>dexterity: <font color=green>" + stats.getDex() + "</font></html>");			
+		} else if(stats.getDex() < (int)player.species.dex) {
+			dexLabel.setText("<html>dexterity: <font color=red>" + stats.getDex() + "</font></html>");			
 		} else {
-			dexLabel.setText("dexterity: " + player.getDex());
+			dexLabel.setText("dexterity: " + stats.getDex());
 		}
-		if(player.getCon() > (int)player.species.con) {
-			conLabel.setText("<html>constitution: <font color=green>" + player.getCon() + "</font></html>");			
-		} else if(player.getCon() < (int)player.species.con) {
-			conLabel.setText("<html>constitution: <font color=red>" + player.getCon() + "</font></html>");			
+		if(stats.getCon() > (int)player.species.con) {
+			conLabel.setText("<html>constitution: <font color=green>" + stats.getCon() + "</font></html>");			
+		} else if(stats.getCon() < (int)player.species.con) {
+			conLabel.setText("<html>constitution: <font color=red>" + stats.getCon() + "</font></html>");			
 		} else {
-			conLabel.setText("constitution: " + player.getCon());
+			conLabel.setText("constitution: " + stats.getCon());
 		}
-		if(player.getInt() > (int)player.species.iq) {
-			intLabel.setText("<html>intelligence: <font color=green>" + player.getInt() + "</font></html>");			
-		} else if(player.getInt() < (int)player.species.iq) {
-			intLabel.setText("<html>intelligence: <font color=red>" + player.getInt() + "</font></html>");			
+		if(stats.getInt() > (int)player.species.iq) {
+			intLabel.setText("<html>intelligence: <font color=green>" + stats.getInt() + "</font></html>");			
+		} else if(stats.getInt() < (int)player.species.iq) {
+			intLabel.setText("<html>intelligence: <font color=red>" + stats.getInt() + "</font></html>");			
 		} else {
-			intLabel.setText("intelligence: " + player.getInt());
+			intLabel.setText("intelligence: " + stats.getInt());
 		}
-		if(player.getWis() > (int)player.species.wis) {
-			wisLabel.setText("<html>wisdom: <font color=green>" + player.getWis() + "</font></html>");			
-		} else if(player.getWis() < (int)player.species.wis) {
-			wisLabel.setText("<html>wisdom: <font color=red>" + player.getWis() + "</font></html>");			
+		if(stats.getWis() > (int)player.species.wis) {
+			wisLabel.setText("<html>wisdom: <font color=green>" + stats.getWis() + "</font></html>");			
+		} else if(stats.getWis() < (int)player.species.wis) {
+			wisLabel.setText("<html>wisdom: <font color=red>" + stats.getWis() + "</font></html>");			
 		} else {
-			wisLabel.setText("wisdom: " + player.getWis());
+			wisLabel.setText("wisdom: " + stats.getWis());
 		}
-		if(player.getCha() > (int)player.species.cha) {
-			chaLabel.setText("<html>charisma: <font color=green>" + player.getCha() + "</font></html>");			
-		} else if(player.getCha() < (int)player.species.cha) {
-			chaLabel.setText("<html>charisma: <font color=red>" + player.getCha() + "</font></html>");			
+		if(stats.getCha() > (int)player.species.cha) {
+			chaLabel.setText("<html>charisma: <font color=green>" + stats.getCha() + "</font></html>");			
+		} else if(stats.getCha() < (int)player.species.cha) {
+			chaLabel.setText("<html>charisma: <font color=red>" + stats.getCha() + "</font></html>");			
 		} else {
-			chaLabel.setText("charisma: " + player.getCha());
+			chaLabel.setText("charisma: " + stats.getCha());
 		}
 		
 		if(player.getConditions().contains(Condition.DISEASED) || player.getConditions().contains(Condition.CURSED) || 
@@ -333,7 +334,7 @@ public class GamePanel extends JComponent {
 			
 			// TODO: player staat niet gecentreerd op outdoor map
 			// 8 en 17: cirkel met diameter 16, gecentreerd op player
-			ShapeComponent bounds = player.getComponent(ShapeComponent.class);
+			ShapeComponent bounds = player.getShapeComponent();
 			area.subtract(new Area(new Ellipse2D.Float((bounds.x - 8)*zoom - view.x*zoom, 
 					(bounds.y - 8)*zoom - view.y*zoom, (int)(17*zoom), (int)(17*zoom))));
 			for(Point p : Engine.getAtlas().getCurrentZone().getLightMap().keySet()) {

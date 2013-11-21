@@ -19,6 +19,7 @@
 package neon.entities.serialization;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
@@ -83,11 +84,12 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 	public void serialize(DataOutput output, Item item) throws IOException {
 		output.writeUTF(item.resource.id);
 		output.writeLong(item.getUID());
-		output.writeInt(item.bounds.x);
-		output.writeInt(item.bounds.y);
+		Rectangle bounds = item.getShapeComponent();
+		output.writeInt(bounds.x);
+		output.writeInt(bounds.y);
 		output.writeLong(item.getOwner());
 		
-		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Enchantment enchantment = item.getMagicComponent();
 		if(enchantment != null) {
 			output.writeBoolean(true);
 			writeEnchantment(output, enchantment);
@@ -119,7 +121,7 @@ public class ItemSerializer implements Serializer<Item>, Serializable {
 		float modifier = input.readFloat();
 		Enchantment enchantment = new Enchantment(SpellFactory.getSpell(id), mana, uid);
 		enchantment.setModifier(modifier);
-		item.setComponent(Enchantment.class, enchantment);
+		item.setMagicComponent(enchantment);
 	}
 	
 	private void writeEnchantment(DataOutput output, Enchantment enchantment) throws IOException {

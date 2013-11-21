@@ -32,16 +32,16 @@ public class GuardAI extends AI {
 	public GuardAI(Creature creature, byte aggression, byte confidence, int range) {
 		super(creature, aggression, confidence);
 		this.range = range;
-		ShapeComponent bounds = creature.getComponent(ShapeComponent.class);
+		ShapeComponent bounds = creature.getShapeComponent();
 		home = new Point(bounds.x, bounds.y);
 	}
 
 	public void act() {
 		// TODO: niet alleen op player letten, maar ook op andere wezens in zicht
-		ShapeComponent cBounds = creature.getComponent(ShapeComponent.class);
-		ShapeComponent pBounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+		ShapeComponent cBounds = creature.getShapeComponent();
+		ShapeComponent pBounds = Engine.getPlayer().getShapeComponent();
 		if(isHostile() && cBounds.getLocation().distance(pBounds.getLocation()) < range){
-			HealthComponent health = creature.getComponent(HealthComponent.class);
+			HealthComponent health = creature.getHealthComponent();
 			if(100*health.getHealth()/health.getBaseHealth() < confidence/100) {	
 				// 80% kans om gewoon te vluchten, 20% kans om te healen; als geen heal spell, toch vluchten
 				if(Math.random() > 0.2 || !(cure() || heal())) {	

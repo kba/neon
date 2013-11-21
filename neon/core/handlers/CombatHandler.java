@@ -18,12 +18,13 @@
 
 package neon.core.handlers;
 
+import java.awt.Rectangle;
+
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Weapon;
-import neon.entities.components.Enchantment;
 import neon.entities.components.HealthComponent;
 import neon.entities.property.Slot;
 import net.engio.mbassy.listener.Handler;
@@ -70,7 +71,8 @@ public class CombatHandler {
 	 * @return the outcome of the fight
 	 */
 	private int fight(Creature attacker, Creature defender) {
-		Weapon weapon = attacker.getWeapon();
+		long uid = attacker.getInventoryComponent().get(Slot.WEAPON);
+		Weapon weapon = (Weapon)Engine.getStore().getEntity(uid);
 		return fight(attacker, defender, weapon);
 	}
 
@@ -84,16 +86,19 @@ public class CombatHandler {
 	 */
 	private int shoot(Creature shooter, Creature target) {
 		// damage is gemiddelde van pijl en boog (Creature.getAV)
-		Weapon ammo = (Weapon)Engine.getStore().getEntity(shooter.inventory.get(Slot.AMMO));
+		Weapon ammo = (Weapon)Engine.getStore().getEntity(shooter.getInventoryComponent().get(Slot.AMMO));
 		InventoryHandler.removeItem(shooter, ammo.getUID());
-		for(long uid : shooter.inventory) {
+		for(long uid : shooter.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item.getID().equals(ammo.getID())) {
 				InventoryHandler.equip(item, shooter);
 				break;
 			}
 		}
-		return fight(shooter, target, shooter.getWeapon());
+		
+		long uid = shooter.getInventoryComponent().get(Slot.WEAPON);
+		Weapon weapon = (Weapon)Engine.getStore().getEntity(uid);
+		return fight(shooter, target, weapon);
 	}
 	
 	/*
@@ -105,9 +110,9 @@ public class CombatHandler {
 	 * @return			the outcome of the fight
 	 */
 	private int fling(Creature thrower, Creature target) {
-		Weapon weapon = (Weapon)Engine.getStore().getEntity(thrower.inventory.get(Slot.AMMO));
+		Weapon weapon = (Weapon)Engine.getStore().getEntity(thrower.getInventoryComponent().get(Slot.AMMO));
 		InventoryHandler.removeItem(thrower, weapon.getUID());
-		for(long uid : thrower.inventory) {
+		for(long uid : thrower.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item.getID().equals(weapon.getID())) {
 				InventoryHandler.equip(item, thrower);
@@ -136,12 +141,13 @@ public class CombatHandler {
 				int DV = CombatUtils.getDV(defender);
 				
 				// altijd minimum 1 damage
-				HealthComponent health = defender.getComponent(HealthComponent.class);
+				HealthComponent health = defender.getHealthComponent();
 				health.heal(Math.min(-1, -(int)((AV - DV)/(DV + 1))));
 				
 				// enchanted weapon spell casten
-				if(weapon != null && weapon.getComponent(Enchantment.class).getSpell() != null) {
-					MagicHandler.cast(attacker, defender.bounds.getLocation(), weapon);
+				if(weapon != null && weapon.getMagicComponent().getSpell() != null) {
+					Rectangle bounds = defender.getShapeComponent();
+					MagicHandler.cast(attacker, bounds.getLocation(), weapon);
 				}
 				
 				// berichten bepalen

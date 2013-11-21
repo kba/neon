@@ -22,14 +22,6 @@ import neon.core.Engine;
 import neon.maps.Zone;
 import neon.resources.CClient;
 import neon.ui.*;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.MotionHandler;
 import neon.entities.Container;
@@ -40,6 +32,17 @@ import neon.entities.Item;
 import neon.entities.Player;
 import neon.util.fsm.*;
 import net.engio.mbassy.bus.MBassador;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+
 
 public class ContainerState extends State implements KeyListener, ListSelectionListener {
 	private final static UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -146,7 +149,9 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 					if(container instanceof Container) {	// verandering registreren
 						((Container)container).addItem(item.getUID());
 					} else if(container instanceof Zone) {	// itempositie aanpassen
-						item.bounds.setLocation(player.bounds.x, player.bounds.y);
+						Rectangle pBounds = player.getShapeComponent();
+						Rectangle iBounds = item.getShapeComponent();
+						iBounds.setLocation(pBounds.x, pBounds.y);
 						Engine.getAtlas().getCurrentZone().addItem(item);
 					} else if(container instanceof Creature) {
 						InventoryHandler.addItem(((Creature)container), item.getUID());
@@ -194,9 +199,10 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 		ArrayList<Object> items = new ArrayList<Object>();
 		if(container instanceof Zone) {
 			Zone zone = (Zone)container;
-			items.addAll(zone.getItems(player.bounds.getLocation()));
+			Rectangle bounds = player.getShapeComponent();
+			items.addAll(zone.getItems(bounds.getLocation()));
 		} else if(container instanceof Creature) {
-			items.addAll(((Creature)container).inventory.getItems());
+			items.addAll(((Creature)container).getInventoryComponent().getItems());
 		} else {
 			items.addAll(((Container)container).getItems());
 		}
@@ -216,7 +222,7 @@ public class ContainerState extends State implements KeyListener, ListSelectionL
 			}
 		}
 
-		for(long uid : player.inventory) {
+		for(long uid : player.getInventoryComponent()) {
 			Item i = (Item)Engine.getStore().getEntity(uid);
 			if(!iData.containsKey(i.getID())) {
 				iData.put(i.getID(), 1);

@@ -20,13 +20,11 @@ package neon.ai;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-
 import neon.core.Engine;
 import neon.core.handlers.MagicHandler;
 import neon.entities.Creature;
 import neon.entities.components.ShapeComponent;
 import neon.entities.property.Skill;
-import neon.entities.property.Slot;
 import neon.resources.RSpell;
 import neon.util.Dice;
 
@@ -41,27 +39,27 @@ public class HuntBehaviour implements Behaviour {
 	
 	public void act() {
 		int dice = Dice.roll(1,2,0);
-		Rectangle creaturePos = creature.getComponent(ShapeComponent.class);
-		Rectangle preyPos = prey.getComponent(ShapeComponent.class);
+		Rectangle creaturePos = creature.getShapeComponent();
+		Rectangle preyPos = prey.getShapeComponent();
 
 		if(dice == 1) {
 			int time = Engine.getTimer().getTime();
-			for(RSpell.Power power : creature.animus.getPowers()) {
-				if(power.effect.getSchool().equals(Skill.DESTRUCTION) && creature.animus.canUse(power, time) && 
-						power.range >= Point.distance(creaturePos.x, creaturePos.y, 
-								preyPos.x, preyPos.y)) {
-					creature.animus.equipSpell(power);
-					ShapeComponent bounds = prey.getComponent(ShapeComponent.class);
+			for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
+				if(power.effect.getSchool().equals(Skill.DESTRUCTION) && 
+						creature.getMagicComponent().canUse(power, time) && 
+						power.range >= Point.distance(creaturePos.x, creaturePos.y, preyPos.x, preyPos.y)) {
+					creature.getMagicComponent().equipSpell(power);
+					ShapeComponent bounds = prey.getShapeComponent();
 					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
-			for(RSpell spell : creature.animus.getSpells()) {
+			for(RSpell spell : creature.getMagicComponent().getSpells()) {
 				if(spell.effect.getSchool().equals(Skill.DESTRUCTION) && 
 						spell.range >= Point.distance(creaturePos.x, creaturePos.y, 
 								preyPos.x, preyPos.y)) {
-					creature.animus.equipSpell(spell);
-					ShapeComponent bounds = prey.getComponent(ShapeComponent.class);
+					creature.getMagicComponent().equipSpell(spell);
+					ShapeComponent bounds = prey.getShapeComponent();
 					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
@@ -69,7 +67,7 @@ public class HuntBehaviour implements Behaviour {
 		} 
 
 		Point p;
-		if(creature.getInt() < 5) {		// als wezen lomp is, gewoon kortste weg proberen
+		if(creature.getStatsComponent().getInt() < 5) {		// als wezen lomp is, gewoon kortste weg proberen
 			int dx = 0;
 			int dy = 0;
 			if(creaturePos.x < preyPos.x) { 
@@ -84,13 +82,13 @@ public class HuntBehaviour implements Behaviour {
 			}
 			p = new Point(creaturePos.x + dx, creaturePos.y + dy);
 		} else {						// als wezen slimmer is, A* proberen
-			ShapeComponent cBounds = creature.getComponent(ShapeComponent.class);
-			ShapeComponent pBounds = prey.getComponent(ShapeComponent.class);
+			ShapeComponent cBounds = creature.getShapeComponent();
+			ShapeComponent pBounds = prey.getShapeComponent();
 			p = PathFinder.findPath(creature, cBounds.getLocation(), pBounds.getLocation())[0];
 		}
 
 		if(p.distance(preyPos.x, preyPos.y) < 1) {
-			if(creature.inventory.hasEquiped(Slot.WEAPON) && creature.getWeapon().isRanged()) {
+//			if(creature.inventory.hasEquiped(Slot.WEAPON) && creature.getWeapon().isRanged()) {
 //				if(!(creature.inventory.getWeaponType().equals(WeaponType.THROWN) || equip(Slot.AMMO))) {
 //					InventoryHandler.unequip(creature.getWeapon().getUID(), creature);
 //				}
@@ -101,7 +99,7 @@ public class HuntBehaviour implements Behaviour {
 //		} else if(Atlas.getCurrentZone().getCreature(p) == null) {
 //			if(MotionHandler.move(creature, p) == MotionHandler.DOOR) {
 //				open(p);	// deur opendoen indien nodig
-			}
+//			}
 		} else {	// als een ander creature in de weg staat
 			//			wander();
 		}		

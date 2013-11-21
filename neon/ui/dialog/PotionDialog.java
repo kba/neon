@@ -109,7 +109,7 @@ public class PotionDialog implements KeyListener {
 					}
 					Item item = EntityFactory.getItem(potion.toString(), Engine.getStore().createNewEntityUID());
 					Engine.getStore().addEntity(item);
-					player.inventory.addItem(item.getUID());
+					player.getInventoryComponent().addItem(item.getUID());
 					player.addMoney(-potion.cost);
 					initPotions();
 					ui.showMessage("Potion created.", 2);
@@ -173,7 +173,7 @@ public class PotionDialog implements KeyListener {
 	}
 	
 	private boolean hasItem(Creature creature, String item) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			if(Engine.getStore().getEntity(uid).getID().equals(item)) {
 				return true;
 			}
@@ -182,7 +182,7 @@ public class PotionDialog implements KeyListener {
 	}
 
 	private long removeItem(Creature creature, String id) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item.getID().equals(id)) {
 				InventoryHandler.removeItem(creature, uid);

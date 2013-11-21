@@ -49,10 +49,10 @@ public class DrainHandler implements EffectHandler {
 		Creature target = (Creature)spell.getTarget();
 		switch(type) {
 		case HEALTH: 
-			HealthComponent health = target.getComponent(HealthComponent.class);
+			HealthComponent health = target.getHealthComponent();
 			health.heal(-spell.getMagnitude()); 
 			break;
-		case MANA: target.animus.addMana(-spell.getMagnitude()); break;
+		case MANA: target.getMagicComponent().addMana(-spell.getMagnitude()); break;
 		default: 
 			throw new IllegalArgumentException("The given spell does not have a drain effect."); 
 		}

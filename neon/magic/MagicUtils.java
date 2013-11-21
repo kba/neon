@@ -116,7 +116,7 @@ public class MagicUtils {
 	 * @param item
 	 */
 	public static void equip(Creature creature, Clothing item) {
-		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Enchantment enchantment = item.getMagicComponent();
 		Spell spell = new Spell(enchantment.getSpell(), 0, creature, null);
 		spell.getHandler().addEffect(spell);
 	}
@@ -128,7 +128,7 @@ public class MagicUtils {
 	 * @param item
 	 */
 	public static void unequip(Creature creature, Clothing item) {
-		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Enchantment enchantment = item.getMagicComponent();
 		Spell spell = new Spell(enchantment.getSpell(), 0, creature, null);
 		spell.getHandler().removeEffect(spell);
 	}

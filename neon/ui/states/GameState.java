@@ -177,7 +177,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 					panel.print("The " + ce.getDefender() + " blocks the attack.");
 					break;
 				case CombatEvent.ATTACK:
-					HealthComponent health = ce.getDefender().getComponent(HealthComponent.class);
+					HealthComponent health = ce.getDefender().getHealthComponent();
 					panel.print("You strike the " + ce.getDefender() + " (" + health.getHealth() + ").");
 					break;
 				case CombatEvent.DIE:

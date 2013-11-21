@@ -117,7 +117,7 @@ public class CrafterDialog implements KeyListener {
 					}
 					Item item = EntityFactory.getItem(craft.name, Engine.getStore().createNewEntityUID());
 					bus.publishAsync(new StoreEvent(this, item));
-					player.inventory.addItem(item.getUID());
+					player.getInventoryComponent().addItem(item.getUID());
 					player.addMoney(-craft.cost);
 					ui.showMessage("Item crafted.", 2);
 					initItems();

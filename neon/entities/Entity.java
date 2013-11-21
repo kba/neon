@@ -22,6 +22,7 @@ import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
 import neon.entities.components.Component;
 import neon.entities.components.PhysicsComponent;
+import neon.entities.components.RenderComponent;
 import neon.entities.components.ScriptComponent;
 import neon.entities.components.ShapeComponent;
 
@@ -31,10 +32,10 @@ import neon.entities.components.ShapeComponent;
  * @author mdriesen
  */
 public abstract class Entity {
-	public final ShapeComponent bounds;
+	protected ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
+
 	private final long uid;
 	private final String id;
-	protected ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
 
 	/**
 	 * @param id	the id of the resource this entity is an instance of
@@ -45,7 +46,7 @@ public abstract class Entity {
 		this.uid = uid;
 
 		// components
-		bounds = new ShapeComponent(this, 0, 0, 1, 1);
+		ShapeComponent bounds = new ShapeComponent(this, 0, 0, 1, 1);
 		components.putInstance(ShapeComponent.class, bounds);
 		components.putInstance(PhysicsComponent.class, new PhysicsComponent(uid, bounds));
 		components.putInstance(ScriptComponent.class, new ScriptComponent(uid));
@@ -65,21 +66,19 @@ public abstract class Entity {
 		return id;
 	}
 
-	/**
-	 * @param component
-	 * @return	the requested component
-	 */
-	public <T extends Component> T getComponent(Class<T> component) {
-		return components.getInstance(component);
+	public ShapeComponent getShapeComponent() {
+		return components.getInstance(ShapeComponent.class);
 	}
 
-	/**
-	 * Sets a component.
-	 * 
-	 * @param type
-	 * @param component
-	 */
-	public <T extends Component> void setComponent(Class<T> type, T component) {
-		components.putInstance(type, component);
+	public RenderComponent getRenderComponent() {
+		return components.getInstance(RenderComponent.class);
+	}
+
+	public void setRenderComponent(RenderComponent renderer) {
+		components.putInstance(RenderComponent.class, renderer);
+	}
+
+	public PhysicsComponent getPhysicsComponent() {
+		return components.getInstance(PhysicsComponent.class);
 	}
 }

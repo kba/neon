@@ -20,7 +20,6 @@ package neon.core.handlers;
 
 import java.awt.Rectangle;
 import java.util.Collection;
-
 import neon.core.Configuration;
 import neon.core.Engine;
 import neon.core.event.TurnEvent;
@@ -73,12 +72,14 @@ public class TurnHandler {
 		for(long uid : Engine.getAtlas().getCurrentZone().getCreatures()) {
 			Creature creature = (Creature)Engine.getStore().getEntity(uid);
 			if(!creature.hasCondition(Condition.DEAD)) {
-				HealthComponent health = creature.getComponent(HealthComponent.class);
-				health.heal(creature.getCon()/100f);
-				creature.animus.addMana(creature.getWis()/100f);
-				if(player.bounds.getLocation().distance(creature.bounds.getLocation()) < range) {
-					int spd = creature.getSpeed();
-					Region region = Engine.getAtlas().getCurrentZone().getRegion(creature.bounds.getLocation());
+				HealthComponent health = creature.getHealthComponent();
+				health.heal(creature.getStatsComponent().getCon()/100f);
+				creature.getMagicComponent().addMana(creature.getStatsComponent().getWis()/100f);
+				Rectangle pBounds = player.getShapeComponent();
+				Rectangle cBounds = creature.getShapeComponent();
+				if(pBounds.getLocation().distance(cBounds.getLocation()) < range) {
+					int spd = getSpeed(creature);
+					Region region = Engine.getAtlas().getCurrentZone().getRegion(cBounds.getLocation());
 					if(creature.species.habitat == Habitat.LAND && region.getMovMod() == Modifier.SWIM) {
 						spd = spd/4;	// zwemmende creatures hebben penalty
 					}
@@ -86,18 +87,18 @@ public class TurnHandler {
 						spd = spd*2;	// player krijgt penalty bij sneaken
 					}
 					
-					while(spd > player.getSpeed()*Math.random()) {
+					while(spd > getSpeed(player)*Math.random()) {
 						creature.brain.act();
-						spd -= player.getSpeed();
+						spd -= getSpeed(player);
 					}
 				}
 			}
 		}
 
 		// player in gereedheid brengen voor volgende beurt
-		HealthComponent health = player.getComponent(HealthComponent.class);
-		health.heal(player.getCon()/100f);
-		player.animus.addMana(player.getWis()/100f);
+		HealthComponent health = player.getHealthComponent();
+		health.heal(player.getStatsComponent().getCon()/100f);
+		player.getMagicComponent().addMana(player.getStatsComponent().getWis()/100f);
 		
 		// en systems updaten
 		Engine.getPhysicsEngine().update();
@@ -114,6 +115,9 @@ public class TurnHandler {
 		}
 	}
 	
+	/*
+	 * Checks if any regions are visible that should be randomly generated.
+	 */
 	private boolean checkRegions() {	// die boolean is eigenlijk maar louche
 		Rectangle window = panel.getVisibleRectangle();
 		Zone zone = Engine.getAtlas().getCurrentZone();
@@ -139,5 +143,20 @@ public class TurnHandler {
 		} while(fixed == false);
 		
 		return generated;
+	}
+
+	/*
+	 * @return	a creature's speed
+	 */
+	private static int getSpeed(Creature creature) {
+		int penalty = 3;
+		if(InventoryHandler.getWeight(creature) > 9*creature.species.str) {
+			return 0;
+		} else if(InventoryHandler.getWeight(creature) > 6*creature.species.str) {
+			penalty = 1;
+		} else if(InventoryHandler.getWeight(creature) > 3*creature.species.str) {
+			penalty = 2;
+		}
+		return (creature.getStatsComponent().getSpd())*penalty/3;
 	}
 }

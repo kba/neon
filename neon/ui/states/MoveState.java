@@ -19,6 +19,7 @@
 package neon.ui.states;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -27,12 +28,7 @@ import neon.core.Engine;
 import neon.core.event.CombatEvent;
 import neon.core.event.TurnEvent;
 import neon.core.handlers.*;
-import neon.entities.Container;
-import neon.entities.Creature;
-import neon.entities.Door;
-import neon.entities.Entity;
-import neon.entities.Item;
-import neon.entities.Player;
+import neon.entities.*;
 import neon.entities.property.Condition;
 import neon.entities.property.Slot;
 import neon.resources.CClient;
@@ -70,7 +66,9 @@ public class MoveState extends State implements KeyListener {
 	}
 	
 	private void move(int x, int y) {
-		Point p = new Point(player.bounds.x + x, player.bounds.y + y);
+		// TODO: dit moet gedeeltelijk naar MotionHandler?
+		Rectangle bounds = player.getShapeComponent();
+		Point p = new Point(bounds.x + x, bounds.y + y);
 
 		// kijken of creature in de weg staat
 		Creature other = Engine.getAtlas().getCurrentZone().getCreature(p);
@@ -100,8 +98,9 @@ public class MoveState extends State implements KeyListener {
 	 */
 	private void act() {
 		// hier de lijst klonen, anders concurrentmodificationexceptions bij item oppakken
-		ArrayList<Long> items = new ArrayList<Long>(Engine.getAtlas().getCurrentZone().getItems(player.bounds));
-		Creature c = Engine.getAtlas().getCurrentZone().getCreature(player.bounds.getLocation());
+		Rectangle bounds = player.getShapeComponent();
+		ArrayList<Long> items = new ArrayList<Long>(Engine.getAtlas().getCurrentZone().getItems(bounds));
+		Creature c = Engine.getAtlas().getCurrentZone().getCreature(bounds.getLocation());
 		if(c != null) {
 			items.add(c.getUID());
 		}
@@ -169,14 +168,16 @@ public class MoveState extends State implements KeyListener {
 				Creature mount = player.getMount();
 				player.unmount();
 				Engine.getAtlas().getCurrentZone().addCreature(mount);
-				mount.bounds.setLocation(player.bounds.x, player.bounds.y);
+				Rectangle pBounds = player.getShapeComponent();
+				Rectangle mBounds = mount.getShapeComponent();
+				mBounds.setLocation(pBounds.x, pBounds.y);
 			}
 		} else if(code == keys.magic) {
 			int out = MagicHandler.RANGE;
-			if(player.animus.getSpell() != null) {
-				out = MagicHandler.cast(player, player.animus.getSpell());
-			} else if(player.inventory.hasEquiped(Slot.MAGIC)) {
-				Item item = (Item)Engine.getStore().getEntity(player.inventory.get(Slot.MAGIC));
+			if(player.getMagicComponent().getSpell() != null) {
+				out = MagicHandler.cast(player, player.getMagicComponent().getSpell());
+			} else if(player.getInventoryComponent().hasEquiped(Slot.MAGIC)) {
+				Item item = (Item)Engine.getStore().getEntity(player.getInventoryComponent().get(Slot.MAGIC));
 				out = MagicHandler.cast(player, item);
 			} 
 			switch(out) {
@@ -194,7 +195,7 @@ public class MoveState extends State implements KeyListener {
 	}
 	
 	private boolean hasItem(Creature creature, RItem item) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			if(Engine.getStore().getEntity(uid).getID().equals(item.id)) {
 				return true;
 			}

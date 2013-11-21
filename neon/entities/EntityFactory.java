@@ -18,7 +18,9 @@
 
 package neon.entities;
 
+import java.awt.Rectangle;
 import java.util.*;
+
 import neon.ai.*;
 import neon.core.Engine;
 import neon.core.handlers.InventoryHandler;
@@ -54,9 +56,9 @@ public class EntityFactory {
 		Item item = getItem(resource, uid);
 		
 		// positie
-		ShapeComponent itemBounds = item.getComponent(ShapeComponent.class);
+		ShapeComponent itemBounds = item.getShapeComponent();
 		itemBounds.setLocation(x, y);
-		RenderComponent renderer = item.getComponent(RenderComponent.class);
+		RenderComponent renderer = item.getRenderComponent();
 		renderer.setZ(resource.top ? Byte.MAX_VALUE : Byte.MAX_VALUE - 2);
 		
 		if(resource.svg != null) {	// svg custom look gedefinieerd
@@ -64,7 +66,7 @@ public class EntityFactory {
 			shape.setX(x);
 			shape.setY(y);
 			shape.setZ(renderer.getZ());
-			item.setComponent(RenderComponent.class, shape);
+			item.setRenderComponent(shape);
 			itemBounds.setWidth(shape.getBounds().width);
 			itemBounds.setHeight(shape.getBounds().height);
 		} 
@@ -74,7 +76,7 @@ public class EntityFactory {
 			if(resource instanceof RWeapon) {
 				mana = ((RWeapon) resource).mana;
 			}
-			item.setComponent(Enchantment.class, new Enchantment(SpellFactory.getSpell(resource.spell), mana, item.getUID()));
+			item.setMagicComponent(new Enchantment(SpellFactory.getSpell(resource.spell), mana, item.getUID()));
 		}
 		
 		return item;
@@ -109,7 +111,8 @@ public class EntityFactory {
 			name = person.name;
 		}
 		Creature creature = new Hominid(id, uid, name, species, Gender.OTHER);
-		creature.bounds.setLocation(x, y);
+		Rectangle bounds = creature.getShapeComponent();
+		bounds.setLocation(x, y);
 		for(String i : person.items) {
 			long itemUID = Engine.getStore().createNewEntityUID();
 			Item item = EntityFactory.getItem(i, itemUID);
@@ -117,9 +120,9 @@ public class EntityFactory {
 			InventoryHandler.addItem(creature, itemUID);
 		}
 		for(String s : person.spells) {
-			creature.animus.addSpell(neon.magic.SpellFactory.getSpell(s));
+			creature.getMagicComponent().addSpell(neon.magic.SpellFactory.getSpell(s));
 		}
-		FactionComponent factions = creature.getComponent(FactionComponent.class);
+		FactionComponent factions = creature.getFactionComponent();
 		for(String f : person.factions.keySet()) {
 			factions.addFaction(f, person.factions.get(f));
 		}
@@ -150,7 +153,8 @@ public class EntityFactory {
 			}
 			
 			// positie
-			creature.bounds.setLocation(x, y);
+			Rectangle bounds = creature.getShapeComponent();
+			bounds.setLocation(x, y);
 			
 			// brain
 			creature.brain = aiFactory.getAI(creature);

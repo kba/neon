@@ -29,9 +29,7 @@ import neon.entities.Creature;
 import neon.entities.Door;
 import neon.entities.Item;
 import neon.entities.Weapon;
-import neon.entities.components.Enchantment;
 import neon.entities.components.FactionComponent;
-import neon.entities.components.ShapeComponent;
 import neon.entities.property.Condition;
 import neon.entities.property.Skill;
 import neon.entities.property.Slot;
@@ -102,11 +100,11 @@ public abstract class AI {
 	 * @return	the disposition of the creature with this AI towards the given creature
 	 */
 	public byte getDisposition(Creature other) {
-		byte disposition = (byte)(40 + other.getCha());
+		byte disposition = (byte)(40 + other.getStatsComponent().getCha());
 		if(creature.species.id.equals(other.species.id)) {
 			disposition += 5;		// zelfde soort is ok
 		}
-		FactionComponent factions = creature.getComponent(FactionComponent.class);
+		FactionComponent factions = creature.getFactionComponent();
 		for(String faction : factions.getFactions().keySet()) {
 			if(factions.isMember(faction)) {
 				disposition += 10;	// zelfde faction is nog meer ok
@@ -152,8 +150,8 @@ public abstract class AI {
 			return false;
 		} else {
 			// TODO: rekening houden met sneaken en lichtjes
-			Rectangle cBounds = creature.getComponent(ShapeComponent.class);
-			Rectangle oBounds = other.getComponent(ShapeComponent.class);
+			Rectangle cBounds = creature.getShapeComponent();
+			Rectangle oBounds = other.getShapeComponent();
 			return Point.distance(cBounds.x, cBounds.y, oBounds.x, oBounds.y) < 16;
 		}
 	}
@@ -168,7 +166,7 @@ public abstract class AI {
 		if(creature.hasCondition(Condition.BLIND)) {
 			return false;
 		} else {
-			Rectangle bounds = creature.getComponent(ShapeComponent.class);
+			Rectangle bounds = creature.getShapeComponent();
 			return p.distance(bounds.x, bounds.y) < 16;
 		}
 	}
@@ -178,10 +176,10 @@ public abstract class AI {
 	 */
 	protected boolean heal() {
 		// eerst potions en scrolls bekijken?
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item instanceof Item.Scroll || item instanceof Item.Potion) {
-				RSpell formula = item.getComponent(Enchantment.class).getSpell();
+				RSpell formula = item.getMagicComponent().getSpell();
 				
 				if(formula.effect.equals(Effect.RESTORE_HEALTH) && formula.range == 0) {
 					MagicHandler.cast(creature, item);
@@ -191,13 +189,14 @@ public abstract class AI {
 			}
 		}
 		int time = Engine.getTimer().getTime();
-		for(RSpell.Power power : creature.animus.getPowers()) {
-			if(power.effect.equals(Effect.RESTORE_HEALTH) && power.range == 0 && creature.animus.canUse(power, time)) {
+		for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
+			if(power.effect.equals(Effect.RESTORE_HEALTH) && power.range == 0 && 
+					creature.getMagicComponent().canUse(power, time)) {
 				MagicHandler.cast(creature, power);
 				return true;
 			}
 		}
-		for(RSpell spell : creature.animus.getSpells()) {
+		for(RSpell spell : creature.getMagicComponent().getSpells()) {
 			if(spell.effect.equals(Effect.RESTORE_HEALTH) && spell.range == 0) {
 				MagicHandler.cast(creature, spell);
 				return true;
@@ -229,10 +228,10 @@ public abstract class AI {
 	 */
 	private boolean cure(Effect effect) {
 		// eerst potions en scrolls bekijken?
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item instanceof Item.Scroll || item instanceof Item.Potion) {
-				RSpell formula = item.getComponent(Enchantment.class).getSpell();
+				RSpell formula = item.getMagicComponent().getSpell();
 				if(formula.effect.equals(effect) && formula.range == 0) {
 					MagicHandler.cast(creature, item);
 					InventoryHandler.removeItem(creature, item.getUID());
@@ -241,13 +240,14 @@ public abstract class AI {
 			}
 		}
 		int time = Engine.getTimer().getTime();
-		for(RSpell.Power power : creature.animus.getPowers()) {
-			if(power.effect.equals(effect) && power.range == 0 && creature.animus.canUse(power, time)) {
+		for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
+			if(power.effect.equals(effect) && power.range == 0 && 
+					creature.getMagicComponent().canUse(power, time)) {
 				MagicHandler.cast(creature, power);
 				return true;
 			}
 		}
-		for(RSpell spell : creature.animus.getSpells()) {
+		for(RSpell spell : creature.getMagicComponent().getSpells()) {
 			if(spell.effect.equals(effect) && spell.range == 0) {
 				MagicHandler.cast(creature, spell);
 				return true;
@@ -260,7 +260,7 @@ public abstract class AI {
 	 * equip(slot): proberen iets te equipen dat in dit slot past
 	 */
 	private boolean equip(Slot slot) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item instanceof Weapon && slot.equals(((Weapon)item).getSlot())) {
 				WeaponType type = ((Weapon)item).getWeaponType();
@@ -288,8 +288,8 @@ public abstract class AI {
 	 * flee: wegvluchten van de jager
 	 */
 	protected void flee(Creature hunter) {
-		Rectangle cBounds = creature.getComponent(ShapeComponent.class);
-		Rectangle hBounds = hunter.getComponent(ShapeComponent.class);
+		Rectangle cBounds = creature.getShapeComponent();
+		Rectangle hBounds = hunter.getShapeComponent();
 
 		int dx = 0;
 		int dy = 0;
@@ -343,7 +343,7 @@ public abstract class AI {
 	 */
 	protected void hunt(int range, Point home, Creature prey) {
 		// huidige positie van actor even bijhouden
-		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		Rectangle bounds = creature.getShapeComponent();
 		// prooi aanvallen
 		hunt(prey);			
 		// indien te ver verwijderd van home, terugkeren
@@ -357,7 +357,7 @@ public abstract class AI {
 	 */
 	protected void wander(int range, Point home) {
 		// huidige positie creature opslaan
-		Rectangle bounds = creature.getComponent(ShapeComponent.class);
+		Rectangle bounds = creature.getShapeComponent();
 		double oldDistance = home.distance(bounds.getLocation());
 		// wandel willekeurig rond
 		wander();
@@ -372,8 +372,8 @@ public abstract class AI {
 	 * wander: wandel gewoon wat rond
 	 */
 	protected void wander() {
-		Rectangle cBounds = creature.getComponent(ShapeComponent.class);
-		Rectangle pBounds = Engine.getPlayer().getComponent(ShapeComponent.class);
+		Rectangle cBounds = creature.getShapeComponent();
+		Rectangle pBounds = Engine.getPlayer().getShapeComponent();
 		
 		int dx = 1 - (int)(Math.random()*3);
 		int dy = 1 - (int)(Math.random()*3);
@@ -389,8 +389,8 @@ public abstract class AI {
 	 * wander(point): naar een bepaald punt wandelen
 	 */
 	protected void wander(Point destination) {
-		Rectangle pBounds = Engine.getPlayer().getComponent(ShapeComponent.class);
-		Rectangle cBounds = creature.getComponent(ShapeComponent.class);
+		Rectangle pBounds = Engine.getPlayer().getShapeComponent();
+		Rectangle cBounds = creature.getShapeComponent();
 
 		Point player = pBounds.getLocation();
 		Point next = PathFinder.findPath(creature, cBounds.getLocation(), destination)[0];
@@ -404,27 +404,28 @@ public abstract class AI {
 	 */
 	protected void hunt(Creature prey) {
 		int dice = neon.util.Dice.roll(1,2,0);
-		Rectangle creaturePos = creature.getComponent(ShapeComponent.class);
-		Rectangle preyPos = prey.getComponent(ShapeComponent.class);
+		Rectangle creaturePos = creature.getShapeComponent();
+		Rectangle preyPos = prey.getShapeComponent();
 		
 		if(dice == 1) {
 			int time = Engine.getTimer().getTime();
-			for(RSpell.Power power : creature.animus.getPowers()) {
-				if(power.effect.getSchool().equals(Skill.DESTRUCTION) && creature.animus.canUse(power, time) && 
+			for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
+				if(power.effect.getSchool().equals(Skill.DESTRUCTION) && 
+						creature.getMagicComponent().canUse(power, time) && 
 						power.range >= Point.distance(creaturePos.x, creaturePos.y, 
 						preyPos.x, preyPos.y)) {
-					creature.animus.equipSpell(power);
-					Rectangle bounds = prey.getComponent(ShapeComponent.class);
+					creature.getMagicComponent().equipSpell(power);
+					Rectangle bounds = prey.getShapeComponent();
 					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
-			for(RSpell spell : creature.animus.getSpells()) {
+			for(RSpell spell : creature.getMagicComponent().getSpells()) {
 				if(spell.effect.getSchool().equals(Skill.DESTRUCTION) && 
 						spell.range >= Point.distance(creaturePos.x, creaturePos.y, 
 						preyPos.x, preyPos.y)) {
-					creature.animus.equipSpell(spell);
-					Rectangle bounds = prey.getComponent(ShapeComponent.class);
+					creature.getMagicComponent().equipSpell(spell);
+					Rectangle bounds = prey.getShapeComponent();
 					MagicHandler.cast(creature, bounds.getLocation());
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
@@ -432,7 +433,7 @@ public abstract class AI {
 		} 
 
 		Point p;
-		if(creature.getInt() < 5) {		// als wezen lomp is, gewoon kortste weg proberen
+		if(creature.getStatsComponent().getInt() < 5) {		// als wezen lomp is, gewoon kortste weg proberen
 			int dx = 0;
 			int dy = 0;
 			if(creaturePos.x < preyPos.x) { 
@@ -447,17 +448,19 @@ public abstract class AI {
 			}				
 			p = new Point(creaturePos.x + dx, creaturePos.y + dy);
 		} else {						// als wezen slimmer is, A* proberen
-			Rectangle cBounds = creature.getComponent(ShapeComponent.class);
-			Rectangle pBounds = prey.getComponent(ShapeComponent.class);
+			Rectangle cBounds = creature.getShapeComponent();
+			Rectangle pBounds = prey.getShapeComponent();
 			p = PathFinder.findPath(creature, cBounds.getLocation(), pBounds.getLocation())[0];
 		}
 
 		if(p.distance(preyPos.x, preyPos.y) < 1) {
-			if(creature.inventory.hasEquiped(Slot.WEAPON) && creature.getWeapon().isRanged()) {
+			long uid = creature.getInventoryComponent().get(Slot.WEAPON);
+			Weapon weapon = (Weapon)Engine.getStore().getEntity(uid);
+			if(creature.getInventoryComponent().hasEquiped(Slot.WEAPON) && weapon.isRanged()) {
 				if(!(CombatUtils.getWeaponType(creature).equals(WeaponType.THROWN) || equip(Slot.AMMO))) {
-					InventoryHandler.unequip(creature.getWeapon().getUID(), creature);
+					InventoryHandler.unequip(weapon.getUID(), creature);
 				}
-			} else if(!creature.inventory.hasEquiped(Slot.WEAPON)) {
+			} else if(!creature.getInventoryComponent().hasEquiped(Slot.WEAPON)) {
 				equip(Slot.WEAPON);
 			} 
 			Engine.post(new CombatEvent(creature, prey));
@@ -471,7 +474,7 @@ public abstract class AI {
 	}
 	
 	private boolean hasItem(Creature creature, RItem item) {
-		for(long uid : creature.inventory) {
+		for(long uid : creature.getInventoryComponent()) {
 			if(Engine.getStore().getEntity(uid).getID().equals(item.id)) {
 				return true;
 			}

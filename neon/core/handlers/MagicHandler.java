@@ -18,14 +18,12 @@
 
 package neon.core.handlers;
 
-import neon.magic.*;
-import neon.resources.RSpell;
-import neon.util.Dice;
-
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.util.Collection;
-
+import neon.magic.*;
+import neon.resources.RSpell;
+import neon.util.Dice;
 import neon.core.Engine;
 import neon.core.event.MagicTask;
 import neon.entities.Creature;
@@ -81,7 +79,7 @@ public class MagicHandler {
 			for(Creature creature : creatures) {
 				castSpell(creature, null, spell);
 			}
-			if(box.contains(Engine.getPlayer().bounds)) {
+			if(box.contains(Engine.getPlayer().getShapeComponent())) {
 				castSpell(Engine.getPlayer(), null, spell);
 			}
 		}
@@ -95,19 +93,20 @@ public class MagicHandler {
 	 * @return	the result of the casting
 	 */
 	public static int cast(Creature caster, Point target) {
-		RSpell formula = caster.animus.getSpell();
+		Rectangle bounds = caster.getShapeComponent();
+		RSpell formula = caster.getMagicComponent().getSpell();
 		
 		if(formula == null) {
 			return NONE;	// geen spell/enchantment beschikbaar
 		} else if(caster.hasCondition(Condition.SILENCED)) {
 			return SILENCED;	// gesilenced
-		} else if(target.distance(caster.bounds.getLocation()) > formula.range) {
+		} else if(target.distance(bounds.getLocation()) > formula.range) {
 			return RANGE;	// out of range
 		} else {
 			if(formula instanceof RSpell.Power) {
 				int time = Engine.getTimer().getTime();
-				if(caster.animus.canUse((RSpell.Power)formula, time)) {
-					caster.animus.usePower((RSpell.Power)formula, time);
+				if(caster.getMagicComponent().canUse((RSpell.Power)formula, time)) {
+					caster.getMagicComponent().usePower((RSpell.Power)formula, time);
 				} else {	// te kort geleden power gecast
 					return INTERVAL;
 				}
@@ -119,10 +118,10 @@ public class MagicHandler {
 				} else if(!formula.effect.equals(Effect.SCRIPTED) && 
 						MagicUtils.check(caster, formula) < 20 + penalty) {
 					return SKILL;	// skill check gefaald
-				} else if(caster.animus.getMana() < MagicUtils.getMana(formula)) {
+				} else if(caster.getMagicComponent().getMana() < MagicUtils.getMana(formula)) {
 					return MANA;	// genoeg mana om te casten?
 				} else {
-					caster.animus.addMana(-MagicUtils.getMana(formula));
+					caster.getMagicComponent().addMana(-MagicUtils.getMana(formula));
 				}
 			}
 
@@ -141,7 +140,7 @@ public class MagicHandler {
 				}
 			} else {
 				Collection<Creature> creatures = Engine.getAtlas().getCurrentZone().getCreatures(box);
-				if(box.contains(Engine.getPlayer().bounds.getLocation())) {
+				if(box.contains(Engine.getPlayer().getShapeComponent())) {
 					creatures.add(Engine.getPlayer());
 				}
 				for(Creature creature : creatures) {
@@ -163,7 +162,8 @@ public class MagicHandler {
 	 * @return	the result of the cast
 	 */
 	public static int cast(Creature caster, Point target, Item item) {
-		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Rectangle bounds = caster.getShapeComponent();
+		Enchantment enchantment = item.getMagicComponent();
 		RSpell formula = null;
 		
 		if(item instanceof Item.Scroll) {
@@ -176,7 +176,7 @@ public class MagicHandler {
 			return MANA;			
 		} else if(target == null) {
 			return NULL;
-		} else if(formula.range < target.distance(caster.bounds.getLocation())) {
+		} else if(formula.range < target.distance(bounds.getLocation())) {
 			return RANGE;
 		} else {
 			if(item instanceof Item.Scroll) {
@@ -198,7 +198,7 @@ public class MagicHandler {
 				}
 			} else {
 				Collection<Creature> creatures = Engine.getAtlas().getCurrentZone().getCreatures(box);
-				if(box.contains(Engine.getPlayer().bounds.getLocation())) {
+				if(box.contains(Engine.getPlayer().getShapeComponent())) {
 					creatures.add(Engine.getPlayer());
 				}
 				for(Creature creature : creatures) {
@@ -219,7 +219,7 @@ public class MagicHandler {
 	 * @return	the result of the cast
 	 */
 	public static int cast(Creature caster, Item item) {
-		Enchantment enchantment = item.getComponent(Enchantment.class);
+		Enchantment enchantment = item.getMagicComponent();
 		RSpell formula = null;
 		
 		if(item instanceof Item.Scroll) {
@@ -257,8 +257,8 @@ public class MagicHandler {
 		} else  {
 			if(spell instanceof RSpell.Power) {
 				int time = Engine.getTimer().getTime();
-				if(caster.animus.canUse((RSpell.Power)spell, time)) {
-					caster.animus.usePower((RSpell.Power)spell, time);
+				if(caster.getMagicComponent().canUse((RSpell.Power)spell, time)) {
+					caster.getMagicComponent().usePower((RSpell.Power)spell, time);
 					castSpell(caster, caster, spell);
 					return OK;
 				} else {	// te kort geleden power gecast
@@ -271,10 +271,10 @@ public class MagicHandler {
 				} else if(!spell.effect.equals(Effect.SCRIPTED) && 
 						MagicUtils.check(caster, spell) < 20 + penalty) {
 					return SKILL;	// skill check gefaald
-				} else 	if(caster.animus.getMana() < MagicUtils.getMana(spell)) {
+				} else 	if(caster.getMagicComponent().getMana() < MagicUtils.getMana(spell)) {
 					return MANA;	// genoeg mana om te casten?
 				} else {
-					caster.animus.addMana(-MagicUtils.getMana(spell));
+					caster.getMagicComponent().addMana(-MagicUtils.getMana(spell));
 					castSpell(caster, caster, spell);
 					return OK;
 				}
@@ -297,7 +297,7 @@ public class MagicHandler {
 		
 		if(target.hasAbility(Ability.SPELL_ABSORPTION)) {
 			penalty += target.getAbility(Ability.SPELL_ABSORPTION);
-			target.animus.addMana(MagicUtils.getMana(formula)*penalty/100);
+			target.getMagicComponent().addMana(MagicUtils.getMana(formula)*penalty/100);
 		}
 		if(target.hasAbility(Ability.SPELL_RESISTANCE)) {
 			penalty += target.getAbility(Ability.SPELL_RESISTANCE);
@@ -348,7 +348,7 @@ public class MagicHandler {
 	 * @return
 	 */
 	public static int eat(Creature eater, Item.Food food) {
-		Enchantment enchantment = food.getComponent(Enchantment.class);
+		Enchantment enchantment = food.getMagicComponent();
 		int check = Math.max(1, SkillHandler.check(eater, Skill.ALCHEMY)/10);
 		RSpell spell = new RSpell("", 0, Dice.roll(1, check, 0), 
 				enchantment.getSpell().effect.toString(), 1, Dice.roll(1, check, 0), "spell");
@@ -363,7 +363,7 @@ public class MagicHandler {
 	 * @return
 	 */
 	public static int drink(Creature drinker, Item.Potion potion) {
-		Enchantment enchantment = potion.getComponent(Enchantment.class);
+		Enchantment enchantment = potion.getMagicComponent();
 		RSpell spell = enchantment.getSpell();
 		InventoryHandler.removeItem(drinker, potion.getUID());
 		return castSpell(drinker, drinker, spell);

@@ -113,7 +113,7 @@ public class RepairDialog implements KeyListener {
 
 	private void initItems() {
 		listData = new ArrayList<Item>();
-		for(long uid : player.inventory) {
+		for(long uid : player.getInventoryComponent()) {
 			Item item = (Item)Engine.getStore().getEntity(uid);
 			if(item instanceof Weapon && ((Weapon)item).getState() < 100) {
 				listData.add(item);
