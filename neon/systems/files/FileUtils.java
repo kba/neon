@@ -40,7 +40,6 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
 public class FileUtils {
-	
 	/**
 	 * Copies all contents of a source directory to a destination directory
 	 * @param from	the source directory
@@ -72,7 +71,7 @@ public class FileUtils {
 	    }
 
 	    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
-	    	try {
+	    	try {	// TODO: fout onder linux
 	    		Files.copy(dir, target.resolve(source.relativize(dir)));
 	    	} catch (IOException e) {
 	    		e.printStackTrace();

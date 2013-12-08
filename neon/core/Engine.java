@@ -39,8 +39,8 @@ import neon.systems.io.Port;
 import net.engio.mbassy.bus.MBassador;
 
 /**
- * The engine class is the core of the neon roguelike engine. It is essentially
- * a finite state machine with some extras to keep track of all game elements.
+ * The engine class is the core of the neon roguelike engine. It keeps track of 
+ * all game elements.
  * 
  * @author mdriesen
  */
@@ -53,9 +53,9 @@ public class Engine implements Runnable {
 	private static Logger logger;
 	private static QuestTracker quests;	
 	private static MBassador<EventObject> bus;	// event bus
-	private static TaskQueue queue;
 	private static ResourceManager resources;
 	
+	private static TaskQueue queue;
 	private Configuration config;
 
 	// wordt extern geset
@@ -81,10 +81,13 @@ public class Engine implements Runnable {
 		// nog engine componenten opzetten
 		quests = new QuestTracker();
 		config = new Configuration(resources);
-		initEvents();		
 	}
 	
-	private void initEvents() {
+	/**
+	 * This method is the run method of the gamethread. It sets up the event
+	 * system.
+	 */
+	public void run() {
 		EventAdapter adapter = new EventAdapter(quests);
 		bus.subscribe(queue);
 		bus.subscribe(new CombatHandler());	
@@ -92,13 +95,8 @@ public class Engine implements Runnable {
 		bus.subscribe(new InventoryHandler());
 		bus.subscribe(adapter);
 		bus.subscribe(quests);
-		bus.subscribe(new GameLoader(config));
-	}
-	
-	/**
-	 * This method is the run method of the gamethread. It does nothing at the moment.
-	 */
-	public void run() {
+		bus.subscribe(new GameLoader(this, config));
+		bus.subscribe(new GameSaver(queue));
 	}
 	
 	/**
@@ -195,7 +193,7 @@ public class Engine implements Runnable {
 	/**
 	 * Starts a new game.
 	 */
-	public static void startGame(Game g) {
+	public void startGame(Game g) {
 		game = g;
 		Player player = g.getPlayer();
 		

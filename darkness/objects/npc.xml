@@ -42,6 +42,7 @@
     <factions>
       <faction id="kusunda" />
     </factions>
+    <script>testDeath</script>
   </npc>
   <npc id="Uenia" race="light elf">
     <factions>

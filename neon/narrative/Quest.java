@@ -20,8 +20,9 @@ package neon.narrative;
 
 import java.util.Collection;
 import java.util.HashMap;
-import neon.resources.RQuest;
+
 import neon.resources.quest.Conversation;
+import neon.resources.quest.RQuest;
 
 public class Quest {
 	public RQuest template;

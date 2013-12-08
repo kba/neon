@@ -16,12 +16,13 @@
  *	along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package neon.resources;
+package neon.resources.quest;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import neon.resources.quest.Conversation;
-import neon.resources.quest.Topic;
+
+import neon.resources.RData;
+
 import org.jdom2.Element;
 
 /**

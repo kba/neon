@@ -18,11 +18,12 @@
 
 package neon.entities.components;
 
-//import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class ScriptComponent implements Component {
 	private final long uid;
-//	private ArrayList<String> scripts = new ArrayList<>();
+	private ArrayList<String> scripts = new ArrayList<>();
 	
 	public ScriptComponent(long uid) {
 		this.uid = uid;
@@ -32,4 +33,25 @@ public class ScriptComponent implements Component {
 	public long getUID() {
 		return uid;
 	}
+	
+	public void addScript(String script) {
+		scripts.add(script);
+	}
+	
+	public Collection<String> getScripts() {
+		return scripts;
+	}
+	
+	/*
+	 * TODO: script object voor entities
+	 * 
+	 * in javascript: 
+	 * function entity() {
+	 * 	bounds = entity.getShapeComponent();
+	 *  social = entity.getFactionComponent();
+	 *  ...
+	 * }
+	 * 
+	 * kijken hoe in java de juiste entity aan script gehangen moet worden
+	 */
 }

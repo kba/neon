@@ -107,9 +107,9 @@ public class TravelDialog implements KeyListener {
 			break;
 		case KeyEvent.VK_ENTER:
 			try {
-				if(player.getMoney() >= costData.get(destinations.getSelectedValue())) {
+				if(player.getInventoryComponent().getMoney() >= costData.get(destinations.getSelectedValue())) {
 					travel(destinations.getSelectedValue());
-					player.addMoney(-costData.get(destinations.getSelectedValue()));
+					player.getInventoryComponent().addMoney(-costData.get(destinations.getSelectedValue()));
 					frame.dispose();
 					bus.publishAsync(new TransitionEvent("return"));
 				} else {

@@ -19,9 +19,11 @@
 package neon.editor.editors;
 
 import javax.swing.*;
+
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.border.*;
@@ -29,7 +31,7 @@ import javax.swing.border.*;
 import neon.editor.DialogEditor;
 import neon.editor.NeonFormat;
 import neon.editor.help.HelpLabels;
-import neon.resources.RQuest;
+import neon.resources.quest.RQuest;
 import neon.resources.quest.Topic;
 
 import org.jdom2.Element;

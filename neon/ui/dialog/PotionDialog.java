@@ -102,7 +102,7 @@ public class PotionDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				RRecipe potion = potions.getSelectedValue();
-				if(player.getMoney() >= potion.cost) {
+				if(player.getInventoryComponent().getMoney() >= potion.cost) {
 					for(String item : potion.ingredients) {
 						long uid = removeItem(player, item);
 						Engine.getStore().removeEntity(uid);
@@ -110,7 +110,7 @@ public class PotionDialog implements KeyListener {
 					Item item = EntityFactory.getItem(potion.toString(), Engine.getStore().createNewEntityUID());
 					Engine.getStore().addEntity(item);
 					player.getInventoryComponent().addItem(item.getUID());
-					player.addMoney(-potion.cost);
+					player.getInventoryComponent().addMoney(-potion.cost);
 					initPotions();
 					ui.showMessage("Potion created.", 2);
 				} else {

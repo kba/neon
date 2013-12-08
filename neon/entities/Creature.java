@@ -33,6 +33,8 @@ import neon.entities.property.*;
  */
 public class Creature extends Entity {
 	// componenten
+	public final FactionComponent social;
+	public final Stats stats;
 	public final RCreature species;
 	public AI brain;
 	
@@ -43,14 +45,10 @@ public class Creature extends Entity {
 	// lijstjes
 	protected EnumMap<Skill, Float> skills;
 	protected ArrayList<Spell> spells;			// active spells
-	protected Set<Feat> feats;
-	protected Set<Trait> traits;
-	protected EnumMap<Ability, Integer> abilities;
 	protected Set<Condition> conditions;
 	
 	// character attributen
 	private int date = 0;						// time of death
-	private int money = 0;
 	
 	/**
 	 * Initialize a creature with the given data.
@@ -65,10 +63,11 @@ public class Creature extends Entity {
 		this.species = species;
 		components.putInstance(Animus.class, new Animus(this));
 		components.putInstance(RenderComponent.class, new CreatureRenderComponent(this));
-		components.putInstance(FactionComponent.class, new FactionComponent(uid));
+		social = new FactionComponent(uid);
 		components.putInstance(HealthComponent.class, new HealthComponent(uid, species.hit));
 		components.putInstance(Inventory.class, new Inventory(uid));
-		components.putInstance(StatsComponent.class, new StatsComponent(uid, species));
+		stats = new Stats(uid, species);
+		components.putInstance(Characteristics.class, new Characteristics(uid));
 
 		// dit eerst
 		gender = Gender.OTHER;
@@ -78,9 +77,6 @@ public class Creature extends Entity {
 		spells = new ArrayList<Spell>();
 		skills = new EnumMap<Skill, Float>(species.skills);
 		conditions = EnumSet.noneOf(Condition.class);
-		feats = EnumSet.noneOf(Feat.class);
-		traits = EnumSet.noneOf(Trait.class);
-		abilities = new EnumMap<Ability, Integer>(Ability.class);		
 	}
 	
 	public Creature(String id, long uid, String name, RCreature species) {
@@ -89,7 +85,7 @@ public class Creature extends Entity {
 	}
 
 	public FactionComponent getFactionComponent() {
-		return components.getInstance(FactionComponent.class);
+		return social;
 	}
 	
 	public HealthComponent getHealthComponent() {
@@ -104,8 +100,16 @@ public class Creature extends Entity {
 		return components.getInstance(Inventory.class);
 	}
 	
-	public StatsComponent getStatsComponent() {
-		return components.getInstance(StatsComponent.class);
+	public Stats getStatsComponent() {
+		return stats;
+	}
+	
+	public Characteristics getCharacteristicsComponent() {
+		return components.getInstance(Characteristics.class);
+	}
+	
+	public AI getAI() {
+		return brain;
 	}
 	
 // conditions die een actor kan hebben
@@ -239,84 +243,6 @@ public class Creature extends Entity {
 	}
 	
 	/**
-	 * Checks if this creature has a certain feat.
-	 * 
-	 * @param feat	the feat to check
-	 * @return		whether this creature has the given feat
-	 */
-	public boolean hasFeat(Feat feat) {
-		return feats.contains(feat);
-	}
-	
-	public Collection<Feat> getFeats() {
-		return feats;
-	}
-	
-	/**
-	 * Adds a feat to this creature
-	 * 
-	 * @param feat	the feat to add
-	 */
-	public void addFeat(Feat feat) {
-		feats.add(feat);
-	}
-	
-	/**
-	 * Checks if this creature has a certain trait.
-	 * 
-	 * @param trait	the trait to check
-	 * @return		whether this creature has the given trait
-	 */
-	public boolean hasTrait(Trait trait) {
-		return traits.contains(trait);
-	}
-	
-	public Collection<Trait> getTraits() {
-		return traits;
-	}
-	
-	/**
-	 * Adds a trait to this creature
-	 * 
-	 * @param trait	the trait to add
-	 */
-	public void addTrait(Trait trait) {
-		traits.add(trait);
-	}
-	
-	/**
-	 * Checks if this creature has a certain ability.
-	 * 
-	 * @param ability	the ability to check
-	 * @return		whether this creature has the given ability
-	 */
-	public boolean hasAbility(Ability ability) {
-		return abilities.containsKey(ability);
-	}
-	
-	public Collection<Ability> getAbilities() {
-		return abilities.keySet();
-	}
-	
-	public int getAbility(Ability ability) {
-		return abilities.get(ability);
-	}
-	
-	/**
-	 * Adds an ability to this creature
-	 * 
-	 * @param ability	the ability to add
-	 * @param value		the magnitude of the ability
-	 */
-	public void addAbility(Ability ability, int value) {
-		if(abilities.containsKey(ability)) {
-			abilities.put(ability, abilities.get(ability) + value);
-		} else {
-			abilities.put(ability, value);
-		}
-	}
-	
-	/**
 	 * @return	this creature's name
 	 */
 	public String toString() {
@@ -348,15 +274,7 @@ public class Creature extends Entity {
 	public EnumMap<Skill, Float> getSkills() {
 		return skills;		
 	}
-		
-	public int getMoney() {
-		return money;
-	}
-	
-	public void addMoney(int amount) {
-		money += amount;
-	}
-	
+
 	public boolean hasDialog() {
 		return false;
 	}

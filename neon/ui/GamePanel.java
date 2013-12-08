@@ -32,7 +32,7 @@ import neon.core.handlers.CombatUtils;
 import neon.entities.Player;
 import neon.entities.components.HealthComponent;
 import neon.entities.components.ShapeComponent;
-import neon.entities.components.StatsComponent;
+import neon.entities.components.Stats;
 import neon.entities.property.Condition;
 import neon.ui.graphics.*;
 import neon.util.ColorFactory;
@@ -227,7 +227,7 @@ public class GamePanel extends JComponent {
 		AVLabel.setText("AV: " + player.getAVString());
 		DVLabel.setText("DV: " + CombatUtils.getDV(player));
 
-		StatsComponent stats = player.getStatsComponent();
+		Stats stats = player.getStatsComponent();
 		if(stats.getStr() > (int)player.species.str) {
 			strLabel.setText("<html>strength: <font color=green>" + stats.getStr() + "</font></html>");			
 		} else if(stats.getStr() < (int)player.species.str) {

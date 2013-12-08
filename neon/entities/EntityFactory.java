@@ -126,6 +126,9 @@ public class EntityFactory {
 		for(String f : person.factions.keySet()) {
 			factions.addFaction(f, person.factions.get(f));
 		}
+		for(String script : person.scripts) {
+			creature.getScriptComponent().addScript(script);
+		}
 		return creature;
 	}
 	

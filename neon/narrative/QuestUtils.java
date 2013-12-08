@@ -19,7 +19,7 @@
 package neon.narrative;
 
 import neon.core.Engine;
-import neon.resources.RQuest;
+import neon.resources.quest.RQuest;
 import neon.resources.quest.Topic;
 
 public class QuestUtils {

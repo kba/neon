@@ -32,7 +32,7 @@ public class Main {
 
 	/**
      * The application's main method. This method creates an {@code Engine} and 
-     * a {@code UserInterface} instance and connects them.
+     * a {@code Client} instance and connects them.
      * 
      * @param args	the command line arguments
      */
@@ -48,8 +48,8 @@ public class Main {
 		Client client = new Client(cPort, version);
 		
 		// custom look and feels zijn soms wat strenger als gewone, blijkbaar
-		// is het grootste probleem dat in modules als main menu delen van de ui buiten 
-		// de swing thread worden aangemaakt. Daarom alles maar op event-dispatch thread.
+		// is het grootste probleem dat delen van de ui buiten de swing thread 
+		// worden aangemaakt. Daarom alles maar op event-dispatch thread.
 		javax.swing.SwingUtilities.invokeLater(client);
 		engine.run();
 	}

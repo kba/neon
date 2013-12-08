@@ -18,8 +18,14 @@
 
 package neon.core.handlers;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
+import neon.core.Engine;
 import neon.core.event.DeathEvent;
 import neon.entities.Creature;
+import neon.entities.components.ScriptComponent;
+import neon.resources.RScript;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.References;
@@ -34,8 +40,25 @@ public class DeathHandler {
 	public DeathHandler() {}
 	
 	@Handler public void handle(DeathEvent de) {
-		Creature c = de.getCreature();
+		Creature creature = de.getCreature();
+		
 		// creature laten doodgaan
-		c.die(de.getTime());
+		creature.die(de.getTime());
+		
+		// scripts draaien op creature
+		ScriptComponent sc = creature.getScriptComponent();
+		
+		for(String s : sc.getScripts()) {
+			RScript rs = (RScript) Engine.getResources().getResource(s, "script");
+			ScriptEngine se = Engine.getScriptEngine();
+			try {
+				se.eval(rs.script);
+				((Invocable) se).invokeFunction("onDeath", "0");
+			} catch (ScriptException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

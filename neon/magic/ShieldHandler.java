@@ -42,12 +42,12 @@ public class ShieldHandler implements EffectHandler {
 
 	public void addEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
-		target.addAbility(ability, (int)spell.getMagnitude());
+		target.getCharacteristicsComponent().addAbility(ability, (int)spell.getMagnitude());
 	}
 
 	public void removeEffect(Spell spell) {
 		Creature target = (Creature)spell.getTarget();
-		target.addAbility(ability, -(int)spell.getMagnitude());
+		target.getCharacteristicsComponent().addAbility(ability, -(int)spell.getMagnitude());
 	}
 
 	public void repeatEffect(Spell spell) {

@@ -63,7 +63,7 @@ public class InventoryHandler {
 	public static void addItem(Creature creature, long uid) {
 		Item item = (Item)Engine.getStore().getEntity(uid);
 		if(item instanceof Item.Coin) {
-			creature.addMoney(item.resource.cost);
+			creature.getInventoryComponent().addMoney(item.resource.cost);
 		} else {
 			creature.getInventoryComponent().addItem(uid);
 		}

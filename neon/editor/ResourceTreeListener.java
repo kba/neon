@@ -19,6 +19,7 @@
 package neon.editor;
 
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import neon.editor.editors.AfflictionEditor;
@@ -38,6 +39,7 @@ import neon.editor.editors.TattooEditor;
 import neon.editor.editors.ZoneThemeEditor;
 import neon.editor.resources.RFaction;
 import neon.resources.*;
+import neon.resources.quest.RQuest;
 
 import javax.swing.tree.*;
 

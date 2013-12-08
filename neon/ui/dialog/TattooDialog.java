@@ -102,10 +102,10 @@ public class TattooDialog implements KeyListener {
 			try {
 				RTattoo tattoo = tattoos.getSelectedValue();
 				if(!player.getTattoos().contains(tattoo)) {
-					if(player.getMoney() >= tattoo.cost) {
+					if(player.getInventoryComponent().getMoney() >= tattoo.cost) {
 						player.addTattoo(tattoo);
 						ui.showMessage("You got the tattoo '" + tattoo.name + "'.", 2);
-						player.addMoney(-tattoo.cost);
+						player.getInventoryComponent().addMoney(-tattoo.cost);
 						initTattoos();
 					} else {
 						ui.showMessage("You don't have enough money.", 2);						

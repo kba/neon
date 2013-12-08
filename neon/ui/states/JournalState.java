@@ -28,7 +28,7 @@ import neon.core.handlers.CombatUtils;
 import neon.core.handlers.InventoryHandler;
 import neon.entities.Player;
 import neon.entities.components.HealthComponent;
-import neon.entities.components.StatsComponent;
+import neon.entities.components.Stats;
 import neon.entities.property.*;
 import neon.resources.RSpell;
 import neon.ui.UserInterface;
@@ -184,7 +184,7 @@ public class JournalState extends State implements FocusListener {
 		traits.removeAll();
 		abilities.removeAll();
 		
-		StatsComponent stats = player.getStatsComponent();
+		Stats stats = player.getStatsComponent();
 		stuff.add(new JLabel("Name: " + player.getName()));
 		stuff.add(new JLabel("Race: " + player.species.id));
 		stuff.add(new JLabel("Specialisation: " + player.getSpecialisation()));
@@ -209,14 +209,14 @@ public class JournalState extends State implements FocusListener {
 			skills.add(new JLabel(skill.toString().toLowerCase() + ": " + player.getSkill(skill)));
 		}
 		
-		for(Feat feat : player.getFeats()) {
+		for(Feat feat : player.getCharacteristicsComponent().getFeats()) {
 			feats.add(new JLabel(feat.text));
 		}
-		for(Trait trait : player.getTraits()) {
+		for(Trait trait : player.getCharacteristicsComponent().getTraits()) {
 			traits.add(new JLabel(trait.text));
 		}
-		for(Ability ability : player.getAbilities()) {
-			abilities.add(new JLabel(ability.text + ": " + player.getAbility(ability)));
+		for(Ability ability : player.getCharacteristicsComponent().getAbilities()) {
+			abilities.add(new JLabel(ability.text + ": " + player.getCharacteristicsComponent().getAbility(ability)));
 		}
 	}
 	

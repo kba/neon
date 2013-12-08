@@ -20,7 +20,6 @@ package neon.core;
 
 import java.io.InputStream;
 import java.util.Scanner;
-
 import neon.entities.Entity;
 import neon.ui.GamePanel;
 
@@ -41,6 +40,10 @@ public class ScriptInterface {
 
 	public Entity get(long uid) {
 		return Engine.getStore().getEntity(uid);
+	}
+	
+	public Entity getPlayer() {
+		return Engine.getPlayer();
 	}
 }
 

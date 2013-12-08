@@ -32,6 +32,9 @@ import neon.entities.components.ShapeComponent;
  * @author mdriesen
  */
 public abstract class Entity {
+	// components
+	public final ShapeComponent bounds;
+	
 	protected ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
 
 	private final long uid;
@@ -46,8 +49,7 @@ public abstract class Entity {
 		this.uid = uid;
 
 		// components
-		ShapeComponent bounds = new ShapeComponent(this, 0, 0, 1, 1);
-		components.putInstance(ShapeComponent.class, bounds);
+		bounds = new ShapeComponent(this, 0, 0, 1, 1);
 		components.putInstance(PhysicsComponent.class, new PhysicsComponent(uid, bounds));
 		components.putInstance(ScriptComponent.class, new ScriptComponent(uid));
 	}
@@ -67,7 +69,7 @@ public abstract class Entity {
 	}
 
 	public ShapeComponent getShapeComponent() {
-		return components.getInstance(ShapeComponent.class);
+		return bounds;
 	}
 
 	public RenderComponent getRenderComponent() {
@@ -80,5 +82,9 @@ public abstract class Entity {
 
 	public PhysicsComponent getPhysicsComponent() {
 		return components.getInstance(PhysicsComponent.class);
+	}
+
+	public ScriptComponent getScriptComponent() {
+		return components.getInstance(ScriptComponent.class);
 	}
 }

@@ -20,6 +20,7 @@ package neon.editor;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
@@ -34,7 +35,6 @@ import neon.resources.RCraft;
 import neon.resources.RData;
 import neon.resources.RDungeonTheme;
 import neon.resources.RItem;
-import neon.resources.RQuest;
 import neon.resources.RRecipe;
 import neon.resources.RRegionTheme;
 import neon.resources.RSign;
@@ -42,6 +42,7 @@ import neon.resources.RSpell;
 import neon.resources.RTattoo;
 import neon.resources.RZoneTheme;
 import neon.resources.RSpell.SpellType;
+import neon.resources.quest.RQuest;
 
 @SuppressWarnings("serial")
 public class ResourceAction extends AbstractAction {

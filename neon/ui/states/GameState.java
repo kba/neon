@@ -28,13 +28,11 @@ import neon.resources.CClient;
 import neon.resources.RScript;
 import neon.ui.*;
 import neon.ui.dialog.MapDialog;
-
+import neon.util.fsm.*;
 import java.awt.event.*;
 import java.io.InputStream;
 import java.util.EventObject;
 import java.util.Scanner;
-
-import neon.util.fsm.*;
 import net.engio.mbassy.bus.MBassador;
 import net.engio.mbassy.listener.Handler;
 import net.phys2d.raw.CollisionEvent;
@@ -43,7 +41,6 @@ import net.phys2d.raw.CollisionListener;
 public class GameState extends State implements KeyListener, CollisionListener {
 	private Player player;
 	private GamePanel panel;
-	private GameSaver saver;
 	private CClient keys;
 	private MBassador<EventObject> bus;
 	private UserInterface ui;
@@ -53,7 +50,6 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		this.bus = bus;
 		this.ui = ui;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
-		saver = new GameSaver();
 		panel = new GamePanel();
 		setVariable("panel", panel);
 		
@@ -130,7 +126,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 		if(quit) {
 			if(ui.showQuestion("Do you wish to quit?")) {
 				if(ui.showQuestion("Do you wish to save?")) {
-					saver.saveGame();
+					bus.publish(new SaveEvent(this));
 				} 
 				Engine.quit();
 			} else {
@@ -138,7 +134,7 @@ public class GameState extends State implements KeyListener, CollisionListener {
 			}
 		} else {
 			if(ui.showQuestion("Do you wish to save?")) {
-				saver.saveGame();
+				bus.publish(new SaveEvent(this));
 			}
 			panel.repaint();
 		}

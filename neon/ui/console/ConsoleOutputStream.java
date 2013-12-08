@@ -28,6 +28,7 @@ import java.io.Writer;
  * http://www.javaprogrammingforums.com/java-swing-tutorials/4907-java-tip-jul-29-2010-swing-console-component.html
  * 
  * @author Andrew
+ * @author mdriesen
  */
 public class ConsoleOutputStream extends Writer {
 	private JConsole console;
@@ -55,6 +56,6 @@ public class ConsoleOutputStream extends Writer {
 		for(int i = off; i < off + len; i++) {
 			temp.append(cbuf[i]);
 		}
-		console.setText(temp.toString());
+		console.setText(temp.toString() + "\n");
 	}
 }

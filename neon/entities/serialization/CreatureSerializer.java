@@ -57,7 +57,7 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		health.setHealth(in.readInt());
 		health.addBaseHealthMod(in.readFloat());
 		health.heal(in.readFloat());
-		creature.addMoney(in.readInt());
+		creature.getInventoryComponent().addMoney(in.readInt());
 		creature.getMagicComponent().setBaseModifier(in.readFloat());
 		creature.getMagicComponent().setModifier(in.readFloat());
 		String spell = in.readUTF();
@@ -80,6 +80,11 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 			creature.getInventoryComponent().put(Slot.valueOf(in.readUTF()), in.readLong());
 		}
 		
+		sCount = in.readByte();
+		for(int i = 0; i < sCount; i++) {
+			creature.getScriptComponent().addScript(in.readUTF());
+		}
+		
 		return creature;
 	}
 
@@ -95,7 +100,7 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		out.writeInt(health.getBaseHealth());
 		out.writeFloat(health.getBaseHealthMod());
 		out.writeFloat(health.getHealthMod());
-		out.writeInt(creature.getMoney());
+		out.writeInt(creature.getInventoryComponent().getMoney());
 		out.writeFloat(creature.getMagicComponent().getBaseModifier());
 		out.writeFloat(creature.getMagicComponent().getModifier());
 		if(creature.getMagicComponent().getSpell() != null) {
@@ -114,6 +119,11 @@ public class CreatureSerializer implements Serializer<Creature>, Serializable {
 		for(Slot slot : creature.getInventoryComponent().slots()) {
 			out.writeUTF(slot.name());
 			out.writeLong(creature.getInventoryComponent().get(slot));
+		}
+
+		out.writeByte(creature.getScriptComponent().getScripts().size());
+		for(String script : creature.getScriptComponent().getScripts()) {
+			out.writeUTF(script);
 		}
 	}
 	

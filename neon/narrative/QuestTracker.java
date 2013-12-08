@@ -19,11 +19,12 @@
 package neon.narrative;
 
 import java.util.*;
+
 import neon.core.Engine;
 import neon.core.event.TurnEvent;
 import neon.entities.Creature;
-import neon.resources.RQuest;
 import neon.resources.quest.Conversation;
+import neon.resources.quest.RQuest;
 import neon.resources.quest.Topic;
 import neon.util.fsm.TransitionEvent;
 import net.engio.mbassy.listener.Handler;

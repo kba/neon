@@ -182,7 +182,7 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 		}
 		buyList.setListData(buyData);
 		
-    	info.setText("Money: " + moneyString(player.getMoney()) + ".");
+    	info.setText("Money: " + moneyString(player.getInventoryComponent().getMoney()) + ".");
     	panel.repaint();		
 	}
 
@@ -198,19 +198,19 @@ public class TradeDialog implements KeyListener, ListSelectionListener {
 	
 	private void buy(Item item) {
 		int price = item.resource.cost;
-		if(price > player.getMoney()) {
+		if(price > player.getInventoryComponent().getMoney()) {
 			ui.showMessage("Not enough money to buy this item.", 2);
 		} else {
 			InventoryHandler.removeItem(trader, item.getUID());
 			player.getInventoryComponent().addItem(item.getUID());				
-			player.addMoney(-price);
+			player.getInventoryComponent().addMoney(-price);
 		}
 	}
 	
 	private void sell(Item item) {
 		InventoryHandler.removeItem(player, item.getUID());
 		trader.getInventoryComponent().addItem(item.getUID());
-		player.addMoney(item.resource.cost);
+		player.getInventoryComponent().addMoney(item.resource.cost);
 	}
 
 	public void valueChanged(ListSelectionEvent lse) {

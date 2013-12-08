@@ -21,7 +21,7 @@ package neon.entities;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
+import neon.entities.components.Characteristics;
 import neon.entities.property.Ability;
 import neon.entities.property.Gender;
 import neon.resources.RCreature;
@@ -45,8 +45,9 @@ public class Hominid extends neon.entities.Creature {
 	public void addTattoo(RTattoo tattoo) {
 		tattoos.add(tattoo);
 		Ability ability = tattoo.ability;
-		if(abilities.containsKey(ability)) {
-			abilities.put(ability, abilities.get(ability) + tattoo.magnitude);
+		Characteristics chars = getCharacteristicsComponent();
+		if(chars.hasAbility(ability)) {
+			chars.addAbility(ability, chars.getAbility(ability) + tattoo.magnitude);
 		}
 	}
 	

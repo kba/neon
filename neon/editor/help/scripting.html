@@ -12,7 +12,7 @@ used to find an entity if its uid is known. Entitities have the following functi
 	<dd>returns the string ID of an entity.
 	<dt><i>&lt;entity&gt;.getUID()</i>
 	<dd>returns the unique identifier of an entity.
-	<dt><i>&lt;entity&gt;.bounds</i> or <i>&lt;entity&gt;.getBounds()</i>
+	<dt><i>&lt;entity&gt;.bounds</i>
 	<dd>the rectangular bounds of the entity on the map.
 </dl>
 All changes to the position of an entity should be done through its <i>bounds</i> component:
@@ -30,11 +30,11 @@ Creatures have all general entity functions available, plus the following::
 <dl>
 	<dt><i>&lt;creature&gt;.getAI()</i>
 	<dd>returns the AI of a creature.
-	<dt><i>&lt;creature&gt;.addSpeed(&lt;speed increase&gt;)</i>
+	<dt><i>&lt;creature&gt;.stats.addSpeed(&lt;speed increase&gt;)</i>
 	<dd>adds speed to a creature.
-	<dt><i>&lt;creature&gt;.isMember(&lt;faction name&gt;)</i>
+	<dt><i>&lt;creature&gt;.social.isMember(&lt;faction name&gt;)</i>
 	<dd>returns whether a creature belongs to the given faction or not.
-	<dt><i>&lt;creature&gt;.getRank(&lt;faction name&gt;)</i>
+	<dt><i>&lt;creature&gt;.social.getRank(&lt;faction name&gt;)</i>
 	<dd>returns the creature's rank in the given faction (or <i>null</i> when the creature does not
 	belong to the given faction).
 </dl>

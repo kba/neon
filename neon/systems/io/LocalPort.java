@@ -59,6 +59,7 @@ public class LocalPort extends Port {
 
 	private void write(EventObject event) {
 		buffer.add(event);
-		bus.publishAsync(event);
+		// geen async, anders werkt save en quit niet meer
+		bus.publish(event);
 	}
 }

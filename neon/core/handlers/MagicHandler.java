@@ -28,6 +28,7 @@ import neon.core.Engine;
 import neon.core.event.MagicTask;
 import neon.entities.Creature;
 import neon.entities.Item;
+import neon.entities.components.Characteristics;
 import neon.entities.components.Enchantment;
 import neon.entities.property.Ability;
 import neon.entities.property.Condition;
@@ -36,7 +37,7 @@ import neon.entities.property.Skill;
 /**
  * This class handles all magic casting. 
  */
-public class MagicHandler {	
+public class MagicHandler {	// TODO: ombouwen naar event system
 	public static final int RANGE = 0;		// verkeerde range
 	public static final int NULL = 1;		// geen target geselecteerd
 	public static final int MANA = 2;		// te weinig mana of charge (voor items)
@@ -293,23 +294,24 @@ public class MagicHandler {
 	}
 	
 	private static int castSpell(Creature target, Creature caster, RSpell formula) {
+		Characteristics chars = target.getCharacteristicsComponent();
 		int penalty = 0;
 		
-		if(target.hasAbility(Ability.SPELL_ABSORPTION)) {
-			penalty += target.getAbility(Ability.SPELL_ABSORPTION);
+		if(chars.hasAbility(Ability.SPELL_ABSORPTION)) {
+			penalty += chars.getAbility(Ability.SPELL_ABSORPTION);
 			target.getMagicComponent().addMana(MagicUtils.getMana(formula)*penalty/100);
 		}
-		if(target.hasAbility(Ability.SPELL_RESISTANCE)) {
-			penalty += target.getAbility(Ability.SPELL_RESISTANCE);
+		if(chars.hasAbility(Ability.SPELL_RESISTANCE)) {
+			penalty += chars.getAbility(Ability.SPELL_RESISTANCE);
 		}
-		if(target.hasAbility(Ability.FIRE_RESISTANCE) && formula.effect == Effect.FIRE_DAMAGE) {
-			penalty += target.getAbility(Ability.FIRE_RESISTANCE);
+		if(chars.hasAbility(Ability.FIRE_RESISTANCE) && formula.effect == Effect.FIRE_DAMAGE) {
+			penalty += chars.getAbility(Ability.FIRE_RESISTANCE);
 		}
-		if(target.hasAbility(Ability.COLD_RESISTANCE) && formula.effect == Effect.FROST_DAMAGE) {
-			penalty += target.getAbility(Ability.COLD_RESISTANCE);
+		if(chars.hasAbility(Ability.COLD_RESISTANCE) && formula.effect == Effect.FROST_DAMAGE) {
+			penalty += chars.getAbility(Ability.COLD_RESISTANCE);
 		}
-		if(target.hasAbility(Ability.SHOCK_RESISTANCE) && formula.effect == Effect.SHOCK_DAMAGE) {
-			penalty += target.getAbility(Ability.SHOCK_RESISTANCE);
+		if(chars.hasAbility(Ability.SHOCK_RESISTANCE) && formula.effect == Effect.SHOCK_DAMAGE) {
+			penalty += chars.getAbility(Ability.SHOCK_RESISTANCE);
 		}
 		float mod = 1 - penalty/100;
 		
@@ -351,7 +353,7 @@ public class MagicHandler {
 		Enchantment enchantment = food.getMagicComponent();
 		int check = Math.max(1, SkillHandler.check(eater, Skill.ALCHEMY)/10);
 		RSpell spell = new RSpell("", 0, Dice.roll(1, check, 0), 
-				enchantment.getSpell().effect.toString(), 1, Dice.roll(1, check, 0), "spell");
+				enchantment.getSpell().effect.name(), 1, Dice.roll(1, check, 0), "spell");
 		return castSpell(eater, eater, spell);
 	}
 

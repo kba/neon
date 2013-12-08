@@ -20,6 +20,7 @@ package neon.core;
 
 import java.awt.Rectangle;
 import java.io.File;
+import neon.core.event.SaveEvent;
 import neon.core.event.TaskQueue;
 import neon.core.event.MagicTask;
 import neon.core.event.ScriptAction;
@@ -31,17 +32,27 @@ import neon.maps.Atlas;
 import neon.resources.RSpell;
 import neon.systems.files.XMLTranslator;
 import neon.util.fsm.Action;
+import net.engio.mbassy.listener.Handler;
+import net.engio.mbassy.listener.Listener;
+import net.engio.mbassy.listener.References;
+
 import com.google.common.collect.Multimap;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 
+@Listener(references = References.Strong)
 public class GameSaver {
-	private TaskQueue queue = Engine.getQueue();
+	private TaskQueue queue;
+	
+	public GameSaver(TaskQueue queue) {
+		this.queue = queue;
+	}
 	
 	/**
 	 * Saves the current game.
 	 */
-	public void saveGame() {
+	@Handler public void saveGame(SaveEvent se) {
 		Document doc = new Document();
 		Element root = new Element("save");
 		doc.setRootElement(root);
@@ -65,7 +76,7 @@ public class GameSaver {
 			dir.mkdir();
 		}
 		
-		// eerst alles vanuit temp naar save kopi�ren, zodat savedoc zeker niet overschreven wordt
+		// eerst alles vanuit temp naar save kopiëren, zodat savedoc zeker niet overschreven wordt
 		Engine.getAtlas().getCache().commit();
 		Engine.getStore().getCache().commit();
 		Engine.getFileSystem().storeTemp(dir);
@@ -162,7 +173,7 @@ public class GameSaver {
 		PC.addContent(stats);
 		
 		Element money = new Element("money");
-		money.setText(String.valueOf(player.getMoney()));
+		money.setText(String.valueOf(player.getInventoryComponent().getMoney()));
 		PC.addContent(money);
 		
 		for(long uid : player.getInventoryComponent()) {
@@ -183,7 +194,7 @@ public class GameSaver {
 			PC.addContent(spell);
 		}
 		
-		for(Feat f : player.getFeats()) {
+		for(Feat f : player.getCharacteristicsComponent().getFeats()) {
 			Element feat = new Element("feat");
 			feat.setText(f.toString());
 			PC.addContent(feat);

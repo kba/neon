@@ -21,9 +21,11 @@ package neon.editor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 import neon.editor.resources.*;
 import neon.resources.RCraft;
 import neon.resources.RCreature;
@@ -31,7 +33,6 @@ import neon.resources.RDungeonTheme;
 import neon.resources.RItem;
 import neon.resources.RMod;
 import neon.resources.RPerson;
-import neon.resources.RQuest;
 import neon.resources.RRecipe;
 import neon.resources.RRegionTheme;
 import neon.resources.RScript;
@@ -40,9 +41,11 @@ import neon.resources.RSpell;
 import neon.resources.RTattoo;
 import neon.resources.RTerrain;
 import neon.resources.RZoneTheme;
+import neon.resources.quest.RQuest;
 import neon.systems.files.FileSystem;
 import neon.systems.files.StringTranslator;
 import neon.systems.files.XMLTranslator;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;

@@ -110,7 +110,7 @@ public class CrafterDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				RCraft craft = items.getSelectedValue();
-				if(player.getMoney() >= craft.cost) {
+				if(player.getInventoryComponent().getMoney() >= craft.cost) {
 					Collection<Long> removed = InventoryHandler.removeItems(player, craft.raw, craft.amount);
 					for(long uid : removed) {	// gebruikte items verwijderen
 						bus.publishAsync(new StoreEvent(this, uid));
@@ -118,7 +118,7 @@ public class CrafterDialog implements KeyListener {
 					Item item = EntityFactory.getItem(craft.name, Engine.getStore().createNewEntityUID());
 					bus.publishAsync(new StoreEvent(this, item));
 					player.getInventoryComponent().addItem(item.getUID());
-					player.addMoney(-craft.cost);
+					player.getInventoryComponent().addMoney(-craft.cost);
 					ui.showMessage("Item crafted.", 2);
 					initItems();
 				} else {

@@ -32,6 +32,9 @@ public class RScript extends Resource {
 		this.script = script.script;
 	}
 
+	@Override
 	public void load() {}
+	
+	@Override
 	public void unload() {}
 }

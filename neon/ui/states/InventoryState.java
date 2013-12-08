@@ -139,9 +139,10 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 				listData.put(i.getID(), listData.get(i.getID()) + 1);
 			}
 		}
-		
-		info.setText("Weight: " + InventoryHandler.getWeight(player) + " kg. Money: " + moneyString(player.getMoney()) + ".");
-    	inventory.setListData(buffer);
+
+		info.setText("Weight: " + InventoryHandler.getWeight(player) + " kg. Money: " + 
+				moneyString(player.getInventoryComponent().getMoney()) + ".");
+		inventory.setListData(buffer);
 	}
 	
 	private String moneyString(int money) {

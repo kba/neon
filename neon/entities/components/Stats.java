@@ -20,13 +20,13 @@ package neon.entities.components;
 
 import neon.resources.RCreature;
 
-public class StatsComponent implements Component {
+public class Stats implements Component {
 	private final long uid;
 	private final RCreature species;
 	
 	private int strMod, conMod, dexMod, intMod, wisMod, chaMod, spdMod;	
 
-	public StatsComponent(long uid, RCreature species) {
+	public Stats(long uid, RCreature species) {
 		this.uid = uid;
 		this.species = species;
 	}

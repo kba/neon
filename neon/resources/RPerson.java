@@ -32,6 +32,7 @@ public class RPerson extends RData {
 	public HashMap<Skill, Integer> skills = new HashMap<Skill, Integer>();
 	public HashSet<String> spells = new HashSet<String>();
 	public ArrayList<String> items = new ArrayList<String>();
+	public ArrayList<String> scripts = new ArrayList<String>();
 	public List<Element> services = new ArrayList<Element>();
 	public String species;
 
@@ -94,6 +95,10 @@ public class RPerson extends RData {
 		// nieuwe arraylist om concurrentmodificationexceptions te vermijden
 		for(Element service : new ArrayList<Element>(person.getChildren("service"))) {
 			services.add(service.detach());
+		}
+
+		for(Element script : person.getChildren("script")) {
+			scripts.add(script.getText());
 		}
 	}
 	

@@ -116,7 +116,7 @@ public class SpellTradeDialog implements KeyListener {
 		case KeyEvent.VK_ENTER:
 			try {
 				RSpell spell = buy.getSelectedValue();
-				if(player.getMoney() >= spell.cost) {
+				if(player.getInventoryComponent().getMoney() >= spell.cost) {
 					if(!player.getMagicComponent().getSpells().contains(spell)) {
 						player.getMagicComponent().addSpell(spell);
 						ui.showMessage("You bought the spell " + spell + ".", 2);
@@ -152,7 +152,7 @@ public class SpellTradeDialog implements KeyListener {
 		
 		buy.setListData(spells);
     	buy.setSelectedIndex(0);
-    	info.setText("Money: " + moneyString(player.getMoney()) + ".");
+    	info.setText("Money: " + moneyString(player.getInventoryComponent().getMoney()) + ".");
     	panel.repaint();		
 	}
 	

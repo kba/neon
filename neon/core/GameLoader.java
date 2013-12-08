@@ -27,6 +27,7 @@ import java.util.List;
 import neon.core.event.LoadEvent;
 import neon.core.event.MagicTask;
 import neon.core.event.ScriptAction;
+import neon.core.event.TaskQueue;
 import neon.core.handlers.InventoryHandler;
 import neon.core.handlers.SkillHandler;
 import neon.entities.Entity;
@@ -34,7 +35,7 @@ import neon.entities.EntityFactory;
 import neon.entities.Item;
 import neon.entities.Player;
 import neon.entities.UIDStore;
-import neon.entities.components.StatsComponent;
+import neon.entities.components.Stats;
 import neon.entities.property.Ability;
 import neon.entities.property.Feat;
 import neon.entities.property.Gender;
@@ -53,16 +54,19 @@ import neon.systems.files.XMLTranslator;
 import net.engio.mbassy.listener.Handler;
 import net.engio.mbassy.listener.Listener;
 import net.engio.mbassy.listener.References;
-
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
 @Listener(references = References.Strong)
 public class GameLoader {
+	private Engine engine;
+	private TaskQueue queue;
 	private Configuration config;
 	
-	public GameLoader(Configuration config) {
+	public GameLoader(Engine engine, Configuration config) {
+		this.engine = engine;
 		this.config = config;
+		queue = engine.getQueue();
 	}
 	
 	@Handler public void loadGame(LoadEvent le) {
@@ -101,7 +105,7 @@ public class GameLoader {
 		RCreature species = new RCreature(((RCreature)Engine.getResources().getResource(race)).toElement());
 		Player player = new Player(species, name, gender, spec, profession);
 		player.species.text = "@";
-		Engine.startGame(new Game(player, Engine.getFileSystem()));
+		engine.startGame(new Game(player, Engine.getFileSystem()));
 		setSign(player, sign);
 		for(Skill skill : Skill.values()) {
 			SkillHandler.checkFeat(skill, player);
@@ -138,7 +142,7 @@ public class GameLoader {
 			player.getMagicComponent().addSpell(SpellFactory.getSpell(power));
 		}
 		for(Ability ability : sign.abilities.keySet()) {
-			player.addAbility(ability, sign.abilities.get(ability));
+			player.getCharacteristicsComponent().addAbility(ability, sign.abilities.get(ability));
 		}		
 	}
 	
@@ -194,7 +198,7 @@ public class GameLoader {
 			String description = event.getAttributeValue("desc");
 			if(event.getAttribute("script") != null) {
 				String script = event.getAttributeValue("script");
-				Engine.getQueue().add(description, new ScriptAction(script));
+				queue.add(description, new ScriptAction(script));
 			}
 		}
 		
@@ -207,7 +211,7 @@ public class GameLoader {
 					
 			switch(event.getAttributeValue("task")) {
 			case "script": 
-				Engine.getQueue().add(event.getAttributeValue("script"), start, period, stop);
+				queue.add(event.getAttributeValue("script"), start, period, stop);
 				break;
 			case "magic": 
 				Effect effect = Effect.valueOf(event.getAttributeValue("effect").toUpperCase());
@@ -223,7 +227,7 @@ public class GameLoader {
 					target = Engine.getStore().getEntity(Long.parseLong(event.getAttributeValue("target")));
 				}
 				Spell spell = new Spell(target, caster, effect, magnitude, script, type);
-				Engine.getQueue().add(new MagicTask(spell, stop), start, stop, period);
+				queue.add(new MagicTask(spell, stop), start, stop, period);
 				break;
 			}
 		}
@@ -235,7 +239,7 @@ public class GameLoader {
 		Player player = new Player(new RCreature(species.toElement()), playerData.getAttributeValue("name"), 
 				Gender.valueOf(playerData.getAttributeValue("gender").toUpperCase()), Player.Specialisation.valueOf(playerData.getAttributeValue("spec")),
 				playerData.getAttributeValue("prof"));
-		Engine.startGame(new Game(player, Engine.getFileSystem()));
+		engine.startGame(new Game(player, Engine.getFileSystem()));
 		Rectangle bounds = player.getShapeComponent();
 		bounds.setLocation(Integer.parseInt(playerData.getAttributeValue("x")), Integer.parseInt(playerData.getAttributeValue("y")));
 		player.setSign(playerData.getAttributeValue("sign"));
@@ -248,7 +252,7 @@ public class GameLoader {
 		Engine.getAtlas().setCurrentZone(level);
 		
 		// stats
-		StatsComponent stats = player.getStatsComponent();
+		Stats stats = player.getStatsComponent();
 		stats.addStr(Integer.parseInt(playerData.getChild("stats").getAttributeValue("str")) - stats.getStr());
 		stats.addCon(Integer.parseInt(playerData.getChild("stats").getAttributeValue("con")) - stats.getCon());
 		stats.addDex(Integer.parseInt(playerData.getChild("stats").getAttributeValue("dex")) - stats.getDex());
@@ -274,11 +278,11 @@ public class GameLoader {
 		
 		// feats
 		for(Element e: playerData.getChildren("feat")) {
-			player.addFeat(Feat.valueOf(e.getText()));
+			player.getCharacteristicsComponent().addFeat(Feat.valueOf(e.getText()));
 		}
 
 		// geld
-		player.addMoney(Integer.parseInt(playerData.getChildText("money")));		
+		player.getInventoryComponent().addMoney(Integer.parseInt(playerData.getChildText("money")));		
 	}
 
 	private void initMaps() {

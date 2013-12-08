@@ -81,6 +81,9 @@ public class Topic {
 		this.action = action;
 	}
 	
+	/**
+	 * @return	a JDOM {@code Element} describing this topic
+	 */
 	public Element toElement() {
 		Element topic = new Element("topic");
 		topic.setAttribute("id", id);
