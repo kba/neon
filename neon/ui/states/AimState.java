@@ -25,6 +25,7 @@ import java.util.*;
 import javax.swing.Popup;
 import neon.core.*;
 import neon.core.event.CombatEvent;
+import neon.core.event.MagicEvent;
 import neon.core.handlers.*;
 import neon.entities.Creature;
 import neon.entities.Door;
@@ -199,23 +200,13 @@ public class AimState extends State implements KeyListener {
 	}
 	
 	private void cast() {
-		int out = MagicHandler.NULL;
-
 		if(player.getMagicComponent().getSpell() != null) {
-			out = MagicHandler.cast(player, target);
+			bus.publishAsync(new MagicEvent.CreatureOnPoint(this, player, target));
 		} else if(player.getInventoryComponent().hasEquiped(Slot.MAGIC)) {
 			Item item = (Item)Engine.getStore().getEntity(player.getInventoryComponent().get(Slot.MAGIC));
-			out = MagicHandler.cast(player, target, item);
+			bus.publishAsync(new MagicEvent.ItemOnPoint(this, player, item, target));
 		}
 
-		switch(out) {
-		case MagicHandler.MANA: ui.showMessage("Not enough mana to cast this spell.", 1); break;
-		case MagicHandler.RANGE: ui.showMessage("Target out of range.", 1); break;
-		case MagicHandler.NONE: ui.showMessage("No spell equiped.", 1); break;
-		case MagicHandler.SKILL: ui.showMessage("Casting failed.", 1); break;
-		case MagicHandler.OK: ui.showMessage("Spell cast.", 1); break;
-		case MagicHandler.NULL: ui.showMessage("No target selected.", 1); break;
-		}
 		bus.publishAsync(new TransitionEvent("return"));
 	}
 	

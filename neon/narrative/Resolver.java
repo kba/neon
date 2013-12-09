@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import neon.core.Engine;
-import neon.core.event.ScriptAction;
 import neon.resources.RCreature;
 import neon.resources.RItem;
 import neon.util.Dice;
@@ -100,9 +99,6 @@ public class Resolver {
 		String creature = creatures.get(Dice.roll(1, creatures.size(), -1)).toString();
 		strings.add("$" + var.getTextTrim() + "$");
 		strings.add(creature);
-		if(var.getChild("onDie") != null) {
-			Engine.getQueue().add("die:" + creature, new ScriptAction(var.getChildText("onDie")));
-		}
 		tracker.addObject(creature);		
 	}
 }

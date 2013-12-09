@@ -23,6 +23,7 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
+import neon.core.event.MagicEvent;
 import neon.core.handlers.*;
 import neon.entities.Clothing;
 import neon.entities.Creature;
@@ -182,7 +183,7 @@ public abstract class AI {
 				RSpell formula = item.getMagicComponent().getSpell();
 				
 				if(formula.effect.equals(Effect.RESTORE_HEALTH) && formula.range == 0) {
-					MagicHandler.cast(creature, item);
+					Engine.post(new MagicEvent.ItemOnSelf(this, creature, item));
 					InventoryHandler.removeItem(creature, item.getUID());
 					return true;
 				}
@@ -192,13 +193,13 @@ public abstract class AI {
 		for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
 			if(power.effect.equals(Effect.RESTORE_HEALTH) && power.range == 0 && 
 					creature.getMagicComponent().canUse(power, time)) {
-				MagicHandler.cast(creature, power);
+				Engine.post(new MagicEvent.OnSelf(this, creature, power));
 				return true;
 			}
 		}
 		for(RSpell spell : creature.getMagicComponent().getSpells()) {
 			if(spell.effect.equals(Effect.RESTORE_HEALTH) && spell.range == 0) {
-				MagicHandler.cast(creature, spell);
+				Engine.post(new MagicEvent.OnSelf(this, creature, spell));
 				return true;
 			}
 		}
@@ -233,7 +234,7 @@ public abstract class AI {
 			if(item instanceof Item.Scroll || item instanceof Item.Potion) {
 				RSpell formula = item.getMagicComponent().getSpell();
 				if(formula.effect.equals(effect) && formula.range == 0) {
-					MagicHandler.cast(creature, item);
+					Engine.post(new MagicEvent.ItemOnSelf(this, creature, item));
 					InventoryHandler.removeItem(creature, item.getUID());
 					return true;
 				}
@@ -243,13 +244,13 @@ public abstract class AI {
 		for(RSpell.Power power : creature.getMagicComponent().getPowers()) {
 			if(power.effect.equals(effect) && power.range == 0 && 
 					creature.getMagicComponent().canUse(power, time)) {
-				MagicHandler.cast(creature, power);
+				Engine.post(new MagicEvent.OnSelf(this, creature, power));
 				return true;
 			}
 		}
 		for(RSpell spell : creature.getMagicComponent().getSpells()) {
 			if(spell.effect.equals(effect) && spell.range == 0) {
-				MagicHandler.cast(creature, spell);
+				Engine.post(new MagicEvent.OnSelf(this, creature, spell));
 				return true;
 			}
 		}
@@ -416,7 +417,7 @@ public abstract class AI {
 						preyPos.x, preyPos.y)) {
 					creature.getMagicComponent().equipSpell(power);
 					Rectangle bounds = prey.getShapeComponent();
-					MagicHandler.cast(creature, bounds.getLocation());
+					Engine.post(new MagicEvent.CreatureOnPoint(this, creature, bounds.getLocation()));
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
@@ -426,7 +427,7 @@ public abstract class AI {
 						preyPos.x, preyPos.y)) {
 					creature.getMagicComponent().equipSpell(spell);
 					Rectangle bounds = prey.getShapeComponent();
-					MagicHandler.cast(creature, bounds.getLocation());
+					Engine.post(new MagicEvent.CreatureOnPoint(this, creature, bounds.getLocation()));
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}

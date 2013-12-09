@@ -25,6 +25,7 @@ import neon.core.event.*;
 import neon.core.handlers.CombatHandler;
 import neon.core.handlers.DeathHandler;
 import neon.core.handlers.InventoryHandler;
+import neon.core.handlers.MagicHandler;
 import neon.entities.Player;
 import neon.entities.UIDStore;
 import neon.maps.Atlas;
@@ -55,7 +56,7 @@ public class Engine implements Runnable {
 	private static MBassador<EventObject> bus;	// event bus
 	private static ResourceManager resources;
 	
-	private static TaskQueue queue;
+	private TaskQueue queue;
 	private Configuration config;
 
 	// wordt extern geset
@@ -186,18 +187,21 @@ public class Engine implements Runnable {
 		return game.getAtlas();
 	}
 	
-	public static TaskQueue getQueue() {
+	public TaskQueue getQueue() {
 		return queue;
 	}
 	
 	/**
 	 * Starts a new game.
 	 */
-	public void startGame(Game g) {
-		game = g;
-		Player player = g.getPlayer();
+	public void startGame(Game game) {
+		Engine.game = game;
+
+		// ontbrekende systemen opzetten
+		bus.subscribe(new MagicHandler(queue, game));
 		
 		// player registreren
+		Player player = game.getPlayer();
 		engine.put("journal", player.getJournal());	
 		engine.put("player", player);
 		engine.put("PC", player);

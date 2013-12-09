@@ -21,7 +21,7 @@ package neon.ai;
 import java.awt.Point;
 import java.awt.Rectangle;
 import neon.core.Engine;
-import neon.core.handlers.MagicHandler;
+import neon.core.event.MagicEvent;
 import neon.entities.Creature;
 import neon.entities.components.ShapeComponent;
 import neon.entities.property.Skill;
@@ -50,7 +50,7 @@ public class HuntBehaviour implements Behaviour {
 						power.range >= Point.distance(creaturePos.x, creaturePos.y, preyPos.x, preyPos.y)) {
 					creature.getMagicComponent().equipSpell(power);
 					ShapeComponent bounds = prey.getShapeComponent();
-					MagicHandler.cast(creature, bounds.getLocation());
+					Engine.post(new MagicEvent.CreatureOnPoint(this, creature, bounds.getLocation()));
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}
@@ -60,7 +60,7 @@ public class HuntBehaviour implements Behaviour {
 								preyPos.x, preyPos.y)) {
 					creature.getMagicComponent().equipSpell(spell);
 					ShapeComponent bounds = prey.getShapeComponent();
-					MagicHandler.cast(creature, bounds.getLocation());
+					Engine.post(new MagicEvent.CreatureOnPoint(this, creature, bounds.getLocation()));
 					return;	// hunt afbreken van zodra er een spell is gecast
 				}
 			}

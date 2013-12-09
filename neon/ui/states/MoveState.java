@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
+import neon.core.event.MagicEvent;
 import neon.core.event.TurnEvent;
 import neon.core.handlers.*;
 import neon.entities.*;
@@ -33,8 +34,8 @@ import neon.entities.property.Condition;
 import neon.entities.property.Slot;
 import neon.resources.CClient;
 import neon.resources.RItem;
+import neon.resources.RSpell;
 import neon.ui.GamePanel;
-import neon.ui.UserInterface;
 import neon.util.fsm.TransitionEvent;
 import neon.util.fsm.State;
 import net.engio.mbassy.bus.MBassador;
@@ -44,12 +45,10 @@ public class MoveState extends State implements KeyListener {
 	private GamePanel panel;
 	private CClient keys;
 	private MBassador<EventObject> bus;
-	private UserInterface ui;
 
-	public MoveState(State parent, MBassador<EventObject> bus, UserInterface ui) {
+	public MoveState(State parent, MBassador<EventObject> bus) {
 		super(parent, "move module");
 		this.bus = bus;
-		this.ui = ui;
 		keys = (CClient)Engine.getResources().getResource("client", "config");
 	}
 	
@@ -86,8 +85,6 @@ public class MoveState extends State implements KeyListener {
 						bus.publishAsync(new TransitionEvent("door", "door", Engine.getStore().getEntity(uid)));
 					}
 				}
-//			} else if(Configuration.audio) {	// TODO: audio hoort hier niet thuis
-//				new WavePlayer("data/step.wav").start();
 			}
 			bus.publishAsync(new TurnEvent(Engine.getTimer().addTick())); // volgende beurt
 		}
@@ -173,24 +170,22 @@ public class MoveState extends State implements KeyListener {
 				mBounds.setLocation(pBounds.x, pBounds.y);
 			}
 		} else if(code == keys.magic) {
-			int out = MagicHandler.RANGE;
 			if(player.getMagicComponent().getSpell() != null) {
-				out = MagicHandler.cast(player, player.getMagicComponent().getSpell());
+				RSpell spell = player.getMagicComponent().getSpell();
+				if(spell.range > 0) {
+					bus.publishAsync(new TransitionEvent("aim"));
+				} else {
+					bus.publishAsync(new MagicEvent.OnSelf(this, player, spell));
+				}
 			} else if(player.getInventoryComponent().hasEquiped(Slot.MAGIC)) {
 				Item item = (Item)Engine.getStore().getEntity(player.getInventoryComponent().get(Slot.MAGIC));
-				out = MagicHandler.cast(player, item);
+				if(item.getMagicComponent().getSpell().range > 0) {
+					bus.publishAsync(new TransitionEvent("aim"));
+				} else {
+					bus.publishAsync(new MagicEvent.ItemOnSelf(this, player, item));
+				}
+
 			} 
-			switch(out) {
-			case MagicHandler.MANA: ui.showMessage("Not enough mana to cast this spell.", 1); break;
-			case MagicHandler.NONE: ui.showMessage("No spell equiped.", 1); break;
-			case MagicHandler.SKILL: ui.showMessage("Casting failed.", 1); break;
-			case MagicHandler.OK: ui.showMessage("Spell cast.", 1); break;
-			case MagicHandler.NULL: ui.showMessage("No spell equiped!", 1); break;
-			case MagicHandler.LEVEL: ui.showMessage("Spell is too difficult to cast.", 1); break;
-			case MagicHandler.SILENCED: ui.showMessage("You are silenced", 1); break;
-			case MagicHandler.INTERVAL: ui.showMessage("Can't cast this power yet.", 1); break;
-			case MagicHandler.RANGE: bus.publishAsync(new TransitionEvent("aim")); break;
-			}
 		}
 	}
 	

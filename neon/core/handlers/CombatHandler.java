@@ -19,9 +19,9 @@
 package neon.core.handlers;
 
 import java.awt.Rectangle;
-
 import neon.core.Engine;
 import neon.core.event.CombatEvent;
+import neon.core.event.MagicEvent;
 import neon.entities.Creature;
 import neon.entities.Item;
 import neon.entities.Weapon;
@@ -147,7 +147,7 @@ public class CombatHandler {
 				// enchanted weapon spell casten
 				if(weapon != null && weapon.getMagicComponent().getSpell() != null) {
 					Rectangle bounds = defender.getShapeComponent();
-					MagicHandler.cast(attacker, bounds.getLocation(), weapon);
+					Engine.post(new MagicEvent.ItemOnPoint(this, attacker, weapon, bounds.getLocation()));
 				}
 				
 				// berichten bepalen

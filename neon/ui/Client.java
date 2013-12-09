@@ -24,8 +24,11 @@ import javax.swing.UIManager;
 import de.muntjak.tinylookandfeel.Theme;
 import neon.core.Engine;
 import neon.core.event.LoadEvent;
+import neon.core.event.MagicEvent;
 import neon.core.event.MessageEvent;
 import neon.core.event.UpdateEvent;
+import neon.core.handlers.MagicHandler;
+import neon.entities.Player;
 import neon.resources.CClient;
 import neon.systems.io.Port;
 import neon.ui.states.*;
@@ -85,7 +88,7 @@ public class Client implements Runnable {
 		// bumpen
 		BumpState bump = new BumpState(game, bus, ui);
 		// move
-		MoveState move = new MoveState(game, bus, ui);
+		MoveState move = new MoveState(game, bus);
 		// aim
 		AimState aim = new AimState(game, bus, ui);
 
@@ -145,6 +148,22 @@ public class Client implements Runnable {
 		@Handler public void load(LoadEvent le) {
 			if(le.getMode() == LoadEvent.Mode.DONE) {
 				fsm.transition(new TransitionEvent("start"));
+			}
+		}
+		
+		@Handler public void result(MagicEvent.Result me) {
+			if(me.getCaster() instanceof Player) {
+				switch(me.getResult()) {
+				case MagicHandler.MANA: ui.showMessage("Not enough mana to cast this spell.", 1); break;
+				case MagicHandler.RANGE: ui.showMessage("Target out of range.", 1); break;
+				case MagicHandler.NONE: ui.showMessage("No spell equiped.", 1); break;
+				case MagicHandler.SKILL: ui.showMessage("Casting failed.", 1); break;
+				case MagicHandler.OK: ui.showMessage("Spell cast.", 1); break;
+				case MagicHandler.NULL: ui.showMessage("No target selected.", 1); break;
+				case MagicHandler.LEVEL: ui.showMessage("Spell is too difficult to cast.", 1); break;
+				case MagicHandler.SILENCED: ui.showMessage("You are silenced", 1); break;
+				case MagicHandler.INTERVAL: ui.showMessage("Can't cast this power yet.", 1); break;
+				}
 			}
 		}
 	}

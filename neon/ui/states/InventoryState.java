@@ -104,6 +104,7 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 	private void use(Item item) {
 //		System.out.println(item.getClass());
 		if(item instanceof Item.Potion) {
+			InventoryHandler.removeItem(player, item.getUID());
 			MagicHandler.drink(player, (Item.Potion)item);
 			initList();
 		} else if(item instanceof Item.Book && !(item instanceof Item.Scroll)) {
@@ -111,8 +112,8 @@ public class InventoryState extends State implements KeyListener, MouseListener 
 			new BookDialog(ui.getWindow()).show(item.toString(), text.getText());
 		} else if(item instanceof Item.Food) {
 			InventoryHandler.removeItem(player, item.getUID());
-			initList();
 			MagicHandler.eat(player, (Item.Food)item);
+			initList();
 		} else if(item instanceof Item.Aid) {
 			InventoryHandler.removeItem(player, item.getUID());
 			initList();
